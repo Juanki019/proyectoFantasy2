@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+# Datos de ejemplo: usuarios y contraseñas (en un escenario real, esto estaría en una base de datos)
 users = {
     'user1': 'password1',
     'user2': 'password2',
@@ -22,11 +23,12 @@ def login():
 
         if username in users and users[username] == password:
             session['username'] = username
-            print(f'Inicio de sesión exitoso para {username}')  
+            print(f'Inicio de sesión exitoso para {username}')  # Imprime para depurar
             
         return redirect(url_for('index'))
         
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
@@ -35,5 +37,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

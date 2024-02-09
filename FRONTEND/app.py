@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import csv
+from flask import Flask, render_template
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -8,6 +11,19 @@ users = {
     'user1': 'password1',
     'user2': 'password2',
 }
+
+###########################
+# FUNCIONES
+###########################
+
+# Ruta para cargar y procesar el archivo CSV
+def cargar_datos_desde_csv(ruta_csv):
+    with open(ruta_csv, newline='', encoding='utf-8') as archivo_csv:
+        lector_csv = csv.DictReader(archivo_csv)
+        datos = list(lector_csv)
+    return datos
+
+
 
 @app.route('/')
 def index():
@@ -29,6 +45,12 @@ def login():
         
     return render_template('login.html')
 
+
+@app.route('/datajugadores')
+def datajugadores():
+    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
+    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 @app.route('/logout')
 def logout():

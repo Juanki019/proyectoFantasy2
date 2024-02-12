@@ -7,8 +7,12 @@
     <title>DreamXI</title>
 </head>
 <body>
-    <p>hola que tal</p>
     <button id="button1" onclick="redirectTo('/datajugadores')">Visualizar Data Jugadores</button>
+    
+    <button id="button2" onclick="redirectTo('/alineaciones')">Alineaciones</button>
+
+    <button id="button3" onclick="redirectTo('/miequipo')">Mi Equipo</button>
+
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

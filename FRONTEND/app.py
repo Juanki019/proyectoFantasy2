@@ -52,6 +52,24 @@ def datajugadores():
     lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
     return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
+
+
+@app.route('/alineaciones')
+def alineaciones():
+    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
+    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
+
+
+@app.route('/miequipo')
+def miequipo():
+    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
+    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    return render_template('miequipo.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
+
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)

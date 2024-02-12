@@ -1,0 +1,523 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    width: 100%;
+    font-size: 62.5%;
+    padding: 0;
+    margin: 0;
+    background: #09121b;
+    font-family: 'Open Sans', helvetica, arial, sans-serif;
+  }
+  
+  .stage {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    perspective-origin: 50% -200px;
+    perspective: 1100px;
+    z-index: 1;
+    top: -50px;
+    left: 1000px;
+  }
+  
+  .world {
+    position: absolute;
+    left: 50%;
+    margin-left: -336px;
+    width: 672px;
+    height: 840px;
+    transform: translateZ(-210px);
+    transform-style: preserve-3d;
+    z-index: 1;
+  }
+  
+  .field {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    z-index: 2;
+    transform: rotateX(90deg) translateZ(0);
+    transform-origin: 50% 50%;
+    box-sizing: content-box;
+  }
+  
+  .field__texture {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+  }
+  
+  .field__texture--gradient {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+    z-index: 4;
+  }
+  
+  .field__texture--grass {
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/215059/grass2.png");
+    background-repeat: repeat;
+    background-size: 75px 75px;
+    background-position: -20px -20px;
+  }
+  
+  .field__side {
+    position: absolute;
+    top: 420px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    transform: rotateX(180deg) translateZ(-420px);
+    transform-origin: 50% 50%;
+    z-index: 9;
+  }
+  
+  .field__side:after {
+    content: "";
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    opacity: 0.55;
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/215059/mud.png");
+    background-repeat: repeat;
+    background-size: 75px 75px;
+    background-position: -20px -20px;
+  }
+  
+  .field__line {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    z-index: 4;
+  }
+  
+  .field__line--goal {
+    width: 16%;
+    height: 6%;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 4%;
+  }
+  
+  .field__line--goal--far {
+    top: 4%;
+    bottom: auto;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-top: none;
+  }
+  
+  .field__line--penalty-arc {
+    width: 20%;
+    height: 20%;
+    overflow: hidden;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  
+  .field__line--penalty-arc:after {
+    position: absolute;
+    top: 75%;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    content: ' ';
+    display: block;
+    border-radius: 50% 50% 0 0;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-bottom: none; 
+  }
+  
+  .field__line--penalty-arc--far {
+    bottom: auto;
+    top: 20%;
+  }
+  
+  .field__line--penalty-arc--far:after {
+    bottom: 75%;
+    top: auto;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-top: none;
+    border-radius: 0 0 50% 50%;
+  }
+  
+  .field__line--penalty {
+    width: 44%;
+    height: 16%;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 4%;
+  }
+  
+  .field__line--penalty--far {
+    top: 4%;
+    bottom: auto;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-top: none;
+  }
+  
+  .field__line--outline {
+    width: 92%;
+    height: 92%;
+    top: 4%;
+    left: 4%;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+  }
+  
+  .field__line--mid {
+    top: 50%;
+    width: 92%;
+    left: 4%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .field__line--circle {
+    width: 20%;
+    height: 20%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: solid 3px rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+  }
+  
+  .player {
+    transition: all 0.2s;
+    position: absolute;
+    height: 88px;
+    width: 65px;
+    padding-bottom: 23px;
+    z-index: 9;
+    left: 50%;
+    margin-left: -32.5px;
+    bottom: 50%;
+    transform-style: preserve-3d;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .player__placeholder {
+    position: absolute;
+    opacity: 0;
+    transform: rotateX(90deg);
+    height: 30px;
+    width: 30px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .player.active .player__placeholder {
+    opacity: 1;
+  }
+  
+  .player__card {
+    position: absolute;
+    bottom: 26px;
+    left: -82.5px;
+    height: 0px;
+    background-color: #f7f7f7;
+    opacity: 0;
+    width: 230px;
+    padding: 0;
+    font-size: 18px;
+    color: #333;
+    border-radius: 4px;
+    z-index: 2;
+  }
+  
+  .player__card:after {
+    position: absolute;
+    display: block;
+    content: '';
+    height: 1px;
+    width: 1px;
+    border: solid 10px transparent;
+    border-top: solid 10px #eee;
+    bottom: -21px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: auto;
+    z-index: 3;
+  }
+  
+  .player__card h3 {
+    text-align: center;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-family: montserrat;
+    font-size: 19px;
+    line-height: 27px;
+    color: #fff;
+    padding: 15px 30px 40px;
+    margin: 0 0 30px;
+    background-color: #eee;
+    border-radius: 4px 4px 0 0;
+    background-color: #192642;
+  }
+  
+  .player__card__list {
+    padding: 10px 0;
+    font-size: 14px;
+    color: #777;
+    overflow: auto;
+    text-align: center;
+  }
+  
+  .player__card__list li {
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 15px;
+    padding-left: 20px;
+    color: #333;
+  }
+  
+  .player__card__list li span {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+  
+  .player__card__list li:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+  
+  .player__card__list--last {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background-color: #ddd;
+    margin: 0;
+    padding: 0;
+    border-top: solid 1px #ddd;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+  }
+  
+  .player__card__list--last li {
+    width: 49%;
+    padding: 10px 0 20px 0;
+    color: #a40028;
+    font-size: 28px;
+    line-height: 22px;
+  }
+  
+  .player__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 65px;
+    height: 65px;
+    z-index: 4;
+    overflow: hidden;
+    border-radius: 32.5px;
+    background-color: #000;
+    border: solid 1px #fff;
+    transition: all 0.2s;
+  }
+  
+  .player__img img {
+    width: 100%;
+    transition: all 0.2s;
+    display: block;
+  }
+  
+  .player__label {
+    position: absolute;
+    height: 20px;
+    display: inline-block;
+    width: auto;
+    overflow: visible;
+    white-space: nowrap;
+    left: -100%;
+    right: -100%;
+    margin: auto;
+    padding: 0 10px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 10px;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 2;
+  }
+  
+  .player__label span {
+    background-color: rgba(16, 20, 30, 0.9);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px 2px 10px;
+    border-radius: 20px;
+    text-transform: upppercase;
+  }
+  
+  /* ==================== */
+  section {
+    width: 300px;
+    top: 20px;
+    left: 10px;
+    position: absolute;
+    background: #ccc;
+    padding: 0 10px 0 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 2px #000;
+    border: 1px solid #fff;
+  }
+  section a {
+    display: block;
+    clear: left;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+  section ul {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    clear: left;
+  }
+  section ul li {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    background: #eee;
+    border-radius: 100px;
+    overflow: hidden;
+    float: left;
+    box-shadow: 0px 2px 2px 0px #999;
+  }
+  section ul li div img {
+    margin-top: -5px;
+  }
+  section ul li div p {
+    display: none;
+  }
+  section div#fm li {
+    border-radius: 5px;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    background: #333;
+  }
+  section div#fm li:hover {
+    background: #000;
+  }
+  
+  canvas {
+    position: relative;
+    left: 350px;
+    top: 30px;
+    fill: green;
+  }
+  
+  ul#starting_11 {
+    position: absolute;
+    top: 30px;
+    left: 350px;
+  }
+  ul#starting_11 li {
+    width: 40px;
+    height: 40px;
+    background: #000;
+    display: block;
+    opacity: 0.1;
+    border-radius: 100px;
+    box-shadow: 0px -2px 5px 1px #000;
+    border: 1px solid #666;
+    overflow: hidden;
+  }
+  ul#starting_11 li img {
+    margin-top: -5px;
+  }
+  ul#starting_11 li#pos1 {
+    top: 20px;
+    left: 265px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos2 {
+    top: 120px;
+    left: 110px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos3 {
+    top: 100px;
+    left: 210px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos4 {
+    top: 100px;
+    left: 320px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos5 {
+    top: 120px;
+    left: 415px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos6 {
+    top: 250px;
+    left: 100px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos7 {
+    top: 250px;
+    left: 210px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos8 {
+    top: 250px;
+    left: 320px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos9 {
+    top: 250px;
+    left: 430px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos10 {
+    top: 400px;
+    left: 320px;
+    position: absolute;
+  }
+  ul#starting_11 li#pos11 {
+    top: 400px;
+    left: 210px;
+    position: absolute;
+  }
+  ul#starting_11 .highlight {
+    opacity: 0.7;
+  }
+  ul#starting_11 .selected {
+    opacity: 1;
+    z-index: 2;
+  }
+  ul#starting_11 .selected img {
+    z-index: -1;
+  }
+  
+  
+  

@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import csv
-from flask import Flask, render_template
 
 
 app = Flask(__name__)

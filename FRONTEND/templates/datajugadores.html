@@ -32,7 +32,8 @@
         <div id="player_info"></div>
     </div>
 
-    <h1>Tabla de Lesiones</h1>
+<h1>Tabla de Lesiones</h1>
+<div id="lesionados-container">
     <table>
         <thead>
             <tr>
@@ -52,7 +53,44 @@
 
         </tbody>
     </table>
+<div>
 
+<br>
+
+    <h1>Tabla de Jugadores</h1>
+    <div id="jugadores-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Equipo</th>
+                    <th>Precio</th>
+                    <th>Puntos</th>
+                    <th>Partidos</th>
+                    <th>Minutos</th>
+                    <th>Goles</th>
+                    <th>Asistencias</th>
+                    <th>Amarillas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr>
+                    <td>{{ player['Nombre'] }}</td>
+                    <td>{{ player['Equipo'] }}</td>
+                    <td>{{ player['Precio'] }}</td>
+                    <td>{{ player['Puntos'] }}</td>
+                    <td>{{ player['Partidos'] }}</td>
+                    <td>{{ player['Minutos'] }}</td>
+                    <td>{{ player['Goles'] }}</td>
+                    <td>{{ player['Asistencia'] }}</td>
+                    <td>{{ player['Amarillas'] }}</td>
+                </tr>
+                {% endfor %}
+    
+            </tbody>
+        </table>
+    <div>   
 
     <script src="{{ url_for('static', filename='js/datajugadores.js') }}"></script>
 </body>

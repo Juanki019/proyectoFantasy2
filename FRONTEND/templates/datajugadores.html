@@ -7,8 +7,7 @@
     <title>DreamXI</title>
 </head>
 <body>
-    <p>hola que tal</p>
-
+    <h1>Información de Jugadores</h1>
     <div id="container">
         <h2>Selecciona un jugador:</h2>
         <select id="player_select">
@@ -17,6 +16,8 @@
             {% endfor %}
         </select>
         <button id="show_player_info">Mostrar información del jugador</button>
+
+        <div id="player_info"></div>
 
         <select id="team_select">
             {% set equipos = [] %}
@@ -29,7 +30,7 @@
         </select>
         <button id="show_team_info">Mostrar información del jugador</button>
 
-        <div id="player_info"></div>
+        <div id="team_info"></div>
     </div>
 
 <h1>Tabla de Lesiones</h1>

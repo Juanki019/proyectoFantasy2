@@ -3,13 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/alineacionesProbables.css') }}">
     <title>DreamXI</title>
 </head>
 <body>
 
-    <h1>Marta caraculo</h1>
+    <h1>Alineaciones probables para la proxima jornada</h1>
+
+    <div class="alineaciones-container">
+        <img src="./DATABASE/partido1.png" class="alineacion">
+        <img src="/DATABASE/partido1.png" class="alineacion">
+        <img src="DATABASE/partido1.png" class="alineacion">
+
+    </div>
     
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alineacionesProbables.js') }}"></script>
 </body>
 </html>
+
+

@@ -72,6 +72,15 @@ def get_team_info(team_name):
     cursor.close()
     return team_info
     
+def verificar_credenciales(username, password):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "SELECT COUNT(*) FROM usuarios WHERE user = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    count = cursor.fetchone()[0]
+    cursor.close()
+    conexion.close()
+    return count > 0
 
 ###########################
 # RUTAS #################################
@@ -88,12 +97,13 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        if username in users and users[username] == password:
+        
+        if verificar_credenciales(username, password):
             session['username'] = username
-            print(f'Inicio de sesión exitoso para {username}')  # Imprime para depurar
-            
-        return redirect(url_for('index'))
+            print(f'Inicio de sesión exitoso para {username}')  
+            return redirect(url_for('index'))
+        else:
+            flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
         
     return render_template('login.html')
 
@@ -108,8 +118,8 @@ def datajugadores():
 
 @app.route('/alineaciones')
 def alineaciones():
-    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
-    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 
@@ -126,6 +136,7 @@ def miequipo():
     datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
     lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
     return render_template('miequipo.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
 
 @app.route('/player_info')
 def player_info():

@@ -3,109 +3,32 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/alineaciones.css') }}">
-    <title>DreamXI - Alineaciones</title>
-
+    <title>DreamXI</title>
 </head>
-
 <body>
-	<header>
-		S<i class="fa fa-futbol-o" style="font-size: 22px;"></i>ccer Formations
-	</header>
-	<main>
-		<div class="pitch">
-			<h4>3-4-2-1</h4>
-			<div class="container">
-				<div class="box1">
-					<div class="pen1">
-						<div class="pos" style="margin: 5px 17px;">1</div>
-					</div>
-				</div>
-				<div class="pos" style="margin: 65px 90px">2</div>
-				<div class="pos" style="margin: 65px 157px;">3</div>
-				<div class="pos" style="margin: 65px 224px">4</div>
 
-				<div class="pos" style="margin: 114px 53px">5</div>
-				<div class="pos" style="margin: 114px 126px">6</div>
-				<div class="pos" style="margin: 114px 186px">7</div>
-				<div class="pos" style="margin: 114px 258px">8</div>
+	<select id="alineacion_select">
+        <option value="4-4-2">4-4-2</option>
+        <option value="4-3-3">4-3-3</option>
+        <option value="3-5-2">3-5-2</option>
+	</select>
+    
+	<select id="player_select">
+		{% for player in players %}
+			<option value="{{ player.Nombre }}">{{ player.Nombre }}</option>
+		{% endfor %}
+	</select>
 
-				<div class="pos" style="margin: 165px 90px;">9</div>
-				<div class="pos" style="margin: 165px 222px;">10</div>
+	<button onclick="agregarJugador()">Añadir</button>
 
-				<div class="pos" style="margin: 198px 157px;">11</div>
+    <div id="jugadores_seleccionados">
+        <h2>Jugadores seleccionados:</h2>
+        <ul id="lista_jugadores"></ul>
+    </div>
 
-				<div class="half"></div>
-				<div class="box2">
-					<div class="pen2"></div>
-				</div>
-			</div>
-		</div>
-		<!--3421-->
+	<button onclick="guardarPlantilla()">Guardar Plantilla</button>
 
-		<div class="pitch">
-			<h4>4-4-2</h4>
-			<div class="container">
-				<div class="box1">
-					<div class="pen1">
-						<div class="pos" style="margin: 5px 15px;">1</div>
-					</div>
-				</div>
-				<div class="pos" style="margin: 65px 53px">2</div>
-				<div class="pos" style="margin: 65px 126px;">3</div>
-				<div class="pos" style="margin: 65px 186px">4</div>
-				<div class="pos" style="margin: 65px 258px">5</div>
-
-				<div class="pos" style="margin: 130px 53px">6</div>
-				<div class="pos" style="margin: 130px 126px">7</div>
-				<div class="pos" style="margin: 130px 186px">8</div>
-				<div class="pos" style="margin: 130px 258px">9</div>
-
-				<div class="pos" style="margin: 197px 126px;">10</div>
-				<div class="pos" style="margin: 197px 186px;">11</div>
-
-				<div class="half"></div>
-				<div class="box2">
-					<div class="pen2"></div>
-				</div>
-			</div>
-		</div>
-		<!--442-->
-
-		<div class="pitch">
-			<h4>3-5-2(3)</h4>
-			<div class="container">
-				<div class="box1">
-					<div class="pen1">
-						<div class="pos" style="margin: 5px 15px;">1</div>
-					</div>
-				</div>
-				<div class="pos" style="margin: 65px 90px">2</div>
-				<div class="pos" style="margin: 65px 157px;">3</div>
-				<div class="pos" style="margin: 65px 224px">4</div>
-
-				<div class="pos" style="margin: 114px 104px">5</div>
-				<div class="pos" style="margin: 114px 210px">6</div>
-
-				<div class="pos" style="margin: 145px 50px">7</div>
-				<div class="pos" style="margin: 160px 157px">8</div>
-				<div class="pos" style="margin: 145px 264px;">9</div>
-
-				<div class="pos" style="margin: 198px 126px;">10</div>
-				<div class="pos" style="margin: 198px 186px;">11</div>
-
-				<div class="half"></div>
-				<div class="box2">
-					<div class="pen2"></div>
-				</div>
-			</div>
-		</div>
-		<!--352(3)-->
-
-		<p></p>
-		<p></p>
-		<p></p>
-		<main>
+    <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>
 </html>

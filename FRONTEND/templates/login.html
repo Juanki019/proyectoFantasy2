@@ -9,39 +9,15 @@
 <body>
     <div class="login-box">
         <h2>Login</h2>
-            <form id="loginForm">
-                <div class="user-box">
+        <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+            <div class="user-box">
                     <input type="text" id="username" name="username" required>
                     <label>Username</label><br>
                 </div>
                 <div class="user-box">
                     <input type="password" id="password" name="password" required><br>
                     <label>Contraseña:</label>
-                    <button class="button" type="button" onclick="attemptLogin()">Iniciar sesión</button>
+                    <button class="button" type="submit">Iniciar sesión</button>
             </form>
-
-    <script>
-        function attemptLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-        
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `username=${username}&password=${password}`,
-            })
-            .then(response => {
-                if (response.redirected) {
-                    window.location.href = response.url;
-                } else {
-                    alert('Inicio de sesión fallido. Verifica tu usuario y contraseña.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-    </script>
 </body>
 </html>

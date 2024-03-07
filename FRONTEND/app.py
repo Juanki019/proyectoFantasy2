@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask_mail import Mail, Message
 import csv
 import mysql.connector
 
@@ -6,11 +7,14 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Datos de ejemplo: usuarios y contraseñas (en un escenario real, esto estaría en una base de datos)
-users = {
-    'user1': 'password1',
-    'user2': 'password2',
-}
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587  
+app.config['MAIL_USE_TLS'] = True 
+app.config['MAIL_USERNAME'] = ''  # Tu dirección de correo electrónico
+app.config['MAIL_PASSWORD'] = ''  # Tu contraseña de correo electrónico
+
+mail = Mail(app)
+
 
 ###########################
 # FUNCIONES
@@ -31,6 +35,7 @@ def conectar_bd():
         password="",
         database="dreamxi"
     )
+    
 # Función para cargar datos de jugadores desde la base de datos
 def cargar_datos_desde_bd():
     conexion = conectar_bd()
@@ -40,6 +45,34 @@ def cargar_datos_desde_bd():
     cursor.close()
     conexion.close()
     return datos
+
+def verificar_credenciales(username, password):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "SELECT COUNT(*) FROM usuarios WHERE user = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    count = cursor.fetchone()[0]
+    cursor.close()
+    conexion.close()
+    return count > 0
+
+def guardar_credenciales(username, password, email):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "INSERT INTO usuarios (user, password, email) VALUES (%s, %s, %s)"
+    cursor.execute(query, (username, password, email))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+def update_contrasena(username, new_password):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "UPDATE usuarios SET password = %s WHERE user = %s"
+    cursor.execute(query, (new_password, username))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
 
 # Función para cargar datos de jugadores lesionados desde la base de datos
 def cargar_datos_lesionados_desde_bd():
@@ -61,7 +94,6 @@ def get_player_info(player_name):
     conexion.close()
     return player_info
     
-    
 def get_team_info(team_name):
     conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)
@@ -72,15 +104,6 @@ def get_team_info(team_name):
     cursor.close()
     return team_info
     
-def verificar_credenciales(username, password):
-    conexion = conectar_bd()
-    cursor = conexion.cursor()
-    query = "SELECT COUNT(*) FROM usuarios WHERE user = %s AND password = %s"
-    cursor.execute(query, (username, password))
-    count = cursor.fetchone()[0]
-    cursor.close()
-    conexion.close()
-    return count > 0
 
 ###########################
 # RUTAS #################################
@@ -95,17 +118,43 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        if verificar_credenciales(username, password):
-            session['username'] = username
-            print(f'Inicio de sesión exitoso para {username}')  
-            return redirect(url_for('index'))
-        else:
-            flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
-        
+        action = request.form['action']
+        if action == 'register':
+            username = request.form['username']
+            password = request.form['password']
+            email = request.form['email']
+            guardar_credenciales(username, password, email)
+            print(f'Registro exitoso para {username}')  
+        elif action == 'login':   
+            username = request.form['username']
+            password = request.form['password']
+            
+            if verificar_credenciales(username, password):
+                session['username'] = username
+                print(f'Inicio de sesión exitoso para {username}')  
+                return redirect(url_for('index'))
+            else:
+                flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
+            
     return render_template('login.html')
+
+
+@app.route('/olvidocontrasena', methods=['GET', 'POST'])
+def olvidocontrasena():
+    if request.method == 'POST':
+        email = request.form['email']
+        msg = Message('Reset password', sender='your-email@example.com', recipients=[email])
+        msg.body = 'Aquí está el enlace para restablecer tu contraseña: http://tu-sitio.com/reset_password'
+        mail.send(msg)
+    return render_template('olvidoContrasena.html')
+
+@app.route('/olvidocontrasena/reiniciocontrasena', methods=['GET', 'POST'])
+def reiniciocontrasena():
+    username = request.form['username']
+    password = request.form['password']
+    update_contrasena(username, password)
+    return render_template('reinicioContrasena.html')
+
 
 
 @app.route('/datajugadores')

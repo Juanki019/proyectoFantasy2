@@ -10,8 +10,8 @@ app.secret_key = 'your_secret_key'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587  
 app.config['MAIL_USE_TLS'] = True 
-app.config['MAIL_USERNAME'] = ''  # Tu dirección de correo electrónico
-app.config['MAIL_PASSWORD'] = ''  # Tu contraseña de correo electrónico
+app.config['MAIL_USERNAME'] = ''  
+app.config['MAIL_PASSWORD'] = ''  
 
 mail = Mail(app)
 
@@ -112,8 +112,9 @@ def get_team_info(team_name):
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('index.html')
-    return redirect(url_for('login'))
+        return redirect(url_for('main_page'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

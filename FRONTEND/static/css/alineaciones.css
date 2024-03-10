@@ -1,21 +1,50 @@
-/* Estilos para la lista de jugadores seleccionados */
-#jugadores_seleccionados {
-    margin-top: 20px;
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
 }
 
-#jugadores_seleccionados h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
+/* Estilos de los selectores */
+select {
+    padding: 8px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+/* Estilos del botón */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos de la lista de jugadores */
 #lista_jugadores {
     list-style-type: none;
     padding: 0;
 }
 
 #lista_jugadores li {
-    margin-bottom: 5px;
-    padding: 5px 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Estilos del título */
+h2 {
+    color: #333;
+    margin-bottom: 10px;
 }

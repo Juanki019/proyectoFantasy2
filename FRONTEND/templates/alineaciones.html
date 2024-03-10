@@ -16,7 +16,7 @@
     
 	<select id="player_select">
 		{% for player in players %}
-			<option value="{{ player.Nombre }}">{{ player.Nombre }}</option>
+            <option value="{{ player.Nombre }}" data-posicion="{{ player.Posicion }}">{{ player.Nombre }} ({{ player.Posicion }})</option>
 		{% endfor %}
 	</select>
 

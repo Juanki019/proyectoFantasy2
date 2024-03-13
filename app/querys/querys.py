@@ -10,9 +10,10 @@ def cargar_datos_desde_csv(ruta_csv):
 # Conexión a la base de datos MySQL
 def conectar_bd():
     return mysql.connector.connect(
-        host="localhost",
+        host="195.235.211.197",
+        port="35024",
         user="root",
-        password="",
+        password="grupo5",
         database="dreamxi"
     )
     

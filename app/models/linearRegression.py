@@ -1,3 +1,27 @@
+import pickle
+import tkinter as tk
+from tkinter import ttk, filedialog
+import joblib
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from sklearn.impute import SimpleImputer
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import learning_curve
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.neural_network import MLPRegressor
+import os
+from datetime import datetime
+from tkinter import messagebox
+from PIL import Image, ImageTk
+import subprocess
 class LinearRegression():
     def __init__(self):
         self.model = LinearRegressionModel()

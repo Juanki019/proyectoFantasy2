@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, session, flash, jsonify, Blueprint
 from flask_mail import Mail, Message
 
-from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, guardar_credenciales, verificar_credenciales
+from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, guardar_credenciales, verificar_credenciales
 
 
 routes_config = Blueprint('routes', __name__)

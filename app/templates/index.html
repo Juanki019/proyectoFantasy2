@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
-    <title>DreamXI</title>
+    <title>CarefullyDrunk</title>
 </head>
 <body>
+
     <nav>
         <a href="#seccion1">DATA JUGADORES</a>
         <a href="#seccion2">SELECCION DE EQUIPO</a>
@@ -16,33 +17,94 @@
     </nav>
 
     <div id="seccion1" class="seccion">
-        <h2>VISUALIZAR DATOS DE LOS JUGADORES</h2>
-        <p>Contenido de la sección 1...</p>
-        <button id="button1" onclick="redirectTo('/datajugadores')">Visualizar Data Jugadores</button>
-
+        <div class="contenedor-flex">
+            <div class="texto-y-boton">
+                <h2 class="heading">VISUALIZAR DATOS DE LOS JUGADORES</h2>
+                <p class="description-proyect">
+                    En esta sección, puedes acceder a los datos de los jugadores y ver sus estadísticas,
+                    como puntos, precio en Fantasy, goles, etc. Además, también puedes ver qué jugadores
+                    están lesionados y la razón por la que están lesionados.
+                </p>
+                <button id="button1" onclick="redirectTo('/datajugadores')">
+                    <span class="transition"></span>
+                    <span class="gradient"></span>
+                    <span class="label">Visualizar</span>
+                </button>
+            </div>
+            <div class="imagen">
+                <img src="{{ url_for('static', filename='imagenes/analitica_futbol.png') }}" alt="Descripción de la imagen">
+            </div>
+        </div>
     </div>
 
     <div id="seccion2" class="seccion">
-        <h2>SELECCION DE EQUIPO</h2>
-        <p>Contenido de la sección 2...</p>
-        <button id="button2" onclick="redirectTo('/alineaciones')">Alineaciones</button>
-
+        <div class="contenedor-flex">
+            <div class="texto-y-boton">
+                <h2 class="heading">ALINEACION</h2>
+                <p class="description-proyect">
+                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
+                </p>
+                <button id="button1" onclick="redirectTo('/alineaciones')">
+                    <span class="transition"></span>
+                    <span class="gradient"></span>
+                    <span class="label">Visualizar</span>
+                </button>
+            </div>
+            <div class="imagen">
+                <img src="{{ url_for('static', filename='imagenes/alineacion.png') }}" alt="Descripción de la imagen">
+            </div>
+        </div>
     </div>
 
     <div id="seccion3" class="seccion">
-        <h2>EQUIPO DEL USUARIO</h2>
-        <p>Contenido de la sección 3...</p>
-        <button id="button3" onclick="redirectTo('/miequipo')">Mi Equipo</button>
+        <div class="contenedor-flex">
+            <div class="texto-y-boton">
+                <h2 class="heading">PREDICCIONES</h2>
+                <p class="description-proyect">
+                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
+                </p>
+                <button id="button1" onclick="redirectTo(''/miequipo'')">
+                    <span class="transition"></span>
+                    <span class="gradient"></span>
+                    <span class="label">Visualizar</span>
+                </button>
+            </div>
+            <div class="imagen">
+                <img src="{{ url_for('static', filename='imagenes/alineacion.png') }}" alt="Descripción de la imagen">
+            </div>
+        </div>
 
     </div>
 
     <div id="seccion4" class="seccion">
-        <h2>ALINEACIONES DE LA JORNADA</h2>
-        <p>Contenido de la sección 4...</p>
-        <button id="button4" onclick="redirectTo('/alineacionesProbables')">Alineaciones Probables</button>
+        <div class="contenedor-flex">
+            <div class="texto-y-boton">
+                <h2 class="heading">ALINEACION PROBABLE</h2>
+                <p class="description-proyect">
+                    En esta sección, tendrás acceso exclusivo a las alineaciones probables de cada uno de los emocionantes partidos de la jornada. ¿Te gustaría estar al tanto de qué jugadores estarán en el terreno de juego antes del pitido inicial? ¡Este es el lugar perfecto para ti!
 
+                    Descubre quiénes son los titulares, quiénes podrían quedarse en el banquillo y quiénes podrían ser las sorpresas de la jornada. Con información detallada sobre las alineaciones probables, podrás tomar decisiones más informadas para armar tu equipo DreamXI y competir con tus amigos.
+                    
+                    No te pierdas ni un solo detalle de las alineaciones probables. ¡Prepárate para la acción y mantente un paso adelante en tu estrategia de Fantasy Football con DreamXI!
+
+                    by:analiticafantasy
+                                    </p>
+                <button id="button1" onclick="redirectTo('/alineacionesProbables')">
+                    <span class="transition"></span>
+                    <span class="gradient"></span>
+                    <span class="label">Visualizar</span>
+                </button>
+            </div>
+            <div class="imagen">
+                <img src="{{ url_for('static', filename='imagenes/logo_dreamXI.png') }}" alt="Descripción de la imagen">
+            </div>
+        </div>
     </div>
 
+
+    
+>>>>>>> Stashed changes
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
+
 </html>

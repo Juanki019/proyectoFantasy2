@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from flask_mail import Mail, Message
 from routes import routes_config
 
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -24,7 +23,7 @@ app.register_blueprint(routes_config, url_prefix='/')
 @app.route('/')
 def index():
     if 'username' in session:
-        return redirect(url_for('routes.main_page'))
+        return redirect(url_for('routes.index'))
     else:
         return redirect(url_for('routes.login'))
 

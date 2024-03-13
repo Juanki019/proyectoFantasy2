@@ -1,4 +1,7 @@
 from flask import render_template, request, redirect, url_for, session, flash, jsonify, Blueprint
+from flask_mail import Mail, Message
+
+from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, guardar_credenciales, verificar_credenciales
 
 
 routes_config = Blueprint('routes', __name__)
@@ -34,7 +37,7 @@ def olvidocontrasena():
         email = request.form['email']
         msg = Message('Reset password', sender='your-email@example.com', recipients=[email])
         msg.body = 'Aquí está el enlace para restablecer tu contraseña: http://tu-sitio.com/reset_password'
-        mail.send(msg)
+        Mail.send(msg)
     return render_template('olvidoContrasena.html')
 
 @routes_config.route('/olvidocontrasena/reiniciocontrasena', methods=['GET', 'POST'])
@@ -43,6 +46,13 @@ def reiniciocontrasena():
     password = request.form['password']
     update_contrasena(username, password)
     return render_template('reinicioContrasena.html')
+
+
+@routes_config.route('/index')
+def index():
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    return render_template('index.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 
 

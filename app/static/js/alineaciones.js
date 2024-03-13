@@ -4,12 +4,14 @@ var cmCount = 0;
 var dcCount = 0;
 var poCount = 0;
 var dlCount = 0;
+var precioTotal = 0; 
 
 function agregarJugador() {
     var alineacion = document.getElementById("alineacion_select").value;
     var jugadorSeleccionado = document.getElementById("player_select").value;
     var posicionJugador = document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-posicion');
-        
+    var precioJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-precio')); // Obtener el precio del jugador
+
     if (jugadores.includes(jugadorSeleccionado)) {
         alert("Este jugador ya ha sido seleccionado.");
         return; 
@@ -68,6 +70,12 @@ function agregarJugador() {
     } else if (posicionJugador === "DL") {
         dlCount++;
     }
+
+    var precioTotalElement = document.getElementById("precio_total");
+    var precioTotal = parseFloat(precioTotalElement.textContent);
+    precioTotal += precioJugador; 
+    precioTotalElement.textContent = precioTotal;
+
     var jugador = { nombre: jugadorSeleccionado, posicion: posicionJugador };
     jugadores.push(jugador);
     
@@ -81,16 +89,20 @@ function actualizarListaJugadores() {
     
     jugadores.forEach(function(jugador, index) {
         var listItem = document.createElement("li");
-        listItem.textContent = jugador.nombre + " - " + jugador.posicion; 
+        listItem.textContent = jugador.nombre + " - " + jugador.posicion + " - "; 
         
         var btnQuitar = document.createElement("button");
         btnQuitar.textContent = "Quitar";
         
         btnQuitar.addEventListener("click", function() {
             var posicionJugadorEliminado = document.getElementById("player_select").options[index].getAttribute('data-posicion');
+            var precioJugadorEliminado = parseFloat(document.getElementById("player_select").options[index].getAttribute('data-precio')); // Obtener el precio del jugador eliminado
             jugadores.splice(index, 1); 
             actualizarContadores(posicionJugadorEliminado);
             actualizarListaJugadores(); 
+            precioTotal -= precioJugadorEliminado; // Restar el precio del jugador eliminado del precio total
+            document.getElementById("precio_total").textContent = precioTotal; // Actualizar el precio total en el HTML
+
         });
         
         listItem.appendChild(btnQuitar);

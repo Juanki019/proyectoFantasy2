@@ -16,7 +16,7 @@
     
 	<select id="player_select">
 		{% for player in players %}
-            <option value="{{ player.Nombre }}" data-posicion="{{ player.Posicion }}">{{ player.Nombre }} ({{ player.Posicion }})</option>
+            <option value="{{ player.Nombre }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
 		{% endfor %}
 	</select>
 
@@ -25,6 +25,11 @@
     <div id="jugadores_seleccionados">
         <h2>Jugadores seleccionados:</h2>
         <ul id="lista_jugadores"></ul>
+    </div>
+
+    <div id="total_precio">
+        <h2>Total precio:</h2>
+        <p id="precio_total">0</p>
     </div>
 
 	<button onclick="guardarPlantilla()">Guardar Plantilla</button>

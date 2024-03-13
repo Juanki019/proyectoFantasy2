@@ -73,16 +73,16 @@ def alineaciones():
 
 @routes_config.route('/alineacionesProbables')
 def alineacionesProbables():
-    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
-    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('alineacionesProbables.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 
 
 @routes_config.route('/miequipo')
 def miequipo():
-    datos_jugadores = cargar_datos_desde_csv('DATABASE/temporada2023.csv')
-    lesion_jugadores = cargar_datos_desde_csv('DATABASE/lesionados.csv')
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('miequipo.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 

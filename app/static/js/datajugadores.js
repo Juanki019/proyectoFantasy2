@@ -34,14 +34,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 teamInfoDiv.innerHTML = '';
 
                 data.forEach(function(player) {
-                    // Crear un elemento de párrafo para mostrar la información del jugador
                     var playerInfo = document.createElement('p');
                     playerInfo.textContent = 'Nombre: ' + player.Nombre + ', Equipo: ' + player.Equipo + ', Precio: ' + player.Precio + ', Puntos: ' + player.Puntos + ', Goles: ' + player.Goles;
 
-                    // Agregar el elemento de párrafo al contenedor de información del equipo
                     teamInfoDiv.appendChild(playerInfo);
                 });
             })
             .catch(error => console.error('Error al obtener la información del jugador:', error));
     });
+
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('lesionados_chart').getContext('2d');
+    var teamSelect = document.getElementById('team_select');
+    
+    var equipos = [];
+    var cantidadLesionados = [];
+    var options = teamSelect.options;
+    for (var i = 0; i < options.length; i++) {
+        var equipo = options[i].value;
+        var lesionados = parseInt(options[i].getAttribute('data-lesiones'));
+        equipos.push(equipo);
+        cantidadLesionados.push(lesionados);
+    }
+
+    // Crear el gráfico de barras
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: equipos,
+            datasets: [{
+                label: 'Cantidad de Lesionados por Equipo',
+                data: cantidadLesionados,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Color para los barras
+                borderColor: 'rgba(255, 99, 132, 1)', // Color para los bordes de las barras
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Ajuste la configuración de la escala del eje Y aquí
+                }
+            }
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('search_input');
+    var table = document.getElementById('jugadores-table');
+    var rows = table.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function() {
+        var searchText = searchInput.value.toLowerCase();
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var playerName = row.cells[0].textContent.toLowerCase(); 
+
+            // Comparar el nombre del jugador con el texto de búsqueda
+            if (playerName.includes(searchText)) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none'; 
+            }
+        }
+    });
+});
+

@@ -16,7 +16,7 @@
     
 	<select id="player_select">
 		{% for player in players %}
-            <option value="{{ player.Nombre }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
+            <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
 		{% endfor %}
 	</select>
 
@@ -32,8 +32,10 @@
         <p id="precio_total">0</p>
     </div>
 
-	<button onclick="guardarPlantilla()">Guardar Plantilla</button>
-
+    <form id="form_guardar_plantilla" >
+        <button type="submit">Guardar Plantilla</button>
+    </form>
+    
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>
 </html>

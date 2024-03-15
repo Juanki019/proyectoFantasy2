@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datajugadores.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>DreamXI</title>
 </head>
 <body>
@@ -23,76 +24,84 @@
             {% set equipos = [] %}
             {% for player in players %}
                 {% if player.Equipo not in equipos %}
-                    <option value="{{ player.Equipo }}">{{ player.Equipo }}</option>
+                    <option value="{{ player.Equipo }}" data-lesiones="{{ cantidad_lesionados }}">{{ player.Equipo }}</option>
                     {% set _ = equipos.append(player.Equipo) %}
                 {% endif %}
             {% endfor %}
         </select>
         <button id="show_team_info">Mostrar información del jugador</button>
-
         <div id="team_info"></div>
     </div>
 
-<h1>Tabla de Lesiones</h1>
-<div id="lesionados-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Equipo</th>
-                <th>Jugador</th>
-                <th>Lesión</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for lesion in lesiones %}
-            <tr>
-                <td>{{ lesion['Equipo'] }}</td>
-                <td>{{ lesion['Jugador'] }}</td>
-                <td>{{ lesion['Lesion'] }}</td>
-            </tr>
-            {% endfor %}
-
-        </tbody>
-    </table>
-<div>
-
-<br>
-
-    <h1>Tabla de Jugadores</h1>
-    <div id="jugadores-container">
-        <table>
+    
+    <h1>Tabla de Lesiones</h1>
+    <div id="lesionados-container">
+        <table >
             <thead>
                 <tr>
-                    <th>Nombre</th>
                     <th>Equipo</th>
-                    <th>Precio</th>
-                    <th>Puntos</th>
-                    <th>Partidos</th>
-                    <th>Minutos</th>
-                    <th>Goles</th>
-                    <th>Asistencias</th>
-                    <th>Amarillas</th>
+                    <th>Jugador</th>
+                    <th>Lesión</th>
                 </tr>
             </thead>
             <tbody>
-                {% for player in players %}
+                {% for lesion in lesiones %}
                 <tr>
-                    <td>{{ player['Nombre'] }}</td>
-                    <td>{{ player['Equipo'] }}</td>
-                    <td>{{ player['Precio'] }}</td>
-                    <td>{{ player['Puntos'] }}</td>
-                    <td>{{ player['Partidos'] }}</td>
-                    <td>{{ player['Minutos'] }}</td>
-                    <td>{{ player['Goles'] }}</td>
-                    <td>{{ player['Asistencia'] }}</td>
-                    <td>{{ player['Amarillas'] }}</td>
+                    <td>{{ lesion['Equipo'] }}</td>
+                    <td>{{ lesion['Jugador'] }}</td>
+                    <td>{{ lesion['Lesion'] }}</td>
                 </tr>
                 {% endfor %}
-    
             </tbody>
         </table>
-    <div>   
+    </div>
 
-    <script src="{{ url_for('static', filename='js/datajugadores.js') }}"></script>
+
+    <div id="lesionados_chart_container" style="width: 600px; height: 400px;">
+        <canvas id="lesionados_chart"></canvas>
+    </div>
+
+
+    <div>
+        <h1>Tabla de Jugadores</h1>
+        <div class="form__group field">
+            <input type="text" id="search_input" class="form__field" placeholder="Buscar jugador...">
+            <label for="name" class="form__label">Name</label>
+        </div>        <div id="jugadores-container">
+            <table id="jugadores-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Equipo</th>
+                        <th>Precio</th>
+                        <th>Puntos</th>
+                        <th>Partidos</th>
+                        <th>Minutos</th>
+                        <th>Goles</th>
+                        <th>Asistencias</th>
+                        <th>Amarillas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr>
+                        <td>{{ player['Nombre'] }}</td>
+                        <td>{{ player['Equipo'] }}</td>
+                        <td>{{ player['Precio'] }}</td>
+                        <td>{{ player['Puntos'] }}</td>
+                        <td>{{ player['Partidos'] }}</td>
+                        <td>{{ player['Minutos'] }}</td>
+                        <td>{{ player['Goles'] }}</td>
+                        <td>{{ player['Asistencia'] }}</td>
+                        <td>{{ player['Amarillas'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <div>   
+    <div>
+
+
+<script src="{{ url_for('static', filename='js/datajugadores.js') }}"></script>
 </body>
 </html>

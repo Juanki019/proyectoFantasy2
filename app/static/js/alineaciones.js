@@ -10,7 +10,8 @@ function agregarJugador() {
     var alineacion = document.getElementById("alineacion_select").value;
     var jugadorSeleccionado = document.getElementById("player_select").value;
     var posicionJugador = document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-posicion');
-    var precioJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-precio')); // Obtener el precio del jugador
+    var precioJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-precio')); 
+    var idJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-id')); 
 
     if (jugadores.includes(jugadorSeleccionado)) {
         alert("Este jugador ya ha sido seleccionado.");
@@ -21,10 +22,10 @@ function agregarJugador() {
         if (cmCount >= 4 && esCentrocampista(posicionJugador)) {
             alert("Ya se han seleccionado 4 centrocampistas.");
             return;
-        } else if (dcCount >= 2 && esDefensaCentral(posicionJugador)) {
+        } else if (dcCount >= 4 && esDefensaCentral(posicionJugador)) {
             alert("Ya se han seleccionado 2 defensas centrales.");
             return;
-        } else if (dlCount >= 4 && esDelanteroLateral(posicionJugador)) {
+        } else if (dlCount >= 2 && esDelanteroLateral(posicionJugador)) {
             alert("Ya se han seleccionado 4 defensas laterales.");
             return;
         }else if(poCount >= 1 && esPortero(posicionJugador)){
@@ -76,7 +77,7 @@ function agregarJugador() {
     precioTotal += precioJugador; 
     precioTotalElement.textContent = precioTotal;
 
-    var jugador = { nombre: jugadorSeleccionado, posicion: posicionJugador };
+    var jugador = { nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador };
     jugadores.push(jugador);
     
     actualizarListaJugadores();
@@ -123,13 +124,44 @@ function actualizarContadores(posicion) {
     }
 }
 
-function guardarPlantilla() {
-    if (jugadores.length !== 11) {
-        alert("Debes seleccionar exactamente 11 jugadores antes de guardar la plantilla.");
-        return; 
-    }
-    
-}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('form_guardar_plantilla').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe automáticamente
+        if (jugadores.length !== 11) {
+            alert("Debes seleccionar exactamente 11 jugadores antes de guardar la plantilla.");
+            return; 
+        }
+        var alineacionSelect = document.getElementById("alineacion_select");
+        var alineacion = alineacionSelect.value;
+
+        var data = {
+            alineacion: alineacion,
+            jugadores: jugadores.map(jugador => jugador.id), 
+        };
+
+        fetch('/guardar_plantilla', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Plantilla guardada exitosamente");
+                window.location.href = "/index";
+            } else {
+                alert("Error al guardar la plantilla");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error al guardar la plantilla");
+        });
+    });
+});
+
 
 function esCentrocampista(posicion) {
     return posicion === "MC";

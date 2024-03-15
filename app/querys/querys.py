@@ -1,5 +1,8 @@
 import mysql.connector
 import csv
+from flask import session
+
+
 
 def cargar_datos_desde_csv(ruta_csv):
     with open(ruta_csv, newline='', encoding='utf-8') as archivo_csv:
@@ -7,6 +10,7 @@ def cargar_datos_desde_csv(ruta_csv):
         datos = list(lector_csv)
     return datos
 
+"""
 # Conexión a la base de datos MySQL
 def conectar_bd():
     return mysql.connector.connect(
@@ -16,7 +20,16 @@ def conectar_bd():
         password="grupo5",
         database="dreamxi"
     )
-    
+"""
+# Conexión a la base de datos MySQL
+def conectar_bd():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="dreamxi"
+    )
+
 # Función para cargar datos de jugadores desde la base de datos
 def cargar_datos_desde_bd():
     conexion = conectar_bd()
@@ -84,3 +97,36 @@ def get_team_info(team_name):
     conexion.close()
     cursor.close()
     return team_info
+
+def guardar_plantilla_bd(id_usuario, id_jugadores, alineacion):
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    query = "INSERT INTO plantilla (id_usuario, id_jugador, tipo_alineacion) VALUES (%s, %s, %s)"
+    for id_jugador in id_jugadores:
+        cursor.execute(query, (id_usuario, id_jugador, alineacion))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+def obtener_id_usuario_logueado():
+    usuario_actual = session.get('username')
+    if usuario_actual:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "SELECT id_usuario FROM usuarios WHERE user = %s"
+        cursor.execute(query, (usuario_actual,))
+        resultado = cursor.fetchone()
+        cursor.close()
+        conexion.close()
+        if resultado:
+            return resultado[0]  
+    return None
+
+def update_contrasena(user, new_password):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "UPDATE usuarios SET password = %s WHERE user = %s"
+    cursor.execute(query, (new_password, user))
+    conexion.commit()
+    cursor.close()
+    conexion.close()

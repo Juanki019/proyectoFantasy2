@@ -15,11 +15,6 @@ mail = Mail(app)
 
 app.register_blueprint(routes_config, url_prefix='/')
 
-
-###########################
-# FUNCIONES
-###########################
-
 @app.route('/')
 def index():
     if 'username' in session:
@@ -27,7 +22,6 @@ def index():
     else:
         return redirect(url_for('routes.login'))
 
-# Ruta para cargar y procesar el archivo CSV
     
 if __name__ == '__main__':
     app.run(debug=True)

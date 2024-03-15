@@ -4,6 +4,10 @@
     margin: 0 auto;
     padding: 20px;
     background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-top: 30px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow */
+    
 }
 
 /* Estilos para los selectores */
@@ -92,4 +96,83 @@ tr:hover {
 #jugadores-container {
     max-height: 400px; 
     overflow-y: auto; 
+
+}
+
+h1 {
+    font-size: 3rem; 
+    color: #333; 
+    text-align: center; 
+    margin-bottom: 2rem; 
+    text-transform: uppercase; 
+    font-weight: bold; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); }
+
+#jugadores-table{
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+}
+
+
+.form__group {
+    position: relative;
+    padding: 20px 0 0;
+    width: 100%;
+    max-width: 180px;
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 17px;
+    color: #000000;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+    font-size: 17px;
+    cursor: text;
+    top: 20px;
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 17px;
+    color: #9b9b9b;
+    pointer-events: none;
+}
+
+.form__field:focus {
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #116399, #38caef);
+    border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 17px;
+    color: #38caef;
+    font-weight: 700;
+}
+
+/* reset input */
+.form__field:required, .form__field:invalid {
+    box-shadow: none;
 }

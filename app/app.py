@@ -1,6 +1,8 @@
+import subprocess
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Blueprint
 from flask_mail import Mail, Message
 from routes import routes_config
+import sys
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -15,6 +17,12 @@ mail = Mail(app)
 
 app.register_blueprint(routes_config, url_prefix='/')
 
+def iniciar_subprocesos():
+    subprocess.Popen([sys.executable, './scrappers/lesionadosScrap.py'])
+    print("Subproceso iniciado correctamente.")
+    
+iniciar_subprocesos()
+
 @app.route('/')
 def index():
     if 'username' in session:
@@ -22,6 +30,7 @@ def index():
     else:
         return redirect(url_for('routes.login'))
 
-    
 if __name__ == '__main__':
     app.run(debug=True)
+    iniciar_subprocesos()
+

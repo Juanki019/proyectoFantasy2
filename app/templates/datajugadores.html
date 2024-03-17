@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datajugadores.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+
     <title>DreamXI</title>
 </head>
 <body>
@@ -33,6 +35,11 @@
         <div id="team_info"></div>
     </div>
 
+    <div id="canvas-container">
+        <canvas id="lesiones-chart"></canvas> 
+        <canvas id="equipo-con-mas-puntos-chart"></canvas> 
+    </div>
+    
     
     <h1>Tabla de Lesiones</h1>
     <div id="lesionados-container">
@@ -56,18 +63,13 @@
         </table>
     </div>
 
-
-    <div id="lesionados_chart_container" style="width: 600px; height: 400px;">
-        <canvas id="lesionados_chart"></canvas>
-    </div>
-
-
     <div>
         <h1>Tabla de Jugadores</h1>
         <div class="form__group field">
             <input type="text" id="search_input" class="form__field" placeholder="Buscar jugador...">
-            <label for="name" class="form__label">Name</label>
-        </div>        <div id="jugadores-container">
+            <label for="name" class="form__label">Busca un jugador</label>
+        </div>        
+        <div id="jugadores-container">
             <table id="jugadores-table">
                 <thead>
                     <tr>
@@ -79,7 +81,11 @@
                         <th>Minutos</th>
                         <th>Goles</th>
                         <th>Asistencias</th>
-                        <th>Amarillas</th>
+                        <th>Puntos JornadaX</th>
+                        <th>Puntos JornadaY</th>
+                        <th>Puntos JornadaZ</th>
+                        <th>Tendencia</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -92,16 +98,120 @@
                         <td>{{ player['Partidos'] }}</td>
                         <td>{{ player['Minutos'] }}</td>
                         <td>{{ player['Goles'] }}</td>
-                        <td>{{ player['Asistencia'] }}</td>
-                        <td>{{ player['Amarillas'] }}</td>
+                        <td>{{ player['Asistencias'] }}</td>
+                        <td>{{ player['Antepenultima_Jornada'] }}</td>
+                        <td>{{ player['Penultima_Jornada'] }}</td>
+                        <td>{{ player['Ultima_Jornada'] }}</td>
+                        <td>{{ player['Flecha'] }}</td>
+
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
         <div>   
     <div>
 
 
 <script src="{{ url_for('static', filename='js/datajugadores.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtener los datos de la tabla de lesionados
+        var equipos = [];
+        var lesionesPorEquipo = {};
+    
+        {% for lesion in lesiones %}
+            var equipo = "{{ lesion['Equipo'] }}";
+            var tipoLesion = "{{ lesion['Lesion'] }}"; // Renombrar la variable
+            // Verificar si el equipo ya está en el objeto lesionesPorEquipo
+            if (!(equipo in lesionesPorEquipo)) {
+                equipos.push(equipo);
+                lesionesPorEquipo[equipo] = {};
+            }
+            // Verificar si el tipo de lesión ya está en el objeto lesionesPorEquipo para este equipo
+            if (!(tipoLesion in lesionesPorEquipo[equipo])) {
+                lesionesPorEquipo[equipo][tipoLesion] = 1;
+            } else {
+                lesionesPorEquipo[equipo][tipoLesion]++;
+            }
+        {% endfor %}
+    
+        // Crear un array de datos para el gráfico
+        var datasets = [];
+        for (var equipo in lesionesPorEquipo) {
+            var data = [];
+            for (var tipoLesion in lesionesPorEquipo[equipo]) { // Iterar sobre las lesiones para este equipo
+                data.push(lesionesPorEquipo[equipo][tipoLesion]);
+            }
+            datasets.push({
+                label: equipo,
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            });
+        }
+    
+        // Crear el gráfico
+        var ctx = document.getElementById('lesiones-chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'pie', // Cambiar el tipo de gráfico a pie
+            data: {
+                labels: equipos, // Usar los nombres de los equipos como etiquetas
+                datasets: datasets
+            },
+            options: {
+                // Puedes agregar opciones adicionales aquí si lo deseas
+            }
+        });
+    });
+    
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Calcular los puntos acumulados por cada equipo
+        var puntosPorEquipo = {};
+        var filasJugadores = document.querySelectorAll('#jugadores-table tbody tr');
+        filasJugadores.forEach(function(fila) {
+            var equipo = fila.cells[1].textContent; // Obtener el nombre del equipo de la segunda celda de la fila
+            var puntos = parseInt(fila.cells[3].textContent); // Obtener los puntos de la cuarta celda de la fila
+            if (equipo in puntosPorEquipo) {
+                puntosPorEquipo[equipo] += puntos;
+            } else {
+                puntosPorEquipo[equipo] = puntos;
+            }
+        });
+    
+        // Obtener los nombres de los equipos y los puntos acumulados
+        var nombresEquipos = Object.keys(puntosPorEquipo);
+        var puntosAcumulados = nombresEquipos.map(function(equipo) {
+            return puntosPorEquipo[equipo];
+        });
+    
+        // Crear el gráfico de barras
+        var ctx = document.getElementById('equipo-con-mas-puntos-chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: nombresEquipos,
+                datasets: [{
+                    label: 'Puntos acumulados por equipo',
+                    data: puntosAcumulados,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

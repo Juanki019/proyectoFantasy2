@@ -1,4 +1,8 @@
 var jugadores = [];
+var jugadoresMC = []; 
+var jugadoresDL = []; 
+var jugadoresDF = []; 
+var jugadoresPO = []; 
 var alineacion = document.getElementById("alineacion_select");
 var cmCount = 0; 
 var dcCount = 0;
@@ -13,9 +17,9 @@ function agregarJugador() {
     var precioJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-precio')); 
     var idJugador = parseFloat(document.getElementById("player_select").options[document.getElementById("player_select").selectedIndex].getAttribute('data-id')); 
 
-    if (jugadores.includes(jugadorSeleccionado)) {
+    if (jugadores.some(jugador => jugador.id === idJugador)) {
         alert("Este jugador ya ha sido seleccionado.");
-        return; 
+        return;
     }
 
     if (alineacion === "4-4-2") {
@@ -62,15 +66,26 @@ function agregarJugador() {
             return;
         }
     }
-    if (posicionJugador === "MC") {
-        cmCount++;
-    } else if (posicionJugador === "DF") {
-        dcCount++;
-    } else if (posicionJugador === "PO") {
-        poCount++;
-    } else if (posicionJugador === "DL") {
-        dlCount++;
-    }
+
+// Después de agregar un jugador al array específico, llamar a actualizarListaJugadores con el array correspondiente
+if (posicionJugador === "MC") {
+    cmCount++;
+    jugadoresMC.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    actualizarListaJugadores("lista_jugadores_mc", jugadoresMC);
+} else if (posicionJugador === "DF") {
+    dcCount++;
+    jugadoresDF.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    actualizarListaJugadores("lista_jugadores_df", jugadoresDF);
+} else if (posicionJugador === "PO") {
+    poCount++;
+    jugadoresPO.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    actualizarListaJugadores("lista_jugadores_po", jugadoresPO);
+} else if (posicionJugador === "DL") {
+    dlCount++;
+    jugadoresDL.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    actualizarListaJugadores("lista_jugadores_dl", jugadoresDL);
+}
+
 
     var precioTotalElement = document.getElementById("precio_total");
     var precioTotal = parseFloat(precioTotalElement.textContent);
@@ -80,15 +95,16 @@ function agregarJugador() {
     var jugador = { nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador };
     jugadores.push(jugador);
     
-    actualizarListaJugadores();
+    actualizarListaJugadores("lista_jugadores");
+    
 }
 
-function actualizarListaJugadores() {
-    var listaJugadores = document.getElementById("lista_jugadores");
+function actualizarListaJugadores(containerId, listaJugadores) {
+    var listaElement = document.getElementById(containerId);
     
-    listaJugadores.innerHTML = "";
+    listaElement.innerHTML = "";
     
-    jugadores.forEach(function(jugador, index) {
+    listaJugadores.forEach(function(jugador, index) {
         var listItem = document.createElement("li");
         listItem.textContent = jugador.nombre + " - " + jugador.posicion + " - "; 
         
@@ -96,21 +112,26 @@ function actualizarListaJugadores() {
         btnQuitar.textContent = "Quitar";
         
         btnQuitar.addEventListener("click", function() {
-            var posicionJugadorEliminado = document.getElementById("player_select").options[index].getAttribute('data-posicion');
-            var precioJugadorEliminado = parseFloat(document.getElementById("player_select").options[index].getAttribute('data-precio')); // Obtener el precio del jugador eliminado
-            jugadores.splice(index, 1); 
+            var posicionJugadorEliminado = jugador.posicion;
+    
+            var precioJugadorEliminado = listaJugadores[index].precio;
+            
+            listaJugadores.splice(index, 1); 
+            
             actualizarContadores(posicionJugadorEliminado);
-            actualizarListaJugadores(); 
-            precioTotal -= precioJugadorEliminado; // Restar el precio del jugador eliminado del precio total
-            document.getElementById("precio_total").textContent = precioTotal; // Actualizar el precio total en el HTML
-
+            actualizarListaJugadores(containerId, listaJugadores); 
+            
+            precioTotal -= precioJugadorEliminado;
+            
+            document.getElementById("precio_total").textContent = precioTotal;
         });
         
         listItem.appendChild(btnQuitar);
         
-        listaJugadores.appendChild(listItem);
+        listaElement.appendChild(listItem);
     });
 }
+
 
 function actualizarContadores(posicion) {
     if (posicion === "MC") {

@@ -48,3 +48,31 @@ h2 {
     color: #333;
     margin-bottom: 10px;
 }
+
+.contenedor-jugadores {
+    display: flex; 
+}
+
+.contenedor-jugador {
+    flex: 1; 
+    margin-right: 20px;
+}
+
+.contenedor-jugador:last-child {
+    margin-right: 0; 
+}
+
+.contenedor-jugador ul {
+    margin-bottom: 10px; /* Agregar margen inferior a la lista de jugadores */
+}
+
+.contenedor-jugador li {
+    margin-bottom: 5px; /* Agregar margen inferior a cada elemento de la lista */
+}
+
+
+.title {
+    font-family: Arial, sans-serif; /* Cambiar la fuente */
+    color: #333; /* Cambiar el color del texto */
+    margin-bottom: 15px; /* Agregar margen inferior */
+}

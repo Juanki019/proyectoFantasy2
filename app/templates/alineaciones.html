@@ -16,16 +16,39 @@
     
 	<select id="player_select">
 		{% for player in players %}
-            <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
+            <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}" data-antejornada="{{ player.Antepenultima_Jornada}}" data-penjornada="{{ player.Penultima_Jornada}}" data-ultjornada="{{ player.Ultima_Jornada}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
 		{% endfor %}
 	</select>
 
 	<button onclick="agregarJugador()">Añadir</button>
 
     <div id="jugadores_seleccionados">
-        <h2>Jugadores seleccionados:</h2>
+        <h2 class="title">Jugadores seleccionados:</h2>
         <ul id="lista_jugadores"></ul>
     </div>
+
+    <div class="contenedor-jugadores">
+        <div id="jugadores_po" class="contenedor-jugador">
+            <h2>Jugadores Portero:</h2>
+            <ul id="lista_jugadores_po"></ul>
+        </div>
+    
+        <div id="jugadores_df" class="contenedor-jugador">
+            <h2>Jugadores Defensas:</h2>
+            <ul id="lista_jugadores_df"></ul>
+        </div>
+    
+        <div id="jugadores_mc" class="contenedor-jugador">
+            <h2>Jugadores Centrocampistas:</h2>
+            <ul id="lista_jugadores_mc"></ul>
+        </div>
+    
+        <div id="jugadores_dl" class="contenedor-jugador">
+            <h2>Jugadores Delanteros:</h2>
+            <ul id="lista_jugadores_dl"></ul>
+        </div>
+    </div>
+    
 
     <div id="total_precio">
         <h2>Total precio:</h2>

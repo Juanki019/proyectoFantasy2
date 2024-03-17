@@ -113,6 +113,11 @@ h1 {
     padding-bottom: 4rem;
 }
 
+#jugadores-container{
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+}
+
 
 .form__group {
     position: relative;
@@ -172,7 +177,22 @@ h1 {
     font-weight: 700;
 }
 
-/* reset input */
 .form__field:required, .form__field:invalid {
     box-shadow: none;
+}
+
+canvas {
+    max-width: 600px; 
+    max-height: 400px; 
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px; 
+}
+
+#canvas-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* Alinea los canvas con espacio entre ellos */
+    margin-bottom: 20px; /* Añade margen inferior para separarlos */
+    padding: 3rem;
 }

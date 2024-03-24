@@ -15,6 +15,8 @@ app.config['MAIL_PASSWORD'] = 'dreamxiuem24$'
 
 mail = Mail(app)
 
+app.secret_key = 'tu_clave_secreta'
+
 app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():
@@ -31,6 +33,7 @@ def index():
         return redirect(url_for('routes.login'))
 
 if __name__ == '__main__':
+    subprocess.Popen([sys.executable, './scrappers/lesionadosScrap.py'])
+    print("Subproceso iniciado correctamente.")
     app.run(debug=True)
-    iniciar_subprocesos()
 

@@ -1,8 +1,8 @@
-from flask import render_template, request, redirect, url_for, session, flash, jsonify, Blueprint
+from flask import render_template, request, redirect, url_for, flash, jsonify, Blueprint
 from flask_mail import Mail, Message
-
-from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
-
+from flask import session
+from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from classes.Usuario import Usuario
 
 routes_config = Blueprint('routes', __name__)
 
@@ -15,15 +15,21 @@ def login():
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
-            guardar_credenciales(username, password, email)
-            print(f'Registro exitoso para {username}')  
+            nuevo_usuario = Usuario(username, password, email)
+            
+            if guardar_credenciales(nuevo_usuario):
+                flash(f'Registro exitoso para {username}', 'success')
+            else:
+                flash(f'Error al registrar el usuario {username}', 'error')           
         elif action == 'login':   
             username = request.form['username']
             password = request.form['password']
             
-            if verificar_credenciales(username, password):
+            usuario = Usuario(username, password, None)
+            
+            if verificar_credenciales(usuario):
                 session['username'] = username
-                print(f'Inicio de sesión exitoso para {username}')  
+                flash(f'Inicio de sesión exitoso para {username}')  
                 return redirect(url_for('index'))
             else:
                 flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
@@ -45,7 +51,9 @@ def olvidocontrasena():
 def reiniciocontrasena():
     username = request.form['username']
     password = request.form['password']
-    update_contrasena(username, password)
+    usuario = Usuario(username, password, None)
+
+    update_contrasena(usuario)
     return render_template('reinicioContrasena.html')
 
 
@@ -55,8 +63,6 @@ def index():
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('index.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
-
-
 @routes_config.route('/datajugadores')
 def datajugadores():
     datos_jugadores = cargar_datos_desde_bd()
@@ -65,11 +71,34 @@ def datajugadores():
 
 
 
+
+@routes_config.route('/alineaciones')
+def alineaciones():
+    username = session.get('username')
+    if username:
+        try:
+            plantilla_usuario = obtener_plantilla_usuario(username)
+            if plantilla_usuario:  
+                print("Datos de plantilla de usuario:", plantilla_usuario)  # Depuración
+                return render_template('alineaciones.html', players=plantilla_usuario)
+            else:
+                flash('No hay jugadores disponibles.', 'error')  
+                return redirect(url_for('index'))
+        except Exception as e:
+            print("Error al obtener la plantilla del usuario:", e)  # Depuración
+            flash('Error al obtener la plantilla del usuario.', 'error')
+            return redirect(url_for('index'))
+    else:
+        flash('Usuario no identificado.', 'error')
+        return redirect(url_for('index'))
+
+"""
 @routes_config.route('/alineaciones')
 def alineaciones():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores)
+"""
 
 
 @routes_config.route('/alineacionesProbables')
@@ -77,7 +106,6 @@ def alineacionesProbables():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('alineacionesProbables.html', players=datos_jugadores, lesiones=lesion_jugadores)
-
 
 
 @routes_config.route('/miequipo')

@@ -58,6 +58,18 @@
     <form id="form_guardar_plantilla" >
         <button type="submit">Guardar Plantilla</button>
     </form>
+
+    {% if players %}
+        <h2>Jugadores:</h2>
+        <ul>
+            {% for player in players %}
+                <li>{{ player.nombre }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay jugadores disponibles.</p>
+    {% endif %}
+
     
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>

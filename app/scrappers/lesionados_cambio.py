@@ -3,7 +3,7 @@ import pandas as pd
 from app.querys.querys import cargar_datos_lesionados_en_bd
 
 
-df = pd.read_csv('C:\\UEM - 3\\PROYECTO2\\proyectoFantasy2\\data\\lesionados.csv')
+df = pd.read_csv('.../data/lesionados.csv')
 
 
 df['Equipo'] = df['Equipo'].replace({
@@ -32,6 +32,6 @@ df['Equipo'] = df['Equipo'].replace({
 	}, regex=True)
 
 # Guardar el DataFrame modificado de nuevo como un archivo CSV
-csv_lesionados = df.to_csv('C:\\UEM - 3\\PROYECTO2\\proyectoFantasy2\\data\\lesionados2.csv', index=False)
+csv_lesionados = df.to_csv('.../data/lesionados2.csv', index=False)
 
 cargar_datos_lesionados_en_bd(csv_lesionados)

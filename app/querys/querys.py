@@ -1,7 +1,6 @@
 import mysql.connector
 import csv
-from flask import session
-
+from flask import session, flash
 
 
 def cargar_datos_desde_csv(ruta_csv):
@@ -21,7 +20,6 @@ def conectar_bd():
         database="dreamxi"
     )
 """
-# Conexión a la base de datos MySQL
 def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
@@ -40,30 +38,55 @@ def cargar_datos_desde_bd():
     conexion.close()
     return datos
 
-def verificar_credenciales(username, password):
+################################
+# QUERYS PARA LOGIN
+################################    
+
+def verificar_existencia_usuario(usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "SELECT COUNT(*) FROM usuarios WHERE user = %s"
+    cursor.execute(query, (usuario.username,))
+    count = cursor.fetchone()[0]  
+    cursor.close()
+    conexion.close()
+    return count > 0
+
+def verificar_credenciales(usuario):
     conexion = conectar_bd()
     cursor = conexion.cursor()
     query = "SELECT COUNT(*) FROM usuarios WHERE user = %s AND password = %s"
-    cursor.execute(query, (username, password))
+    cursor.execute(query, (usuario.username, usuario.password))
     count = cursor.fetchone()[0]
     cursor.close()
     conexion.close()
     return count > 0
 
-def guardar_credenciales(username, password, email):
-    conexion = conectar_bd()
-    cursor = conexion.cursor()
-    query = "INSERT INTO usuarios (user, password, email) VALUES (%s, %s, %s)"
-    cursor.execute(query, (username, password, email))
-    conexion.commit()
-    cursor.close()
-    conexion.close()
 
-def update_contrasena(username, new_password):
+def guardar_credenciales(usuario):
+    if verificar_existencia_usuario(usuario):
+        flash(f"El nombre de usuario '{usuario.username}' ya existe en la base de datos.")
+        return False  
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "INSERT INTO usuarios (user, password, email) VALUES (%s, %s, %s)"
+        cursor.execute(query, (usuario.username, usuario.password, usuario.email))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True  
+    except Exception as e:
+        print(f"Error al guardar el usuario: {e}")
+        flash(f"El nombre de usuario '{usuario.username}' ya existe en la base de datos.")
+        return False  
+
+
+def update_contrasena(usuario):
     conexion = conectar_bd()
     cursor = conexion.cursor()
     query = "UPDATE usuarios SET password = %s WHERE user = %s"
-    cursor.execute(query, (new_password, username))
+    cursor.execute(query, (usuario.password, usuario.username))
     conexion.commit()
     cursor.close()
     conexion.close()
@@ -149,3 +172,37 @@ def update_contrasena(user, new_password):
     conexion.commit()
     cursor.close()
     conexion.close()
+
+
+def obtener_plantilla_usuario(user):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "SELECT id_jugador FROM plantillas WHERE id_usuario = (SELECT id_usuario FROM usuarios WHERE user = %s)"
+        cursor.execute(query, (user,))
+        plantilla = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return [{'id_plantilla': row[0], 'id_usuario': row[1], 'id_jugador': row[2], 'tipo_alineacion': row[3]} for row in plantilla]
+    except Exception as e:
+        print(f"Error al obtener la plantilla del usuario: {e}")
+        return []
+
+
+def actualizar_plantilla(user, nueva_plantilla):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        # Eliminar la plantilla actual del usuario
+        cursor.execute("DELETE FROM plantillas WHERE id_usuario = %s", (user,))
+        # Insertar la nueva plantilla
+        for jugador in nueva_plantilla:
+            cursor.execute("INSERT INTO plantillas (id_usuario, id_jugador, tipo_alineacion) VALUES (%s, %s, %s)",
+                            (user, jugador['id_jugador'], jugador['tipo_alineacion']))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True  
+    except Exception as e:
+        print(f"Error al actualizar la plantilla: {e}")
+        return False

@@ -7,7 +7,7 @@ class Usuario:
 
     def get_info(self):
         return {
-            "user": self.username,
+            "username": self.username,
             "password": self.password,
             "email": self.email
         }

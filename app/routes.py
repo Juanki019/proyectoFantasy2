@@ -15,6 +15,7 @@ def login():
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
+            
             nuevo_usuario = Usuario(username, password, email)
             
             if guardar_credenciales(nuevo_usuario):
@@ -49,12 +50,16 @@ def olvidocontrasena():
 
 @routes_config.route('/olvidocontrasena/reiniciocontrasena', methods=['GET', 'POST'])
 def reiniciocontrasena():
-    username = request.form['username']
-    password = request.form['password']
-    usuario = Usuario(username, password, None)
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        usuario = Usuario(username, password, None)
 
-    update_contrasena(usuario)
-    return render_template('reinicioContrasena.html')
+        update_contrasena(usuario)
+        flash('Contraseña actualizada exitosamente', 'success')
+        return redirect(url_for('login'))  # Redirigir a la página de inicio de sesión después de restablecer la contraseña
+    else:
+        return render_template('reinicioContrasena.html')
 
 
 @routes_config.route('/index')
@@ -71,34 +76,18 @@ def datajugadores():
 
 
 
-
 @routes_config.route('/alineaciones')
 def alineaciones():
-    username = session.get('username')
-    if username:
-        try:
-            plantilla_usuario = obtener_plantilla_usuario(username)
-            if plantilla_usuario:  
-                print("Datos de plantilla de usuario:", plantilla_usuario)  # Depuración
-                return render_template('alineaciones.html', players=plantilla_usuario)
-            else:
-                flash('No hay jugadores disponibles.', 'error')  
-                return redirect(url_for('index'))
-        except Exception as e:
-            print("Error al obtener la plantilla del usuario:", e)  # Depuración
-            flash('Error al obtener la plantilla del usuario.', 'error')
-            return redirect(url_for('index'))
+    if 'username' in session:  
+        print("Usuario en sesión:", session['username'])  # Verificar el usuario en sesión
+        usuario_actual = session['username']
+        plantilla_usuario = obtener_plantilla_usuario(usuario_actual)
+        datos_jugadores = cargar_datos_desde_bd()
+        lesion_jugadores = cargar_datos_lesionados_desde_bd()
+        return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_usuario)
     else:
-        flash('Usuario no identificado.', 'error')
-        return redirect(url_for('index'))
-
-"""
-@routes_config.route('/alineaciones')
-def alineaciones():
-    datos_jugadores = cargar_datos_desde_bd()
-    lesion_jugadores = cargar_datos_lesionados_desde_bd()
-    return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores)
-"""
+        flash('Debes iniciar sesión para acceder a esta página', 'error')
+        return redirect(url_for('login'))  # Redirigir a la página de inicio de sesión si el usuario no está en sesión
 
 
 @routes_config.route('/alineacionesProbables')

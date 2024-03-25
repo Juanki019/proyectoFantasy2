@@ -1,4 +1,3 @@
-/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -12,14 +11,12 @@ body {
     padding: 20px;
 }
 
-/* Estilos de los selectores */
 select {
     padding: 8px;
     font-size: 16px;
     margin-right: 10px;
 }
 
-/* Estilos del botón */
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -33,7 +30,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Estilos de la lista de jugadores */
 #lista_jugadores {
     list-style-type: none;
     padding: 0;
@@ -43,7 +39,6 @@ button:hover {
     margin-bottom: 10px;
 }
 
-/* Estilos del título */
 h2 {
     color: #333;
     margin-bottom: 10px;
@@ -63,16 +58,113 @@ h2 {
 }
 
 .contenedor-jugador ul {
-    margin-bottom: 10px; /* Agregar margen inferior a la lista de jugadores */
+    margin-bottom: 10px; 
 }
 
 .contenedor-jugador li {
-    margin-bottom: 5px; /* Agregar margen inferior a cada elemento de la lista */
+    margin-bottom: 5px; 
 }
 
 
 .title {
-    font-family: Arial, sans-serif; /* Cambiar la fuente */
-    color: #333; /* Cambiar el color del texto */
-    margin-bottom: 15px; /* Agregar margen inferior */
+    font-family: Arial, sans-serif; 
+    color: #333; 
+    margin-bottom: 15px; 
 }
+
+canvas {
+    position: relative;
+    left: 350px;
+    top: 30px;
+    fill: green;
+    background-color: green !important;
+}
+
+
+ul#starting_11 {
+    position: absolute;
+    top: 30px;
+    left: 350px;
+}
+ul#starting_11 li {
+    width: 40px;
+    height: 40px;
+    background: #000;
+    display: block;
+    opacity: 0.1;
+    border-radius: 100px;
+    box-shadow: 0px -2px 5px 1px #000;
+    border: 1px solid #666;
+    overflow: hidden;
+}
+ul#starting_11 li img {
+    margin-top: -5px;
+}
+ul#starting_11 li#pos1 {
+    top: 20px;
+    left: 265px;
+    position: absolute;
+}
+ul#starting_11 li#pos2 {
+    top: 120px;
+    left: 110px;
+    position: absolute;
+}
+ul#starting_11 li#pos3 {
+    top: 100px;
+    left: 210px;
+    position: absolute;
+}
+ul#starting_11 li#pos4 {
+    top: 100px;
+    left: 320px;
+    position: absolute;
+}
+ul#starting_11 li#pos5 {
+    top: 120px;
+    left: 415px;
+    position: absolute;
+}
+ul#starting_11 li#pos6 {
+    top: 250px;
+    left: 100px;
+    position: absolute;
+}
+ul#starting_11 li#pos7 {
+    top: 250px;
+    left: 210px;
+    position: absolute;
+}
+ul#starting_11 li#pos8 {
+    top: 250px;
+    left: 320px;
+    position: absolute;
+}
+ul#starting_11 li#pos9 {
+    top: 250px;
+    left: 430px;
+    position: absolute;
+}
+ul#starting_11 li#pos10 {
+    top: 400px;
+    left: 320px;
+    position: absolute;
+}
+ul#starting_11 li#pos11 {
+    top: 400px;
+    left: 210px;
+    position: absolute;
+}
+ul#starting_11 .highlight {
+    opacity: 0.7;
+}
+ul#starting_11 .selected {
+    opacity: 1;
+    z-index: 2;
+}
+ul#starting_11 .selected img {
+    z-index: -1;
+}
+
+
+

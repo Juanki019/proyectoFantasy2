@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 playerInfoDiv.innerHTML = '';
 
                 var playerInfo = document.createElement('p');
-                playerInfo.textContent = 'Nombre: ' + data.Nombre + ', Equipo: ' + data.Equipo + ', Precio: ' + data.Precio + ', Puntos: ' + data.Puntos + ', Goles: ' + data.Goles;
+                playerInfo.textContent = 'Nombre: ' + data.Nombre + ', Equipo: ' + data.Equipo + ', Precio: ' + data.Precio + ', Puntos: ' + data.Puntos + ', Goles: ' + data.Goles + ', Trjetas rojas: ' + data.Tarjetas_rojas + ', Tarjetas amarillas: ' + data.Tarjetas_amarillas + ', Antepenultima Jornada: ' + data.Antepenultima_Jornada + ', Penultima Jornada: ' + data.Penultima_Jornada + ', Ultima Jornada: ' + data.Ultima_Jornada + ', Tendencia: ' + data.Flecha;
                 playerInfoDiv.appendChild(playerInfo);
             })
             .catch(error => console.error('Error al obtener la información del jugador:', error));

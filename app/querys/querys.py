@@ -91,6 +91,10 @@ def update_contrasena(usuario):
     cursor.close()
     conexion.close()
 
+
+################################
+# QUERYS PARA CARGA DE DATOS
+################################  
 def cargar_datos_lesionados_en_bd(csv_lesionados):
     with open(csv_lesionados, 'r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
@@ -164,29 +168,46 @@ def obtener_id_usuario_logueado():
             return resultado[0]  
     return None
 
-def update_contrasena(user, new_password):
-    conexion = conectar_bd()
-    cursor = conexion.cursor()
-    query = "UPDATE usuarios SET password = %s WHERE user = %s"
-    cursor.execute(query, (new_password, user))
-    conexion.commit()
-    cursor.close()
-    conexion.close()
-
 
 def obtener_plantilla_usuario(user):
     try:
         conexion = conectar_bd()
         cursor = conexion.cursor()
-        query = "SELECT id_jugador FROM plantillas WHERE id_usuario = (SELECT id_usuario FROM usuarios WHERE user = %s)"
-        cursor.execute(query, (user,))
-        plantilla = cursor.fetchall()
-        cursor.close()
-        conexion.close()
-        return [{'id_plantilla': row[0], 'id_usuario': row[1], 'id_jugador': row[2], 'tipo_alineacion': row[3]} for row in plantilla]
+
+        # Obtener el ID del usuario
+        query_id_usuario = "SELECT id_usuario FROM usuarios WHERE user = %s"
+        cursor.execute(query_id_usuario, (user,))
+        id_usuario = cursor.fetchone()
+
+        if id_usuario:
+            id_usuario = id_usuario[0]  # Obtener el valor del ID del usuario
+
+            # Obtener la plantilla del usuario utilizando su ID
+            query_plantilla = """
+                SELECT j.Nombre
+                FROM plantilla p
+                JOIN jugadores j ON p.id_jugador = j.id_jugador
+                WHERE p.id_usuario = %s
+            """
+            cursor.execute(query_plantilla, (id_usuario,))
+            plantilla = cursor.fetchall()
+
+            if plantilla:
+                print("El usuario tiene una plantilla asociada en la base de datos.")
+            else:
+                print("El usuario no tiene una plantilla asociada en la base de datos.")
+
+            cursor.close()
+            conexion.close()
+
+            return [row[0] for row in plantilla]
+        else:
+            print("No se encontró el usuario en la base de datos.")
+            return []
     except Exception as e:
         print(f"Error al obtener la plantilla del usuario: {e}")
         return []
+
 
 
 def actualizar_plantilla(user, nueva_plantilla):

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-03-2024 a las 12:43:21
+-- Tiempo de generación: 26-03-2024 a las 13:28:26
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -67,7 +67,6 @@ CREATE TABLE `jugadores` (
 --
 
 INSERT INTO `jugadores` (`id_jugador`, `Nombre`, `Puntos`, `Equipo`, `Posicion`, `Precio`, `Media`, `Partidos`, `Minutos`, `Goles`, `Asistencias`, `Asistencias_sin_gol`, `Balones_al_area`, `Despejes`, `Regates`, `Tiros_a_puerta`, `Balones_recuperados`, `Posesiones_perdidas`, `Penaltis_fallados`, `Goles_en_contra`, `Tarjetas_rojas`, `Paradas`, `Penaltis_cometidos`, `Tarjetas_amarillas`, `Segundas_amarillas`, `Penaltis_provocados`, `Penalties_parados`, `Goles_en_propia`, `Antepenultima_Jornada`, `Penultima_Jornada`, `Ultima_Jornada`, `Flecha`) VALUES
-('0', 'Nombre', 0, 'Equipo', 'Posicion', '0.00', '0.00', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Antepenult', 'Penultima_', 'Ultima_Jor', 'F'),
 ('1', 'Bellingham', 232, 'Real Madrid', 'MC', '25.00', '10.00', 22, 1786, 16, 3, 4, 2, 10, 38, 27, 112, 243, 0, 12, 0, 0, 0, 5, 0, 0, 0, 0, '\'18\'', '\'0\'', '\'0\'', '↓'),
 ('10', 'Kroos', 178, 'Real Madrid', 'MC', '20.14', '5.00', 26, 1652, 1, 7, 7, 38, 4, 3, 13, 126, 188, 0, 14, 0, 0, 0, 3, 0, 0, 0, 0, '\'8\'', '\'4\'', '\'6\'', '↑'),
 ('100', 'Hermoso', 108, 'Atlético de Madrid', 'DF', '5.28', '3.00', 25, 1853, 0, 1, 0, 7, 66, 8, 4, 149, 235, 0, 24, 0, 0, 0, 7, 0, 1, 0, 0, '\'4\'', '\'8\'', '\'4\'', '↓'),
@@ -364,9 +363,9 @@ INSERT INTO `jugadores` (`id_jugador`, `Nombre`, `Puntos`, `Equipo`, `Posicion`,
 ('391', 'Fernando', 27, 'Sevilla FC', 'MC', '11.89', '5.00', 11, 459, 0, 0, 1, 2, 8, 2, 0, 43, 41, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, '\'4\'', '\'11\'', '\'9\'', '↑'),
 ('392', 'Cervi', 27, 'RC Celta', 'MC', '11.89', '5.00', 19, 433, 0, 0, 1, 1, 2, 1, 1, 46, 66, 0, 8, 0, 0, 0, 1, 0, 0, 0, 0, '\'4\'', '\'11\'', '\'9\'', '↑'),
 ('393', 'Falcao', 27, 'Rayo Vallecano', 'DL', '858.00', '3.00', 24, 189, 1, 0, 1, 0, 3, 2, 3, 15, 20, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, '\'0\'', '\'0\'', '\'2\'', '↓'),
-('394', 'Fornals', 27, 'Real Betis', 'MC', '1.01', '3.00', 3, 269, 1, 0, 2, 4, 2, 3, 1, 22, 48, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '\'3\'', '\'5\'', '\'3\'', '↑');
+('394', 'Fornals', 27, 'Real Betis', 'MC', '1.01', '3.00', 3, 269, 1, 0, 2, 4, 2, 3, 1, 22, 48, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '\'3\'', '\'5\'', '\'3\'', '↑'),
+('395', 'Sabaly', 26, 'Real Betis', 'DF', '2.83', '4.00', 7, 360, 0, 1, 1, 2, 11, 6, 0, 33, 53, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, '\'0\'', '\'0\'', '\'6\'', '↑');
 INSERT INTO `jugadores` (`id_jugador`, `Nombre`, `Puntos`, `Equipo`, `Posicion`, `Precio`, `Media`, `Partidos`, `Minutos`, `Goles`, `Asistencias`, `Asistencias_sin_gol`, `Balones_al_area`, `Despejes`, `Regates`, `Tiros_a_puerta`, `Balones_recuperados`, `Posesiones_perdidas`, `Penaltis_fallados`, `Goles_en_contra`, `Tarjetas_rojas`, `Paradas`, `Penaltis_cometidos`, `Tarjetas_amarillas`, `Segundas_amarillas`, `Penaltis_provocados`, `Penalties_parados`, `Goles_en_propia`, `Antepenultima_Jornada`, `Penultima_Jornada`, `Ultima_Jornada`, `Flecha`) VALUES
-('395', 'Sabaly', 26, 'Real Betis', 'DF', '2.83', '4.00', 7, 360, 0, 1, 1, 2, 11, 6, 0, 33, 53, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, '\'0\'', '\'0\'', '\'6\'', '↑'),
 ('396', 'Lázaro', 26, 'UD Almería', 'DL', '3.28', '3.00', 23, 275, 0, 0, 0, 3, 1, 6, 4, 14, 55, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, '\'0\'', '\'3\'', '\'2\'', '↑'),
 ('397', 'Sory Kaba', 26, 'UD Las Palmas', 'DL', '17.25', '5.00', 22, 436, 1, 1, 0, 0, 7, 8, 1, 10, 81, 0, 6, 0, 0, 0, 2, 0, 0, 0, 0, '\'2\'', '\'0\'', '\'1\'', '↓'),
 ('398', 'Javi Llabrés', 26, 'RCD Mallorca', 'DL', '160.00', '2.00', 19, 86, 1, 0, 0, 1, 2, 3, 2, 9, 28, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, '\'0\'', '\'0\'', '\'2\'', '↓'),
@@ -694,7 +693,7 @@ INSERT INTO `lesiones` (`Equipo`, `Jugador`, `Lesion`) VALUES
 
 CREATE TABLE `plantilla` (
   `id_plantilla` int(11) NOT NULL,
-  `id_usuario` varchar(255) DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `id_jugador` varchar(255) DEFAULT NULL,
   `tipo_alineacion` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -704,18 +703,28 @@ CREATE TABLE `plantilla` (
 --
 
 INSERT INTO `plantilla` (`id_plantilla`, `id_usuario`, `id_jugador`, `tipo_alineacion`) VALUES
-(13, '5', NULL, '4-3-3'),
-(14, '5', '1', '4-3-3'),
-(15, '5', '12', '4-3-3'),
-(16, '5', '113', '4-3-3'),
-(17, '5', '109', '4-3-3'),
-(18, '5', '103', '4-3-3'),
-(19, '5', '102', '4-3-3'),
-(20, '5', '100', '4-3-3'),
-(21, '5', '170', '4-3-3'),
-(22, '5', '279', '4-3-3'),
-(23, '5', '438', '4-3-3'),
-(24, '5', '63', '4-3-3');
+(1, 1, '1', '4-4-2'),
+(2, 1, '104', '4-4-2'),
+(3, 1, '108', '4-4-2'),
+(4, 1, '105', '4-4-2'),
+(5, 1, '112', '4-4-2'),
+(6, 1, '261', '4-4-2'),
+(7, 1, '25', '4-4-2'),
+(8, 1, '157', '4-4-2'),
+(9, 1, '141', '4-4-2'),
+(10, 1, '111', '4-4-2'),
+(11, 1, '23', '4-4-2'),
+(12, 2, '1', '4-4-2'),
+(13, 2, '10', '4-4-2'),
+(14, 2, '100', '4-4-2'),
+(15, 2, '102', '4-4-2'),
+(16, 2, '104', '4-4-2'),
+(17, 2, '108', '4-4-2'),
+(18, 2, '113', '4-4-2'),
+(19, 2, '129', '4-4-2'),
+(20, 2, '183', '4-4-2'),
+(21, 2, '258', '4-4-2'),
+(22, 2, '34', '4-4-2');
 
 -- --------------------------------------------------------
 
@@ -724,7 +733,7 @@ INSERT INTO `plantilla` (`id_plantilla`, `id_usuario`, `id_jugador`, `tipo_aline
 --
 
 CREATE TABLE `usuarios` (
-  `id_usuario` varchar(255) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `user` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL
@@ -735,9 +744,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `user`, `password`, `email`) VALUES
-('5', 'user1', 'password1', 'user1@gmail.com'),
-('6', 'juanki', 'juanki', 'juanki.sgbh@gmail.com'),
-('7', '', '', '');
+(1, 'user1', 'password1', 'user1@gmail.com'),
+(2, 'user2', 'password2', 'user2@gmail.com');
 
 --
 -- Índices para tablas volcadas
@@ -771,7 +779,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `plantilla`
 --
 ALTER TABLE `plantilla`
-  MODIFY `id_plantilla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_plantilla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

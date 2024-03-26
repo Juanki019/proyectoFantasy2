@@ -111,11 +111,11 @@ def player_info():
     return jsonify(player_info)
 
 
-@routes_config.route('/team_info')
-def team_info():
-    selected_team = request.args.get('team')
-    team_info = get_team_info(selected_team)
-    return jsonify(team_info)
+@routes_config.route('/prediccion')
+def prediccion():
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    return render_template('prediccion.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 
 @routes_config.route('/guardar_plantilla', methods=['POST'])

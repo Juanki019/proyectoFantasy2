@@ -6,105 +6,177 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
     <title>DreamXI</title>
     <link rel="icon" href="{{ url_for('static', filename='imagenes/logo_dreamXI.png') }}" type="image/x-icon">
-
+    <!--  Styles  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:300|Bungee" rel="stylesheet">
+    
 </head>
 <body>
+    <div style="display: none" id="hide-page">
+    <div id="loader"></div>
+    </div>
 
-    <nav>
-        <a href="#seccion1">DATA JUGADORES</a>
-        <a href="#seccion2">SELECCION DE EQUIPO</a>
-        <a href="#seccion3">MI EQUIPO (TEST)</a>
-        <a href="#seccion4">ALINEACIONES JORNADA</a>
+    <section class="section-animate" id="section-1">
+    <div class="container">
+        <div class="aligner">
+        <div class="aligner__item">
+            <div class="section__title">
+            <h2 class="text-center">DreamXI</h2>
+            </div>
+            <div class="section__text">
+            <div class="text-center">Your team becomes true!</div>
+            </div>
+        </div>
+        </div>
+        <div class="section-animate__images text-center">
+        <div class="section-animate__images--left reveal-bottom">
+            <img src="https://img.wennermedia.com/article-leads-immersive/guerrilla_lead_1401x788-10311f13-3cfb-4dca-8d9c-b32f82cfd42e.png" alt="" />
+        </div>
+        <div class="section-animate__images--right reveal-left">
+            <img src="https://i.imgur.com/IYaSuW2.jpg" alt="" />
+        </div>
+        </div>
+    </div>
+    <div class="section-animate__left"></div>
+    <div class="section-animate__right"></div>
+    </section>
 
-    </nav>
-
-    <div id="seccion1" class="seccion">
-        <div class="contenedor-flex">
-            <div class="texto-y-boton">
-                <h2 class="heading">VISUALIZAR DATOS DE LOS JUGADORES</h2>
-                <p class="description-proyect">
-                    En esta sección, puedes acceder a los datos de los jugadores y ver sus estadísticas,
-                    como puntos, precio en Fantasy, goles, etc. Además, también puedes ver qué jugadores
-                    están lesionados y la razón por la que están lesionados.
-                </p>
+    <section class="section-animate" id="section-2">
+    <div class="container">
+        <div class="aligner">
+        <div class="aligner__item aligner__item--top">
+            <div class="section__title">
+            <h3>
+                <span>VISUALIZAR DATOS DE </span>
+                <span>LOS JUGADORES Y EQUIPOS.</span>
+            </h3>
+            </div>
+            <div class="section__text">
+            <p>                    En esta sección, puedes acceder a los datos de los jugadores y ver sus estadísticas,
+                como puntos, precio en Fantasy, goles, etc. Además, también puedes ver qué jugadores
+                están lesionados y la razón por la que están lesionados.</p>
+            
                 <button id="button1" onclick="redirectTo('/datajugadores')">
                     <span class="transition"></span>
                     <span class="gradient"></span>
                     <span class="label">Visualizar</span>
                 </button>
             </div>
-            <div class="imagen">
-                <img src="{{ url_for('static', filename='imagenes/data_jugadores.png') }}" alt="Descripción de la imagen">
-            </div>
+        </div>
+        </div>
+        <div class="section-animate__images text-center">
+        <div class="reveal-left relative overflow-hidden">
+            <div class="cover"></div>
+            <img src="https://questnews.it/wp-content/uploads/2017/01/3126129-horizonzerodawn_screens_septevent_3840x2160_01-2.jpg" alt="" />
+        </div>
         </div>
     </div>
-
-    <div id="seccion2" class="seccion">
-        <div class="contenedor-flex">
-            <div class="texto-y-boton">
-                <h2 class="heading">ALINEACION</h2>
-                <p class="description-proyect">
-                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
+    </section>
+    <section class="section-animate" id="section-2">
+        <div class="container">
+            <div class="aligner">
+            <div class="aligner__item aligner__item--top">
+                <div class="section__title">
+                <h3>
+                    <span>TUS DIFERENTES</span>
+                    <span>ALINEACIONES FANTASY.</span>
+                </h3>
+                </div>
+                <div class="section__text">
+                <p>                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
                 </p>
                 <button id="button1" onclick="redirectTo('/alineaciones')">
                     <span class="transition"></span>
                     <span class="gradient"></span>
                     <span class="label">Visualizar</span>
                 </button>
+                </div>
             </div>
-            <div class="imagen">
-                <img src="{{ url_for('static', filename='imagenes/icon_alineacion.png') }}" alt="Descripción de la imagen">
+            </div>
+            <div class="section-animate__images text-center">
+            <div class="reveal-left relative overflow-hidden">
+                <div class="cover"></div>
+                <img src="https://questnews.it/wp-content/uploads/2017/01/3126129-horizonzerodawn_screens_septevent_3840x2160_01-2.jpg" alt="" />
+            </div>
             </div>
         </div>
-    </div>
+        </section>
 
-    <div id="seccion3" class="seccion">
-        <div class="contenedor-flex">
-            <div class="texto-y-boton">
-                <h2 class="heading">PREDICCIONES</h2>
-                <p class="description-proyect">
-                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
+        
+    <section class="section-animate" id="section-2">
+        <div class="container">
+            <div class="aligner">
+            <div class="aligner__item aligner__item--top">
+                <div class="section__title">
+                <h3>
+                    <span>PREDICCIONES SOBRE </span>
+                    <span>TUS JUGADORES CON IA (INTELIGENCIA ARTIFICIAL).</span>
+                </h3>
+                </div>
+                <div class="section__text">
+                <p>                    En esta seccion podrás elegir el equipo con dinero ilimitado para hacer el equipo de tus sueños y asi planificar la teporada. Tambien podrías poner tu equipo actual y simular algun cambio para asi tener el maximo rendimiento en tu propia liga!
                 </p>
-                <button id="button1" onclick="redirectTo('/miequipo')">
+                <button id="button1" onclick="redirectTo('/prediccion')">
                     <span class="transition"></span>
                     <span class="gradient"></span>
                     <span class="label">Visualizar</span>
                 </button>
+                </div>
             </div>
-            <div class="imagen">
-                <img src="{{ url_for('static', filename='imagenes/icon_prediccion.png') }}" alt="Descripción de la imagen">
             </div>
-        </div>
-
-    </div>
-
-    <div id="seccion4" class="seccion">
-        <div class="contenedor-flex">
-            <div class="texto-y-boton">
-                <h2 class="heading">ALINEACION PROBABLE</h2>
-                <p class="description-proyect">
-                    En esta sección, tendrás acceso exclusivo a las alineaciones probables de cada uno de los emocionantes partidos de la jornada. ¿Te gustaría estar al tanto de qué jugadores estarán en el terreno de juego antes del pitido inicial? ¡Este es el lugar perfecto para ti!
-
-                    Descubre quiénes son los titulares, quiénes podrían quedarse en el banquillo y quiénes podrían ser las sorpresas de la jornada. Con información detallada sobre las alineaciones probables, podrás tomar decisiones más informadas para armar tu equipo DreamXI y competir con tus amigos.
-                    
-                    No te pierdas ni un solo detalle de las alineaciones probables. ¡Prepárate para la acción y mantente un paso adelante en tu estrategia de Fantasy Football con DreamXI!
-
-                    by:analiticafantasy
-                                    </p>
-                <button id="button1" onclick="redirectTo('/alineacionesProbables')">
-                    <span class="transition"></span>
-                    <span class="gradient"></span>
-                    <span class="label">Visualizar</span>
-                </button>
+            <div class="section-animate__images text-center">
+            <div class="reveal-left relative overflow-hidden">
+                <div class="cover"></div>
+                <img src="https://questnews.it/wp-content/uploads/2017/01/3126129-horizonzerodawn_screens_septevent_3840x2160_01-2.jpg" alt="" />
             </div>
-            <div class="imagen">
-                <img src="{{ url_for('static', filename='imagenes/logo_dreamXI.png') }}" alt="Descripción de la imagen">
             </div>
         </div>
-    </div>
-
+        </section>
 
     
+        <section class="section-animate" id="section-2">
+            <div class="container">
+                <div class="aligner">
+                <div class="aligner__item aligner__item--top">
+                    <div class="section__title">
+                    <h3>
+                        <span>ALINEACIONES PROBABLES </span>
+                        <span>DE TODOS LOS PARTIDOS DE LA JORNADA.</span>
+                    </h3>
+                    </div>
+                    <div class="section__text">
+                    <p>                        En esta sección, tendrás acceso exclusivo a las alineaciones probables de cada uno de los emocionantes partidos de la jornada. ¿Te gustaría estar al tanto de qué jugadores estarán en el terreno de juego antes del pitido inicial? ¡Este es el lugar perfecto para ti!
+
+                        Descubre quiénes son los titulares, quiénes podrían quedarse en el banquillo y quiénes podrían ser las sorpresas de la jornada. Con información detallada sobre las alineaciones probables, podrás tomar decisiones más informadas para armar tu equipo DreamXI y competir con tus amigos.
+                        
+                        No te pierdas ni un solo detalle de las alineaciones probables. ¡Prepárate para la acción y mantente un paso adelante en tu estrategia de Fantasy Football con DreamXI!
+    
+                        by:analiticafantasy
+                    </p>
+                    <button id="button1" onclick="redirectTo('/alineacionesProbables')">
+                        <span class="transition"></span>
+                        <span class="gradient"></span>
+                        <span class="label">Visualizar</span>
+                    </button>
+                    </div>
+                </div>
+                </div>
+                <div class="section-animate__images text-center">
+                <div class="reveal-left relative overflow-hidden">
+                    <div class="cover"></div>
+                    <img src="https://questnews.it/wp-content/uploads/2017/01/3126129-horizonzerodawn_screens_septevent_3840x2160_01-2.jpg" alt="" />
+                </div>
+                </div>
+            </div>
+            </section>
+    
+
+
+
+    <!-- Scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 

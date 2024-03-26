@@ -139,6 +139,11 @@ def guardar_plantilla():
     else:
         return jsonify({'message': 'Método no permitido'}), 405
 
+@routes_config.route('/team_info')
+def team_info():
+    selected_team = request.args.get('team')
+    team_info = get_team_info(selected_team)
+    return jsonify(team_info)
 
 @routes_config.route('/logout')
 def logout():

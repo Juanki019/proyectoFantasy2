@@ -8,50 +8,8 @@
 </head>
 <body>
 
-    <div class="stage">
-        <div class="world">
-        <div class="team"></div>
-        <div class="terrain">
-            <div class="field ground">
-            <div class="field__texture field__texture--gradient"></div>
-            <div class="field__texture field__texture--gradient-b"></div>
-            <div class="field__texture field__texture--grass"></div>
-            <div class="field__line field__line--goal"></div>
-            <div class="field__line field__line--goal field__line--goal--far"></div>
-            <div class="field__line field__line--outline"></div>
-            <div class="field__line field__line--penalty"></div>
-            <div class="field__line field__line--penalty-arc"></div>
-            <div class="field__line field__line--penalty-arc field__line--penalty-arc--far"></div>
-            <div class="field__line field__line--mid"></div>
-            <div class="field__line field__line--circle"></div>
-            <div class="field__line field__line--penalty field__line--penalty--far"></div>
-            </div>
-            <div class="field__side"></div>
-        </div>
-        </div>
-    </div>
-    
-    <!-- ==================== -->
-    
-    <canvas id="pitch" width="600" height="600"></canvas>
-    
-    <ul id="starting_11" class="4-4-2">
-        <li data-pos="gk" id="pos1"></li>
-        <li data-pos="df" id="pos2" draggable="true"></li>
-        <li data-pos="df" id="pos3" draggable="true"></li>
-        <li data-pos="df" id="pos4" draggable="true"></li>
-        <li data-pos="df" id="pos5" draggable="true"></li>
-        <li data-pos="md" id="pos6" draggable="true"></li>
-        <li data-pos="md" id="pos7" draggable="true"></li>
-        <li data-pos="md" id="pos8" draggable="true"></li>
-        <li data-pos="md" id="pos9" draggable="true"></li>
-        <li data-pos="fw" id="pos10" draggable="true"></li>
-        <li data-pos="fw" id="pos11" draggable="true"></li>
-    </ul>
-        
-        
+
     {% if session %}
-        <p>Sesión actual: {{ session }}</p>
         <p>Nombre de usuario: {{ session.username }}</p>
 
     {% else %}
@@ -110,17 +68,47 @@
         <button type="submit">Guardar Plantilla</button>
     </form>
 
-    {% if plantilla %}
-        <h2>Plantilla del Usuario:</h2>
-        <ul>
-            {% for jugador in plantilla %}
-                <li>{{ jugador }}</li> <!-- Aquí se muestra el nombre del jugador -->
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tienes jugadores en tu plantilla aún.</p>
-    {% endif %}
+    <div class="miplantilla">
+        {% if plantilla %}
+            <h2>Plantilla del Usuario:</h2>
+            <ul>
+                {% for jugador in plantilla %}
+                    <li>{{ jugador }}</li> <!-- Aquí se muestra el nombre del jugador -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes jugadores en tu plantilla aún.</p>
+        {% endif %}
+    </div>
 
+    <div class="targets">
+
+    <div class="filterDiv A LIN">
+        <div class="discount card" style="--delay: .4s; margin-top: 20px;">
+        
+        <img style="width: 90px; margin-left: auto; margin-right: auto; margin-top: -20px; margin-bottom: 10px;" src="https://magicalogical.co.uk/tto/wp-content/uploads/2021/06/offerplayer.png">
+        
+        <hr style="width: 100%;">
+        </hr>
+        <div class="title">Keeper 1</div>
+        <p id="fff"><span>Position:</span>&nbsp;GK</p>
+        <p id="fff"><span>Asking Price:</span> £40K p/w</p>
+        <p id="fff"><span>Our Offer:</span> £*******</p>
+        <p id="nr"><span>Response Status:</span> NR</p>
+        <p id="nr"><span>TA Status:</span> Not Yet Initiated</p>
+        <span></span>
+        <br>
+        
+        <div class="discount-wrapper">
+            <div class="discount-info">
+            <div class="filedown">
+                <a href="#"><button>View Transfer Agreement</button></a>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
     
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>

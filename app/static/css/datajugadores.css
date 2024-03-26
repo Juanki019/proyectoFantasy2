@@ -18,6 +18,10 @@ select {
     width: 100%;
 }
 
+body{
+    background-color: #333;
+}
+
 /* Estilos para el botón */
 #show_player_info {
     padding: 10px 20px;
@@ -101,7 +105,7 @@ tr:hover {
 
 h1 {
     font-size: 3rem; 
-    color: #333; 
+    color: #ffffff; 
     text-align: center; 
     margin-bottom: 2rem; 
     text-transform: uppercase; 
@@ -195,4 +199,9 @@ canvas {
     justify-content: space-around; /* Alinea los canvas con espacio entre ellos */
     margin-bottom: 20px; /* Añade margen inferior para separarlos */
     padding: 3rem;
+}
+
+
+tr{
+    background-color: #f2f2f2;
 }

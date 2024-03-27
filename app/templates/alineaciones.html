@@ -82,33 +82,37 @@
     </div>
 
     <div class="targets">
-
-    <div class="filterDiv A LIN">
-        <div class="discount card" style="--delay: .4s; margin-top: 20px;">
-        
-        <img style="width: 90px; margin-left: auto; margin-right: auto; margin-top: -20px; margin-bottom: 10px;" src="https://magicalogical.co.uk/tto/wp-content/uploads/2021/06/offerplayer.png">
-        
-        <hr style="width: 100%;">
-        </hr>
-        <div class="title">Keeper 1</div>
-        <p id="fff"><span>Position:</span>&nbsp;GK</p>
-        <p id="fff"><span>Asking Price:</span> £40K p/w</p>
-        <p id="fff"><span>Our Offer:</span> £*******</p>
-        <p id="nr"><span>Response Status:</span> NR</p>
-        <p id="nr"><span>TA Status:</span> Not Yet Initiated</p>
-        <span></span>
-        <br>
-        
-        <div class="discount-wrapper">
-            <div class="discount-info">
-            <div class="filedown">
-                <a href="#"><button>View Transfer Agreement</button></a>
+        {% for player in players %}
+            <div class="filterDiv {{ player.Posicion }}">
+                <div class="discount card" style="--delay: .4s; margin-top: 20px;">
+                
+                    <img style="width: 90px; margin-left: auto; margin-right: auto; margin-top: -20px; margin-bottom: 10px;" src="https://magicalogical.co.uk/tto/wp-content/uploads/2021/06/offerplayer.png">
+                    
+                    <hr style="width: 100%;">
+                    </hr>
+                    <div class="title">{{ player.Nombre }}</div>
+                    <p><span>Posición:</span>&nbsp;{{ player.Posicion }}</p>
+                    <p><span>Precio:</span> €{{ player.Precio }}</p>
+                    <p><span>Puntos:</span> {{ player.Puntos }}</p>
+                    <p><span>Antepenúltima Jornada:</span> {{ player.Antepenultima_Jornada }}</p>
+                    <p><span>Penúltima Jornada:</span> {{ player.Penultima_Jornada }}</p>
+                    <p><span>Última Jornada:</span> {{ player.Ultima_Jornada }}</p>
+                    <p><span>Tendencia:</span> {{ player.Flecha }}</p>
+                    <span></span>
+                    <br>
+                    
+                    <div class="discount-wrapper">
+                        <div class="discount-info">
+                            <div class="filedown">
+                                <a href="#"><button>View Transfer Agreement</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    </div>
-    </div>
+    
     
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>

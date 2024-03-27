@@ -200,3 +200,23 @@ function esDefensaCentral(posicion) {
 function esPortero(posicion) {
     return posicion === "PO";
 }
+
+
+    function showPlayerStats() {
+        // Obtener el panel de estadísticas del jugador
+        var playerStatsPanel = document.getElementById("playerStatsPanel");
+
+        // Mostrar el panel de estadísticas del jugador
+        playerStatsPanel.style.display = "block";
+
+        // Obtener los datos del jugador (puedes obtenerlos desde el botón o desde cualquier otra fuente)
+        var playerName = "Nombre del Jugador"; // Reemplaza esto con el nombre real del jugador
+        var playerPosition = "Posición del Jugador"; // Reemplaza esto con la posición real del jugador
+        var playerPrice = "Precio del Jugador"; // Reemplaza esto con el precio real del jugador
+
+        // Mostrar las estadísticas del jugador en el panel
+        document.getElementById("playerName").innerText = playerName;
+        document.getElementById("playerPosition").innerText = playerPosition;
+        document.getElementById("playerPrice").innerText = playerPrice;
+        // Agrega más estadísticas según sea necesario
+    }

@@ -168,3 +168,95 @@ ul#starting_11 .selected img {
 
 
 
+/* Estilo de las tarjetas de jugador */
+.targets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.filterDiv {
+    width: 300px; /* Ancho de la tarjeta */
+    margin-bottom: 20px;
+}
+
+.discount.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.discount.card:hover {
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+}
+
+.discount.card img {
+    width: 90px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.discount.card hr {
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+.title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.discount.card p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.discount.card span {
+    font-weight: bold;
+    color: #333;
+}
+
+.discount-wrapper {
+    margin-top: 20px;
+}
+
+.discount-info {
+    display: flex;
+    justify-content: center;
+}
+
+.filedown button {
+    background-color: #4CAF50; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cursor al pasar el mouse */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.filedown button:hover {
+    background-color: #45a049; /* Cambio de color de fondo al pasar el mouse */
+}
+
+/* Estilos específicos para diferentes posiciones */
+.GK {
+    background-color: #ffc107; /* Color de fondo para porteros */
+}
+
+.DF {
+    background-color: #007bff; /* Color de fondo para defensas */
+}
+
+.MC {
+    background-color: #28a745; /* Color de fondo para centrocampistas */
+}
+
+.DL {
+    background-color: #dc3545; /* Color de fondo para delanteros */
+}

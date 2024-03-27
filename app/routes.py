@@ -79,7 +79,7 @@ def datajugadores():
 @routes_config.route('/alineaciones')
 def alineaciones():
     if 'username' in session:  
-        print("Usuario en sesión:", session['username'])  # Verificar el usuario en sesión
+        print("Usuario en sesión:", session['username'])  
         usuario_actual = session['username']
         plantilla_usuario = obtener_plantilla_usuario(usuario_actual)
         datos_jugadores = cargar_datos_desde_bd()
@@ -87,7 +87,7 @@ def alineaciones():
         return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_usuario)
     else:
         flash('Debes iniciar sesión para acceder a esta página', 'error')
-        return redirect(url_for('login'))  # Redirigir a la página de inicio de sesión si el usuario no está en sesión
+        return redirect(url_for('login'))  
 
 
 @routes_config.route('/alineacionesProbables')

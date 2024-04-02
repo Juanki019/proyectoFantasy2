@@ -1,0 +1,5 @@
+# Ignora todos los archivos pycache
+**/_pycache_/**
+
+# Ignora la carpeta pycache dentro de querys
+querys/_pycache_/

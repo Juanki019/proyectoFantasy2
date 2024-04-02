@@ -1,7 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    background: #333;
+    color: #ffffff;
+    font-family: "Oxygen", sans-serif;
+    font-size: 20px;
 }
 
 h1 {
@@ -11,20 +12,22 @@ h1 {
 
 
 .image-container {
-    border: 1px solid #ccc; /* Borde del contenedor de imagen */
-    margin-bottom: 20px; /* Margen inferior entre cada contenedor de imagen */
-    padding: 5px; /* Espacio interno dentro del contenedor de imagen */
-    max-width: 800px; /* Ancho máximo del contenedor de imagen */
-    display: block; /* Para que cada contenedor de imagen sea un bloque independiente */
-    overflow: hidden; /* Oculta cualquier contenido que se desborde del contenedor */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
-    margin-left: auto; /* Centra el contenedor de imagen horizontalmente */
-    margin-right: auto; /* Centra el contenedor de imagen horizontalmente */
+    border: 1px solid #ccc; 
+    margin-bottom: 20px; 
+    padding: 20px; 
+    max-width: 800px; 
+    display: block; 
+    overflow: hidden; 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
+    margin-left: auto; 
+    margin-right: auto; 
+    border-radius: 30px;
+    background-color: #ccc;
 }
 
 .image-container img {
-    width: 100%; /* Para que la imagen ocupe todo el ancho del contenedor */
-    height: auto; /* Altura automática para mantener la proporción */
-    display: block; /* Evita el espacio adicional debajo de la imagen */
-    margin: 0 auto; /* Centra la imagen horizontalmente */
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto; 
 }

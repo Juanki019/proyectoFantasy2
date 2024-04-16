@@ -1,11 +1,15 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify, Blueprint
 from flask_mail import Mail, Message
 from flask import session
+import http.client
+import json
+from models.LinearRegressionModel import LinearRegressionModel
 from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
 
 routes_config = Blueprint('routes', __name__)
 
+linear_regression_model = LinearRegressionModel()
 
 @routes_config.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,11 +72,48 @@ def index():
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('index.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
+
+@routes_config.route('/resultadosCompeticiones')
+def resultadosCompeticiones():
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    conn = http.client.HTTPSConnection("free-football-soccer-videos.p.rapidapi.com")
+
+    headers = {
+        'X-RapidAPI-Key': "2c4364d074msh916a298dace8e1bp1d5dc4jsn4ee4b76ffe0a",
+        'X-RapidAPI-Host': "free-football-soccer-videos.p.rapidapi.com"
+    }
+
+    conn.request("GET", "/", headers=headers)
+
+    res = conn.getresponse()
+    if res.status == 200:
+        data_api = json.loads(res.read().decode("utf-8"))
+        return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api)
+    else:
+        return "Error al obtener los datos de la API"    
+
+
+
+
+
+
 @routes_config.route('/datajugadores')
 def datajugadores():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
-    return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores)
+    conn = http.client.HTTPSConnection("laliga-standings.p.rapidapi.com")
+    headers = {
+        'X-RapidAPI-Key': "2c4364d074msh916a298dace8e1bp1d5dc4jsn4ee4b76ffe0a",
+        'X-RapidAPI-Host': "laliga-standings.p.rapidapi.com"
+    }
+    conn.request("GET", "/", headers=headers)
+    res = conn.getresponse()
+    if res.status == 200:
+        data_api = json.loads(res.read().decode("utf-8"))
+        return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api)
+    else:
+        return "Error al obtener los datos de la API"    
 
 
 
@@ -84,7 +125,16 @@ def alineaciones():
         plantilla_usuario = obtener_plantilla_usuario(usuario_actual)
         datos_jugadores = cargar_datos_desde_bd()
         lesion_jugadores = cargar_datos_lesionados_desde_bd()
-        return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_usuario)
+        
+        plantilla_con_info = []
+        for jugador in plantilla_usuario:
+            for datos_jugador in datos_jugadores:
+                if jugador == datos_jugador['Nombre']:
+                    plantilla_con_info.append(datos_jugador)
+                    break  # Una vez que se encuentra el jugador, se sale del bucle interno
+
+        return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_con_info)
+    
     else:
         flash('Debes iniciar sesión para acceder a esta página', 'error')
         return redirect(url_for('login'))  
@@ -95,6 +145,7 @@ def alineacionesProbables():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('alineacionesProbables.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
 
 
 @routes_config.route('/miequipo')
@@ -116,6 +167,21 @@ def prediccion():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('prediccion.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
+
+@routes_config.route('/predict_player', methods=['POST'])
+def predict_player():
+    player_name = request.json['player_name']  
+    target_column = request.json['target_column']  
+    
+    player_data = get_player_info(player_name)
+    
+    datos_jugadores = cargar_datos_desde_bd()
+
+    prediction = train_and_predict(datos_jugadores, player_data, target_column)
+
+    # Devolver la predicción al cliente
+    return jsonify({'prediction': prediction})
 
 
 @routes_config.route('/guardar_plantilla', methods=['POST'])
@@ -149,3 +215,17 @@ def team_info():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+########################################################################################
+#                        FUNCIONES CONFIG
+########################################################################################
+def train_and_predict(df, player_data, target_column):
+    X = df.drop(['Nombre', 'Posicion', 'Equipo', target_column], axis=1)
+    y = df[target_column]
+
+    model = LinearRegressionModel()
+
+    model.train(X, y)
+
+    prediction = model.predict(player_data)
+    return prediction

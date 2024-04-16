@@ -20,6 +20,7 @@ def conectar_bd():
         database="dreamxi"
     )
 """
+
 def conectar_bd():
     return mysql.connector.connect(
         host="localhost",

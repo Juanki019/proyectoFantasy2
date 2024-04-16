@@ -6,16 +6,33 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prediccion.css') }}">
     <title>DreamXI</title>
     <link rel="icon" href="{{ url_for('static', filename='imagenes/logo_dreamXI.png') }}" type="image/x-icon">
-<!--  Styles  -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oxygen:300|Bungee" rel="stylesheet">
 </head>
 
 <body>
-    <h1> PREDICCIONES SOBRE JUGADORES</h1>
-
-    <h1> PREDICCIONES SOBRE JUGADORES</h1>
-<script src="{{ url_for('static', filename='js/prediccion.js') }}"></script>
+    <section>
+        <h1> PREDICCIONES SOBRE JUGADORES</h1>
+        <h2>Selecciona un jugador:</h2>
+        <select id="player_select">
+            {% for player in players %}
+                <option value="{{ player.Nombre }}">{{ player.Nombre }}</option>
+            {% endfor %}
+        </select>
+        <h2>Selecciona la variable objetivo:</h2>
+        <select id="target_select">
+            <option value="Puntos">Puntos</option>
+            <option value="Goles">Goles</option>
+            <option value="Asistencias">Asistencias</option>
+            <!-- Agrega más opciones según tus necesidades -->
+        </select>
+        <button id="show_player_info">Mostrar información del jugador</button>
+        <div id="player_info"></div> <!-- Aquí se mostrará la predicción -->
+    </section>
+    <h1> PREDICCIONES SOBRE EL EQUIPO</h1>
+    <section>
+    </section>
+    <script src="{{ url_for('static', filename='js/prediccion.js') }}"></script>
 </body>
 
 </html>

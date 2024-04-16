@@ -1,61 +1,54 @@
-/**
- * index.js
- * - All our useful JS goes here, awesome!
- */
-window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-};
+document.addEventListener('DOMContentLoaded', function() {
+    var showPlayerInfoButton = document.getElementById('show_player_info');
+    var playerSelect = document.getElementById('player_select');
+    var playerInfoDiv = document.getElementById('player_info');
 
-// Variabili
-var $ = document.querySelector.bind(document);
-var $$ = document.querySelectorAll.bind(document);
-$titles = $$("#section-2 .section__title span");
-var controller = new ScrollMagic.Controller();
-var tl1 = new TimelineMax({paused:true}),
-    tl2 = new TimelineMax();
+    showPlayerInfoButton.addEventListener('click', function() {
+        var selectedPlayer = playerSelect.value;
+        fetch('/player_info?player=' + encodeURIComponent(selectedPlayer))
+            .then(response => response.json())
+            .then(data => {
 
-// Timeline Tweenmax prima sezione
-tl1
-.from("#section-1 .section__title h2",1,{ y:1000 , opacity:1 , ease: Expo. easeOut },1)
-    .to("#section-1 .section__title h2",0,{ y:0 , opacity:1 , ease: Expo. easeOut })
-.from("#section-1 .section__text div",1,{ y:1000 , opacity:1 , ease: Expo. easeOut },1)
-    .to("#section-1 .section__text div",0,{ y:0 , opacity:1 , ease: Expo. easeOut })
-.fromTo("#section-1 .section-animate__left", 0.5, {css: {bottom: "100%"}}, {css:{bottom: "0"}},2)
-.fromTo("#section-1 .section-animate__right", 0.5, {css: {top: "100%"}}, {css:{top: "0"}},2)
-.from("#section-1 .reveal-bottom img",1,{ y:1000 , opacity:1 , ease: Expo. easeOut },"+=0.5")
-    .to("#section-1 .reveal-bottom img",0,{ y:0 , opacity:1 , ease: Expo. easeOut })
-.from("#section-1 .reveal-left img",1,{ x:-800 , opacity:1 , ease: Expo. easeOut },"+=0.5")
-    .to("#section-1 .reveal-left img",0,{ x:0 , opacity:1 , ease: Expo. easeOut });
+                playerInfoDiv.innerHTML = '';
 
-// Timeline Tweenmax seconda sezione
-tl2
-.staggerFromTo($titles, 1, { y:300 , opacity:1 , ease: Expo. easeOut },{ y:0 , opacity:1 , ease: Expo. easeOut }, 1)
-.fromTo("#section-2 .reveal-left .cover", 0.5, {css: {left: "0"}}, {css:{left: "100%"}},"+=0.5")
-.from("#section-2 .section__text p",2,{ x:-800 , opacity:0 , ease: Expo. easeOut },"-=1")
-    .to("#section-2 .section__text p",2,{ x:0 , opacity:1 , ease: Expo. easeOut },"-=0.5");
+                var playerInfo = document.createElement('p');
+                playerInfo.textContent = 'Nombre: ' + data.Nombre + ', Equipo: ' + data.Equipo + ', Precio: ' + data.Precio + ', Puntos: ' + data.Puntos + ', Goles: ' + data.Goles + ', Trjetas rojas: ' + data.Tarjetas_rojas + ', Tarjetas amarillas: ' + data.Tarjetas_amarillas + ', Antepenultima Jornada: ' + data.Antepenultima_Jornada + ', Penultima Jornada: ' + data.Penultima_Jornada + ', Ultima Jornada: ' + data.Ultima_Jornada + ', Tendencia: ' + data.Flecha;
+                playerInfoDiv.appendChild(playerInfo);
+            })
+            .catch(error => console.error('Error al obtener la información del jugador:', error));
+    });
+});
 
+document.addEventListener('DOMContentLoaded', function() {
+    var showPlayerInfoButton = document.getElementById('show_player_info');
+    var playerSelect = document.getElementById('player_select');
+    var targetSelect = document.getElementById('target_select');
+    var playerInfoDiv = document.getElementById('player_info');
 
-// Attivazione Loader
-$("#hide-page").style.display = "block";
+    showPlayerInfoButton.addEventListener('click', function() {
+        var selectedPlayer = playerSelect.value;
+        var selectedTarget = targetSelect.value;
 
-// Al caricamento della pagina nasconde il loader e partono le animazioni
-window.onload = function() {  
-    $("#hide-page").style.display = "none";
-    setTimeout(function(){ 
-    tl1.play();
-    }, 700);   
-};
+        // Aquí se envía una solicitud al servidor para obtener la predicción
+        fetch('/predict_player', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                player_name: selectedPlayer,
+                target_column: selectedTarget
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            playerInfoDiv.innerHTML = '';
 
-// Attivazioni animazioni allo scroll
-var scene = new ScrollMagic.Scene({triggerElement: "#section-1"})
-                            .setTween(tl1)
-                            //.addIndicators()
-                            .addTo(controller);
-var scene2 = new ScrollMagic.Scene({triggerElement: "#section-2"})
-                            .setTween(tl2)
-                            .addTo(controller);
-
-                            
-function redirectTo(endpoint) {
-    window.location.href = endpoint;
-}
+            // Muestra la predicción en el div player_info
+            var predictionText = document.createElement('p');
+            predictionText.textContent = 'Predicción para ' + selectedTarget + ' del jugador ' + selectedPlayer + ': ' + data.prediction;
+            playerInfoDiv.appendChild(predictionText);
+        })
+        .catch(error => console.error('Error al obtener la predicción:', error));
+    });
+});

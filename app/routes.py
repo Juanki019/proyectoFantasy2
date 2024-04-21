@@ -6,13 +6,16 @@ import json
 from models.LinearRegressionModel import LinearRegressionModel
 from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
+from telegram import Bot
+from aiogram import Bot
+from datetime import datetime, timedelta
 
 routes_config = Blueprint('routes', __name__)
 
 linear_regression_model = LinearRegressionModel()
 
 @routes_config.route('/login', methods=['GET', 'POST'])
-def login():
+async def login():
     if request.method == 'POST':
         action = request.form['action']
         if action == 'register':
@@ -24,6 +27,7 @@ def login():
             
             if guardar_credenciales(nuevo_usuario):
                 flash(f'Registro exitoso para {username}', 'success')
+                await send_notification(chat_id, username)
             else:
                 flash(f'Error al registrar el usuario {username}', 'error')           
         elif action == 'login':   
@@ -89,7 +93,8 @@ def resultadosCompeticiones():
     res = conn.getresponse()
     if res.status == 200:
         data_api = json.loads(res.read().decode("utf-8"))
-        return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api)
+        competitions = set(objeto['competition']['name'] for objeto in data_api)
+        return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api, competitions=competitions)
     else:
         return "Error al obtener los datos de la API"    
 
@@ -216,9 +221,11 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+
 ########################################################################################
 #                        FUNCIONES CONFIG
 ########################################################################################
+
 def train_and_predict(df, player_data, target_column):
     X = df.drop(['Nombre', 'Posicion', 'Equipo', target_column], axis=1)
     y = df[target_column]
@@ -229,3 +236,27 @@ def train_and_predict(df, player_data, target_column):
 
     prediction = model.predict(player_data)
     return prediction
+
+bot_token = '7001449113:AAGj6_iTg_uIKTc6biDIlfD_WPRUFHxCWv0'
+chat_id = '1369962968'
+
+async def send_notification(chat_id, username):
+    message = f'Bienvenido a DreamXI! {username}'
+    bot = Bot(bot_token)
+    await bot.send_message(chat_id=chat_id, text=message)
+    return 'Notificación enviada con éxito.'
+
+async def send_notification_jornada(chat_id, username):
+    message = f'La jornada va a comenzar, prepara tu equipo antes de que sea demasiado tarde! {username}'
+    bot = Bot(bot_token)
+    await bot.send_message(chat_id=chat_id, text=message)
+    return 'Notificación enviada con éxito.'
+
+
+
+def check_and_send_notification(chat_id, fecha, mensaje):
+    fecha_objeto = datetime.strptime(fecha, "%d - %b.")
+    fecha_actual = datetime.now()
+    diferencia_dias = (fecha_objeto - fecha_actual).days
+    if diferencia_dias < 2:
+        asyncio.run(send_notification(chat_id, mensaje))

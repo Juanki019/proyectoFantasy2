@@ -2,7 +2,7 @@
 #container {
     width: 80%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 3rem;
     background-color: #f0f0f0;
     border-radius: 5px;
     margin-top: 30px;
@@ -226,15 +226,16 @@ canvas {
     padding: 3rem;
 }
 
-h2{
+.subtitle{
   font-family: Arial, sans-serif;
   font-size: 3rem;
   font-weight: bold;
+  color: white;
   text-align: center; /* Alineación del texto */
   margin-top: 20px; /* Margen superior */
   margin-bottom: 20px; /* Margen inferior */
   text-transform: uppercase; /* Transforma el texto a mayúsculas */
-
+  padding: 3rem;
 }
 
 tr{
@@ -424,10 +425,3 @@ tr{
       .response-table-v2 .rt td:last-child {
         border-bottom: 1px solid #babcbf; } }
   
-
-/* --------------- TABLE SAW ----------------*/ 
-
-.tabla-jugadores{
-    padding-top: 5rem;
-
-}

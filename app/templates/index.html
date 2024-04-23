@@ -9,7 +9,8 @@
     <!--  Styles  -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oxygen:300|Bungee" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
     <div style="display: none" id="hide-page">
@@ -24,7 +25,10 @@
             <h2 class="text-center">DreamXI</h2>
             </div>
             <div class="section__text">
-            <div class="text-center">Your fantasy team becomes true {{ session.username }}!</div>
+            <div class="text-center">Your fantasy team becomes true {{ session.username }}!
+                <i class="fas fa-user"></i>
+
+            </div>
             </div>
         </div>
         </div>
@@ -86,7 +90,7 @@
                 </h3>
                 </div>
                 <div class="section__text">
-                <p>       partidos de diferentes ligas con sus higlighg sacado de una api             
+                <p>       En esta seccion podras ver los partidos mas importantes que se han disputado a lo largo de la semana en todo el mundo. Tendras un filtrador de competiciones para que la busqueda de tu partido favorito sea mas amena.             
                 </p>
                 <button id="button1" onclick="redirectTo('/resultadosCompeticiones')">
                     <span class="transition"></span>

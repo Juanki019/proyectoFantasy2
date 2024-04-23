@@ -104,7 +104,7 @@ tr:hover {
 }
 
 h1 {
-  font-size: 7vw;
+  font-size: 6vw;
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
@@ -141,7 +141,6 @@ h1 {
 #jugadores-container{
     margin-bottom: 4rem;
     padding-bottom: 4rem;
-    padding-top: 2rem;
 
 }
 
@@ -277,69 +276,43 @@ tr{
   
   td, th {
     padding: 6px 10px;
-    border: 1px solid #ccc;
     text-align: left; }
   
-  /*
-  Max width before this PARTICULAR table gets nasty
-  This query will take effect for any screen smaller than 760px
-  and also iPads specifically.
-  */
-  @media only screen and (max-width: 900px), (min-device-width: 768px) and (max-device-width: 1024px) {
-    .response-table-v1 {
-      /* Force table to not be like tables anymore */
-      /* Hide table headers (but not display: none;, for accessibility) */
-      /*
-      Label the data
-      */ }
-      .response-table-v1 table, .response-table-v1 thead, .response-table-v1 tbody, .response-table-v1 th, .response-table-v1 td, .response-table-v1 tr {
-        display: block; }
-      .response-table-v1 thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px; }
-      .response-table-v1 tr {
-        border: 1px solid #ccc;
-        border-bottom: 0; }
-      .response-table-v1 td {
-        /* Behave  like a "row" */
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 50%; }
-      .response-table-v1 td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        font-weight: bold; }
-      .response-table-v1 td:nth-of-type(1):before {
-        content: "Select?"; }
-      .response-table-v1 td:nth-of-type(2):before {
-        content: "Vintage"; }
-      .response-table-v1 td:nth-of-type(3):before {
-        content: "Name"; }
-      .response-table-v1 td:nth-of-type(4):before {
-        content: "Producer"; }
-      .response-table-v1 td:nth-of-type(5):before {
-        content: "Region"; }
-      .response-table-v1 td:nth-of-type(6):before {
-        content: "Average Score"; }
-      .response-table-v1 td:nth-of-type(7):before {
-        content: "Quantity"; }
-      .response-table-v1 td:nth-of-type(8):before {
-        content: "Size"; }
-      .response-table-v1 td:nth-of-type(9):before {
-        content: "Duty"; }
-      .response-table-v1 td:nth-of-type(10):before {
-        content: "Tag"; }
-      .response-table-v1 td:nth-of-type(11):before {
-        content: "Status"; } }
-  
+    #lesionados-container {
+      max-height: 400px; 
+      overflow-y: auto; 
+  }
+
+  #lesionados-container table {
+      width: 100%;
+      border-collapse: collapse; 
+  }
+
+  #lesionados-container th {
+      position: sticky; 
+      top: 0; 
+      z-index: 1; 
+  }
+
+  #jugadores-container th{
+      position: sticky; 
+      top: 0; 
+      z-index: 1;
+  }
+
+  #lesionados-container td, #lesionados-container th {
+      padding: 8px; 
+      border: 1px solid #ddd; 
+      text-align: left; 
+  }
+
+  #lesionados-container th:nth-child(1),
+  #lesionados-container td:nth-child(1) {
+      /* Estilos específicos para la primera columna si es necesario */
+  }
+
+
+
   /* Smartphones (portrait and landscape) ----------- */
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     body {

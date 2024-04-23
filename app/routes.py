@@ -4,7 +4,7 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
@@ -107,6 +107,7 @@ def resultadosCompeticiones():
 def datajugadores():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    jornadas = cargar_datos_jornadas_desde_bd()
     conn = http.client.HTTPSConnection("laliga-standings.p.rapidapi.com")
     headers = {
         'X-RapidAPI-Key': "2c4364d074msh916a298dace8e1bp1d5dc4jsn4ee4b76ffe0a",
@@ -116,7 +117,7 @@ def datajugadores():
     res = conn.getresponse()
     if res.status == 200:
         data_api = json.loads(res.read().decode("utf-8"))
-        return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api)
+        return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api, jornadas=jornadas)
     else:
         return "Error al obtener los datos de la API"    
 
@@ -246,17 +247,11 @@ async def send_notification(chat_id, username):
     await bot.send_message(chat_id=chat_id, text=message)
     return 'Notificación enviada con éxito.'
 
-async def send_notification_jornada(chat_id, username):
-    message = f'La jornada va a comenzar, prepara tu equipo antes de que sea demasiado tarde! {username}'
+async def send_notification_jornada(chat_id, jornada):
+    message = f'La jornada va a comenzar, prepara tu equipo antes de que sea demasiado tarde! {jornada}'
     bot = Bot(bot_token)
     await bot.send_message(chat_id=chat_id, text=message)
     return 'Notificación enviada con éxito.'
 
 
 
-def check_and_send_notification(chat_id, fecha, mensaje):
-    fecha_objeto = datetime.strptime(fecha, "%d - %b.")
-    fecha_actual = datetime.now()
-    diferencia_dias = (fecha_objeto - fecha_actual).days
-    if diferencia_dias < 2:
-        asyncio.run(send_notification(chat_id, mensaje))

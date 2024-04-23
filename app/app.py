@@ -20,7 +20,7 @@ app.secret_key = 'tu_clave_secreta'
 app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():
-    subprocess.Popen([sys.executable, 'C:/UEM - 3/PROYECTO2/proyectoFantasy2/scrappers/lesionadosScrap.py'])
+    subprocess.Popen([sys.executable, 'C://UEM - 3//PROYECTO2//proyectoFantasy2//scrappers//lesionadosScrap.py'])
     print("Subproceso iniciado correctamente.")
     
 

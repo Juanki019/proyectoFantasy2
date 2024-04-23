@@ -14,7 +14,7 @@
 <body>
     <h1>Información de <span class="fancy">LaLiga</span></h1>
 
-    <h2>CLASIFICACION LALIGA<h2>
+    <h2 class="subtitle">CLASIFICACION LALIGA<h2>
     <table>
         <tr>
         <th>Logo</th>
@@ -57,6 +57,7 @@
         <div id="player_info"></div>
 
         <select id="team_select">
+            <h3>Selecciona un jugador:</h3>
             {% set equipos = [] %}
             {% for player in players %}
                 {% if player.Equipo not in equipos %}
@@ -75,7 +76,7 @@
     </div>
     
 
-    <h2>Tabla de Lesiones</h2>
+    <h2 class="subtitle">Tabla de Lesiones</h2>
     <div id="lesionados-container">
         <table>
             <thead>
@@ -97,8 +98,8 @@
         </table>
     </div>
 
+    <h2 class="subtitle">Tabla de Jugadores</h2>
     <div class="tabla-jugadores">
-        <h2>Tabla de Jugadores</21>
         <div class="form__group field">
             <input type="text" id="search_input" class="form__field" placeholder="Buscar jugador...">
             <label for="name" class="form__label">Busca un jugador</label>

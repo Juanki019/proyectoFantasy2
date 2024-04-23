@@ -12,28 +12,35 @@
             width: 100%;
         }
         th, td {
-            border: 1px solid #dddddd;
+            border: 1px solid #fff;
             text-align: left;
             padding: 8px;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #333;
         }
     </style>
 </head>
 <body>
 
-    <h2>Datos de la API</h2>
+    <h2>Resultados de la semana</h2>
+
+    <select id="select-competition">
+        <option value="">Selecciona una competición</option>
+        {% for competition in competitions %}
+        <option value="{{ competition }}">{{ competition }}</option>
+        {% endfor %}
+    </select>
+
     <table>
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Embed</th>
-                <th>URL</th>
+                <th>Local</th>
+                <th>Visitante</th>
+                <th>Competicion</th>
+                <th>Highlights</th>
                 <th>Thumbnail</th>
-                <th>Side 1</th>
-                <th>Side 2</th>
-                <th>Competition</th>
                 <th>Videos</th>
             </tr>
         </thead>
@@ -41,11 +48,11 @@
             {% for objeto in data_api %}
             <tr>
                 <td>{{ objeto.title }}</td>
-                <td>{{ objeto.embed | safe }}</td>
-                <td><a href="{{ objeto.url }}">{{ objeto.url }}</a></td>
-                <td><img src="{{ objeto.thumbnail }}" alt="Thumbnail"></td>
                 <td>{{ objeto.side1.name }}</td>
                 <td>{{ objeto.side2.name }}</td>
+                <td>{{ objeto.competition.name }}</td>
+                <td><a href="{{ objeto.url }}">{{ objeto.url }}</a></td>
+                <td><img src="{{ objeto.thumbnail }}" alt="Thumbnail"></td>
                 <td>{{ objeto.competition.name }}</td>
                 <td>
                     {% for video in objeto.videos %}
@@ -60,6 +67,6 @@
         </tbody>
     </table>
 
-    <script src="{{ url_for('static', filename='js/alineacionesProbables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/resultadosCompeticiones.js') }}"></script>
 </body>
 </html>

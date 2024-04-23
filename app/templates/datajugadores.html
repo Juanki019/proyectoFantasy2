@@ -17,7 +17,7 @@
     <h2 class="subtitle">CLASIFICACION LALIGA<h2>
     <table>
         <tr>
-        <th>Logo</th>
+        <th>Escudo</th>
         <th>Equipo</th>
         <th>Abreviación</th>
         <th>Victorias</th>
@@ -45,6 +45,41 @@
     </table>
 
 
+    <h2 class="subtitle">Datos de Jornadas</h2>
+    <label for="filtro">Filtrar por:</label>
+    <select id="filtro">
+        <option value="todos">Todos</option>
+        <!-- Llenar las opciones del selector con las fechas disponibles -->
+        {% for jornada in jornadas %}
+            <option value="{{ jornada.Fecha }}">{{ jornada.Fecha }}</option>
+        {% endfor %}
+    </select>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Jornada</th>
+                <th>Fecha</th>
+                <th>Equipo Local</th>
+                <th>Resultado</th>
+                <th>Equipo Visitante</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for jornada in jornadas %}
+            <tr>
+                <td>{{ jornada.Jornada }}</td>
+                <td>{{ jornada.Fecha }}</td>
+                <td>{{ jornada.Equipo_Local }}</td>
+                <td>{{ jornada.Resultado }}</td>
+                <td>{{ jornada.Equipo_Visitante }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <h2 class="subtitle">Datos jugadores/equipos<h2>
     <div id="container">
         <h3>Selecciona un jugador:</h3>
         <select id="player_select">
@@ -76,7 +111,7 @@
     </div>
     
 
-    <h2 class="subtitle">Tabla de Lesiones</h2>
+    <h2 class="subtitle">Lesiones actuales</h2>
     <div id="lesionados-container">
         <table>
             <thead>
@@ -98,7 +133,7 @@
         </table>
     </div>
 
-    <h2 class="subtitle">Tabla de Jugadores</h2>
+    <h2 class="subtitle">Puntuaciones Fantasy Jugadores</h2>
     <div class="tabla-jugadores">
         <div class="form__group field">
             <input type="text" id="search_input" class="form__field" placeholder="Buscar jugador...">

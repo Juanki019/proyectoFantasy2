@@ -3,27 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/alineacionesProbables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/resultadosCompeticiones.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <title>DreamXI</title>
     <link rel="icon" href="{{ url_for('static', filename='imagenes/logo_dreamXI.png') }}" type="image/x-icon">
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #fff;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #333;
-        }
-    </style>
+
 </head>
 <body>
 
-    <h2>Resultados de la semana</h2>
+    <h2>Resultados Internacionales</h2>
 
     <select id="select-competition">
         <option value="">Selecciona una competición</option>
@@ -35,33 +23,23 @@
     <table>
         <thead>
             <tr>
+                <th>X</th>
                 <th>Title</th>
                 <th>Local</th>
                 <th>Visitante</th>
                 <th>Competicion</th>
                 <th>Highlights</th>
-                <th>Thumbnail</th>
-                <th>Videos</th>
             </tr>
         </thead>
         <tbody>
             {% for objeto in data_api %}
             <tr>
+                <td><img src="{{ objeto.thumbnail }}" alt="Thumbnail"></td>
                 <td>{{ objeto.title }}</td>
                 <td>{{ objeto.side1.name }}</td>
                 <td>{{ objeto.side2.name }}</td>
                 <td>{{ objeto.competition.name }}</td>
                 <td><a href="{{ objeto.url }}">{{ objeto.url }}</a></td>
-                <td><img src="{{ objeto.thumbnail }}" alt="Thumbnail"></td>
-                <td>{{ objeto.competition.name }}</td>
-                <td>
-                    {% for video in objeto.videos %}
-                    <div>
-                        <h4>{{ video.title }}</h4>
-                        {{ video.embed | safe }}
-                    </div>
-                    {% endfor %}
-                </td>
             </tr>
             {% endfor %}
         </tbody>

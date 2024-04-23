@@ -125,6 +125,26 @@ def cargar_datos_lesionados_desde_bd():
     conexion.close()
     return datos
 
+
+def cargar_datos_jornadas_desde_bd():
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM jornadas")
+    datos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return datos
+
+
+def cargar_datos_jornadas_no_jugadas_desde_bd():
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM jornadas WHERE Resultado NOT LIKE '%-%'")
+    datos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return datos
+
 def get_player_info(player_name):
     conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)

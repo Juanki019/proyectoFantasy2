@@ -12,7 +12,6 @@
     <title>DreamXI</title>
 </head>
 <body>
-    <h1>Información de <span class="fancy">LaLiga</span></h1>
 
     <h2 class="subtitle">CLASIFICACION LALIGA<h2>
     <table>
@@ -46,36 +45,43 @@
 
 
     <h2 class="subtitle">Datos de Jornadas</h2>
-    <label for="filtro">Filtrar por:</label>
+    <label for="filtro">Fechas y resultados por fechas:</label>
     <select id="filtro">
         <option value="todos">Todos</option>
-        <!-- Llenar las opciones del selector con las fechas disponibles -->
+        {% set unique_dates = [] %}
         {% for jornada in jornadas %}
-            <option value="{{ jornada.Fecha }}">{{ jornada.Fecha }}</option>
+            {% if jornada.Fecha not in unique_dates %}
+                <option value="{{ jornada.Fecha }}">{{ jornada.Fecha }}</option>
+                {% set _ = unique_dates.append(jornada.Fecha) %}
+            {% endif %}
         {% endfor %}
     </select>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Jornada</th>
-                <th>Fecha</th>
-                <th>Equipo Local</th>
-                <th>Resultado</th>
-                <th>Equipo Visitante</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for jornada in jornadas %}
-            <tr>
-                <td>{{ jornada.Jornada }}</td>
-                <td>{{ jornada.Fecha }}</td>
-                <td>{{ jornada.Equipo_Local }}</td>
-                <td>{{ jornada.Resultado }}</td>
-                <td>{{ jornada.Equipo_Visitante }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
+    <div id="jugadores-container">
+        <table class="table-jornadas" border="1">
+            <thead>
+                <tr>
+                    <th>Jornada</th>
+                    <th>Fecha</th>
+                    <th>Equipo Local</th>
+                    <th>Resultado</th>
+                    <th>Equipo Visitante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jornada in jornadas %}
+                <tr data-fecha="{{ jornada.Fecha }}">
+                    <td>{{ jornada.Jornada }}</td>
+                    <td>{{ jornada.Fecha }}</td>
+                    <td>{{ jornada.Equipo_Local }}</td>
+                    <td>{{ jornada.Resultado }}</td>
+                    <td>{{ jornada.Equipo_Visitante }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 
 
 
@@ -273,6 +279,8 @@
             }
         });
     });
+
+
 </script>
 </body>
 </html>

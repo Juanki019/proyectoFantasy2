@@ -103,6 +103,8 @@ tr:hover {
 
 }
 
+
+
 h1 {
   font-size: 6vw;
   text-transform: uppercase;
@@ -398,3 +400,20 @@ tr{
       .response-table-v2 .rt td:last-child {
         border-bottom: 1px solid #babcbf; } }
   
+
+
+  .table-jugadores{
+    overflow-y: auto;
+    max-height: 320px; /* Establece una altura máxima */
+  }
+
+  .scrollable-table tbody {
+    display: block;
+    height: 200px; /* Altura máxima de la tabla */
+    overflow-y: auto;
+}
+.scrollable-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}

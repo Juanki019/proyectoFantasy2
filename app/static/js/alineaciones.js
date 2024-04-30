@@ -184,6 +184,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+$(document).ready(function() {
+    $('#eliminarPlantillaBtn').on('click', function() {
+        // Aquí haces la solicitud AJAX
+        $.ajax({
+            url: '/eliminar_alineacion',
+            type: 'DELETE',
+            success: function(response) {
+                // Manejar la respuesta si es necesario
+                console.log('Plantilla eliminada exitosamente');
+                // Recargar la página o hacer algo más después de eliminar la plantilla
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores si es necesario
+                console.error('Error al eliminar la plantilla:', error);
+            }
+        });
+    });
+});
+
+
 function esCentrocampista(posicion) {
     return posicion === "MC";
 }
@@ -220,3 +240,12 @@ function esPortero(posicion) {
         document.getElementById("playerPrice").innerText = playerPrice;
         // Agrega más estadísticas según sea necesario
     }
+
+
+    var tl;
+
+    tl = new TimelineMax ({repeat:-1,repeatDelay:3});
+    
+    
+    tl.set('.player', {autoAlpha: 0, scale:0.3,})
+    .staggerTo(".player", 0.50, {x: 0, y:0, autoAlpha:1, scale:1}, 0.7);

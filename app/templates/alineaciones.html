@@ -12,26 +12,41 @@
 
 
     {% if session %}
-        <p>Nombre de usuario: {{ session.username }}</p>
+        <h2 class="user-name">PLANTILLA DEL USUARIO {{ session.username }}</h2>
 
     {% else %}
         <p>No hay sesión activa.</p>
     {% endif %}
 
+    <h4>Selecciona tu plantilla</h4>
+    <br>
 
-	<select id="alineacion_select">
-        <option value="4-4-2">4-4-2</option>
-        <option value="4-3-3">4-3-3</option>
-        <option value="3-5-2">3-5-2</option>
-	</select>
+    <div class = "select-alineacion">
+        <select id="alineacion_select">
+            <option value="4-4-2">4-4-2</option>
+            <option value="4-3-3">4-3-3</option>
+            <option value="3-5-2">3-5-2</option>
+        </select>
+
+        <select id="player_select">
+            {% for player in players %}
+                <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}" data-antejornada="{{ player.Antepenultima_Jornada}}" data-penjornada="{{ player.Penultima_Jornada}}" data-ultjornada="{{ player.Ultima_Jornada}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
+            {% endfor %}
+        </select>
+
+        <button onclick="agregarJugador()">Añadir</button>
+
+        <div id="total_precio">
+            <h2>Total precio:</h2>
+            <p id="precio_total">0</p>
+        </div>
     
-	<select id="player_select">
-		{% for player in players %}
-            <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}" data-antejornada="{{ player.Antepenultima_Jornada}}" data-penjornada="{{ player.Penultima_Jornada}}" data-ultjornada="{{ player.Ultima_Jornada}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
-		{% endfor %}
-	</select>
+        <form id="form_guardar_plantilla" >
+            <button type="submit">Guardar Plantilla</button>
+        </form>
 
-	<button onclick="agregarJugador()">Añadir</button>
+    </div>
+
 
     <div id="jugadores_seleccionados">
         <h2 class="title">Jugadores seleccionados:</h2>
@@ -61,74 +76,13 @@
     </div>
     
 
-    <div id="total_precio">
-        <h2>Total precio:</h2>
-        <p id="precio_total">0</p>
-    </div>
-
-    <form id="form_guardar_plantilla" >
-        <button type="submit">Guardar Plantilla</button>
-    </form>
-
 
     <h2>TU PLANTILLA </h2>
 
+    <button type="submit">Eliminar Plantilla</button>
+
     <div class="targets">
     {% if plantilla %}
-        {% set delanteros = [] %}
-        {% set defensas = [] %}
-        {% set medios = [] %}
-        {% set porteros = [] %}
-        
-        {% for jugador in plantilla %}
-            {% if jugador.Posicion == 'DL' %}
-                {% set delanteros = delanteros + [jugador] %}
-            {% elif jugador.Posicion == 'DF' %}
-                {% set defensas = defensas + [jugador] %}
-            {% elif jugador.Posicion == 'MC' %}
-                {% set medios = medios + [jugador] %}
-            {% elif jugador.Posicion == 'PO' %}
-                {% set porteros = porteros + [jugador] %}
-            {% endif %}
-        {% endfor %}
-
-        <div id="jugadores_dl" class="contenedor-jugador">
-            <h2>Jugadores Delanteros:</h2>
-            <ul id="lista_jugadores_dl">
-                {% for jugador in delanteros %}
-                    <li>{{ jugador.Nombre }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    
-        <div id="jugadores_df" class="contenedor-jugador">
-            <h2>Jugadores Defensas:</h2>
-            <ul id="lista_jugadores_df">
-                {% for jugador in defensas %}
-                    <li>{{ jugador.Nombre }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    
-        <div id="jugadores_mc" class="contenedor-jugador">
-            <h2>Jugadores Centrocampistas:</h2>
-            <ul id="lista_jugadores_mc">
-                {% for jugador in medios %}
-                    <li>{{ jugador.Nombre }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    
-        <div id="jugadores_po" class="contenedor-jugador">
-            <h2>Jugadores Portero:</h2>
-            <ul id="lista_jugadores_po">
-                {% for jugador in porteros %}
-                    <li>{{ jugador.Nombre }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    
-
         {% for jugador in plantilla %}
             <div class="filterDiv {{ jugador.Posicion }}">
                 <div class="discount card" style="--delay: .4s; margin-top: 20px;">
@@ -162,6 +116,47 @@
         <p>No tienes jugadores en tu plantilla aún.</p>
     {% endif %}
     </div>
+
+
+
+<div id="pitch">
+    <div id="corner-1"></div>
+    <div id="corner-2"></div>
+    <div id="corner-3"></div>
+    <div id="corner-4"></div>
+    <div id="strip-1" class="strip-pitch"></div>
+    <div id="strip-2" class="strip-pitch"></div>
+    <div id="strip-3" class="strip-pitch"></div>
+    <div id="strip-4" class="strip-pitch"></div>
+    <div id="strip-5" class="strip-pitch"></div>
+    <div id="penaltyarea-1">
+        <div></div>
+        <span></span>
+        <p></p>
+    </div>
+    <div id="centrespot">
+        <div></div>
+    </div>
+    <div id="penaltyarea-2">
+        <p></p>
+        <div></div>
+        <span></span>
+    </div>
+    <div id="players">
+        {% set ns = namespace(contador=1) %}
+        {% if plantilla %}
+            {% for jugador in plantilla %}
+                <div id="pl-{{ ns.contador }}" class="player"><p>{{ jugador.Nombre }}</p></div>
+                {% set ns.contador = ns.contador + 1 %}
+            {% endfor %}
+        {% else %}
+            <p>No tienes jugadores en tu plantilla aún.</p>
+        {% endif %}
+    </div>
+    
+    
+    </div>
+
 
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
 </body>

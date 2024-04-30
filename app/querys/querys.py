@@ -145,6 +145,15 @@ def cargar_datos_jornadas_no_jugadas_desde_bd():
     conexion.close()
     return datos
 
+def eliminar_plantilla_usuario(usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM plantilla WHERE id_usuario = %s")
+    datos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return datos
+
 def get_player_info(player_name):
     conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)

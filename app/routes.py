@@ -4,7 +4,7 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_lesionados_desde_bd, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
@@ -39,6 +39,7 @@ async def login():
             if verificar_credenciales(usuario):
                 session['username'] = username
                 flash(f'Inicio de sesión exitoso para {username}')  
+                await send_notification_jornada(chat_id)
                 return redirect(url_for('index'))
             else:
                 flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
@@ -76,7 +77,7 @@ def index():
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('index.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
-
+'''
 @routes_config.route('/resultadosCompeticiones')
 def resultadosCompeticiones():
     datos_jugadores = cargar_datos_desde_bd()
@@ -98,11 +99,18 @@ def resultadosCompeticiones():
     else:
         return "Error al obtener los datos de la API"    
 
+'''
+
+@routes_config.route('/resultadosCompeticiones')
+def resultadosCompeticiones():
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores)
 
 
 
 
-
+'''
 @routes_config.route('/datajugadores')
 def datajugadores():
     datos_jugadores = cargar_datos_desde_bd()
@@ -120,6 +128,15 @@ def datajugadores():
         return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api, jornadas=jornadas)
     else:
         return "Error al obtener los datos de la API"    
+
+'''
+
+@routes_config.route('/datajugadores')
+def datajugadores():
+    datos_jugadores = cargar_datos_desde_bd()
+    lesion_jugadores = cargar_datos_lesionados_desde_bd()
+    jornadas = cargar_datos_jornadas_desde_bd()
+    return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, jornadas=jornadas)
 
 
 
@@ -166,6 +183,13 @@ def player_info():
     selected_player = request.args.get('player')
     player_info = get_player_info(selected_player)
     return jsonify(player_info)
+
+
+@routes_config.route('/eliminar_alineacion')
+def eliminar_alineacion():
+    session['username'] = username
+    eliminar_plantilla_usuario(username)
+    return render_template('index.html')
 
 
 @routes_config.route('/prediccion')
@@ -247,11 +271,15 @@ async def send_notification(chat_id, username):
     await bot.send_message(chat_id=chat_id, text=message)
     return 'Notificación enviada con éxito.'
 
-async def send_notification_jornada(chat_id, jornada):
-    message = f'La jornada va a comenzar, prepara tu equipo antes de que sea demasiado tarde! {jornada}'
+
+async def send_notification_jornada(chat_id):
+    jornadas = cargar_datos_jornadas_no_jugadas_desde_bd()
+    
+    message = "Jornada\tFecha\tEquipo Local\tResultado\tEquipo Visitante\n"
+    for jornada in jornadas:
+        message += f"{jornada['Jornada']}\t{jornada['Fecha']}\t{jornada['Equipo_Local']}\t{jornada['Resultado']}\t{jornada['Equipo_Visitante']}\n"
+
     bot = Bot(bot_token)
     await bot.send_message(chat_id=chat_id, text=message)
+
     return 'Notificación enviada con éxito.'
-
-
-

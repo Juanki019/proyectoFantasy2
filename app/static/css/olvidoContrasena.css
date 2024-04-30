@@ -1,21 +1,23 @@
 html,body { height: 100%; }
 
 body{
+	background: #f6f5f7;
 	display: flex;
-	-ms-flex-align: center;
-	-ms-flex-pack: center;
-	-webkit-box-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
 	justify-content: center;
-	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	align-items: center;
+	flex-direction: column;
+	font-family: 'Montserrat', sans-serif;
+	height: 100vh;
+	margin: -20px 0 50px;
+	background: linear-gradient(to right, white, black);
+	height: 100vh;
+	margin: 0;
+	color: white;
 }
 
 .card{
     width: 400px;
-    background-color: #f5f5f5;
+    background-color: #333;
     margin: 15px;
     padding: 35px;
     border-radius: 10px;
@@ -53,14 +55,14 @@ input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
-	margin: 8px 0;
-	width: 100%;
+	margin: 8px ;
+	width: 90%;
 }
 
 button {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid #ffffff;
+	background-color: #333;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;

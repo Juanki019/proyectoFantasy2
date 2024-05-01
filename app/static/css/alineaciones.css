@@ -299,7 +299,22 @@ h2{
 }
 
 
+#precio_total{
+    font-family: Arial, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-align: center; /* Alineación del texto */
+    margin-top: 20px; /* Margen superior */
+    margin-bottom: 20px; /* Margen inferior */
+    text-transform: uppercase; /* Transforma el texto a mayúsculas */
+    padding: 3rem;
 
+}
+
+li{
+    color: white !important;
+}
 
 :root {
     --green: #4f9c15;
@@ -311,7 +326,7 @@ h2{
     height: 600px;
     width: 500px;
     background: var(--green);
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 10%);
 }
 
 #penaltyarea-1 {position:absolute; bottom:0; left:50%; transform:translate(-50%,0%); border:1px solid #fff; width:200px; height:80px;}

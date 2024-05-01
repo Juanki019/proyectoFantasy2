@@ -114,7 +114,7 @@ function actualizarListaJugadores(containerId, listaJugadores) {
         btnQuitar.addEventListener("click", function() {
             var posicionJugadorEliminado = jugador.posicion;
     
-            var precioJugadorEliminado = listaJugadores[index].precio;
+            var precioJugadorEliminado = jugador.precio;
             
             listaJugadores.splice(index, 1); 
             
@@ -249,3 +249,17 @@ function esPortero(posicion) {
     
     tl.set('.player', {autoAlpha: 0, scale:0.3,})
     .staggerTo(".player", 0.50, {x: 0, y:0, autoAlpha:1, scale:1}, 0.7);
+
+
+    function redirectTo(endpoint) {
+        window.location.href = endpoint;
+    }
+
+    function verificarEliminarPlantilla() {
+        var jugadores = document.getElementsByClassName("filterDiv");
+        if (jugadores.length === 0) {
+            alert("No tienes jugadores en tu plantilla. Agrega jugadores antes de eliminar la plantilla.");
+        } else {
+            window.location.href = "/eliminar_alineacion";
+        }
+    }

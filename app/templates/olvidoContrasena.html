@@ -14,15 +14,34 @@
             <div class="card-text">
                 <form action="{{ url_for('routes.olvidocontrasena') }}" method="post">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Introduce tu correo para seguir con el proceso</label>
-                        <input type="email" name="email" class="form-control form-control-sm" placeholder="Introduce tu correo" requiered>
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Introduce tu correo electrónico" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send password reset email</button>
-                </form>
+                    <div class="form-group">
+                        <label for="password">Introduce tu nueva contraseña</label>
+                        <input type="password" name="password" id="password" class="form-control form-control-sm" placeholder="Introduce tu contraseña">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar contraseña</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control form-control-sm" placeholder="Confirma tu contraseña">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">restablecer contraseña</button>
+                </form>                
                 
             </div>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/datajugadores.js') }}"></script>
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', function(event) {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert("Las contraseñas no coinciden");
+                event.preventDefault(); 
+            }
+        });
+    </script>
 </body>
+
 </html>

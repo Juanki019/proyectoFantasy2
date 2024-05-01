@@ -11,7 +11,34 @@
 <body>
 
     <h1>Alineaciones probables para la próxima jornada</h1>
+
     
+    <div id="jugadores-container">
+        <table class="table-jornadas" border="1">
+            <thead>
+                <tr>
+                    <th>Jornada</th>
+                    <th>Fecha</th>
+                    <th>Equipo Local</th>
+                    <th>Resultado</th>
+                    <th>Equipo Visitante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jornada in jornadas %}
+                <tr data-fecha="{{ jornada.Fecha }}">
+                    <td>{{ jornada.Jornada }}</td>
+                    <td>{{ jornada.Fecha }}</td>
+                    <td>{{ jornada.Equipo_Local }}</td>
+                    <td>{{ jornada.Resultado }}</td>
+                    <td>{{ jornada.Equipo_Visitante }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
     <div class="alineaciones-container" id="alineaciones-container">
         <div class="image-container">
             <h2>Partido 1</h2>

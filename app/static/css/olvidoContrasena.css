@@ -92,3 +92,7 @@ p {
 span {
 	font-size: 12px;
 }
+
+.form-group{
+	padding: 10px;
+}

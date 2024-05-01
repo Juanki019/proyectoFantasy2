@@ -4,7 +4,7 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_por_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
@@ -51,24 +51,22 @@ async def login():
 def olvidocontrasena():
     if request.method == 'POST':
         email = request.form['email']
-        msg = Message('Reset password', sender='your-email@example.com', recipients=[email])
-        msg.body = 'Aquí está el enlace para restablecer tu contraseña: http://tu-sitio.com/reset_password'
-        Mail.send(msg)
-    return render_template('olvidoContrasena.html')
+        password = request.form['password']
+        confirm_password = request.form['confirmPassword']
 
+        if password != confirm_password:
+            flash('Las contraseñas no coinciden', 'error')
+            return render_template('olvidoContrasena.html')
 
-@routes_config.route('/olvidocontrasena/reiniciocontrasena', methods=['GET', 'POST'])
-def reiniciocontrasena():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        usuario = Usuario(username, password, None)
-
+        # Actualizamos la contraseña solo para el usuario con el email proporcionado
+        usuario = Usuario(None, password, email)
         update_contrasena(usuario)
+
         flash('Contraseña actualizada exitosamente', 'success')
-        return redirect(url_for('login'))  # Redirigir a la página de inicio de sesión después de restablecer la contraseña
+        return redirect(url_for('routes.login'))
     else:
-        return render_template('reinicioContrasena.html')
+        return render_template('olvidoContrasena.html')
+
 
 
 @routes_config.route('/index')
@@ -167,7 +165,8 @@ def alineaciones():
 def alineacionesProbables():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
-    return render_template('alineacionesProbables.html', players=datos_jugadores, lesiones=lesion_jugadores)
+    jornadas = cargar_datos_jornadas_no_jugadas_desde_bd()
+    return render_template('alineacionesProbables.html', players=datos_jugadores, lesiones=lesion_jugadores, jornadas=jornadas)
 
 
 
@@ -185,11 +184,17 @@ def player_info():
     return jsonify(player_info)
 
 
+
 @routes_config.route('/eliminar_alineacion')
 def eliminar_alineacion():
-    session['username'] = username
-    eliminar_plantilla_usuario(username)
-    return render_template('index.html')
+    if 'username' in session:
+        username = session['username']
+        if eliminar_plantilla_por_usuario(username):
+            return redirect(url_for('alineaciones'))  
+        else:
+            return "El usuario no existe"  
+    else:
+        return "No se ha iniciado sesión"  
 
 
 @routes_config.route('/prediccion')

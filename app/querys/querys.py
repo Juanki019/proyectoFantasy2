@@ -86,11 +86,12 @@ def guardar_credenciales(usuario):
 def update_contrasena(usuario):
     conexion = conectar_bd()
     cursor = conexion.cursor()
-    query = "UPDATE usuarios SET password = %s WHERE user = %s"
-    cursor.execute(query, (usuario.password, usuario.username))
+    query = "UPDATE usuarios SET password = %s WHERE email = %s"
+    cursor.execute(query, (usuario.password, usuario.email))
     conexion.commit()
     cursor.close()
     conexion.close()
+
 
 
 ################################
@@ -145,14 +146,27 @@ def cargar_datos_jornadas_no_jugadas_desde_bd():
     conexion.close()
     return datos
 
-def eliminar_plantilla_usuario(usuario):
+def eliminar_plantilla_por_usuario(username):
+    # Realizar la consulta para obtener el ID de usuario
+    query_id_usuario = "SELECT id_usuario FROM usuarios WHERE user = %s"
     conexion = conectar_bd()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM plantilla WHERE id_usuario = %s")
-    datos = cursor.fetchall()
-    cursor.close()
-    conexion.close()
-    return datos
+    cursor = conexion.cursor()
+    cursor.execute(query_id_usuario, (username,))
+    row = cursor.fetchone()
+    if row:
+        user_id = row[0]  # Obtener el ID de usuario de la fila
+        
+        # Eliminar la plantilla asociada al usuario
+        cursor.execute("DELETE FROM plantilla WHERE id_usuario = %s", (user_id,))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True  # Indicar que la eliminación fue exitosa
+    else:
+        cursor.close()
+        conexion.close()
+        return False  # Indicar que no se encontró el usuario
+
 
 def get_player_info(player_name):
     conexion = conectar_bd()

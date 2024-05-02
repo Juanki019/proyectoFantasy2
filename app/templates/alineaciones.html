@@ -100,13 +100,7 @@
                     <span></span>
                     <br>
                     
-                    <div class="discount-wrapper">
-                        <div class="discount-info">
-                            <div class="filedown">
-                                <a href="#"><button>Ver todos los datos</button></a>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         {% endfor %}
@@ -148,11 +142,6 @@
                     <p>{{ jugador.Nombre }}</p>
                 </div>
                 {% set ns.contador = ns.contador + 1 %}
-                {% if jugador.Posicion == 'Portero' %}
-                    {% set ns.contador = 12 %}
-                {% elif jugador.Posicion == 'Delantero' %}
-                    {% set ns.contador = 1 %}
-                {% endif %}
             {% endfor %}
         {% else %}
             <p>No tienes jugadores en tu plantilla aún.</p>

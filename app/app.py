@@ -3,15 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from flask_mail import Mail, Message
 from routes import routes_config
 import sys
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587  
-app.config['MAIL_USE_TLS'] = True 
-app.config['MAIL_USERNAME'] = 'dreamxiuem@gmail.com'  
-app.config['MAIL_PASSWORD'] = 'dreamxiuem24$'  
 
 mail = Mail(app)
 
@@ -20,7 +16,8 @@ app.secret_key = 'tu_clave_secreta'
 app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():
-    subprocess.Popen([sys.executable, 'C://UEM - 3//PROYECTO2//proyectoFantasy2//scrappers//lesionadosScrap.py'])
+    script_path = os.path.join(os.path.dirname(__file__), 'app', 'scrappers', 'scraperJornadas.py')
+    subprocess.Popen([sys.executable, script_path])
     print("Subproceso iniciado correctamente.")
     
 

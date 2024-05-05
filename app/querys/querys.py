@@ -25,7 +25,7 @@ def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="fundacion",
         database="dreamxi"
     )
 
@@ -39,9 +39,28 @@ def cargar_datos_desde_bd():
     conexion.close()
     return datos
 
+def cargar_datos_usuarios():
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios")
+    datos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return datos
+
 ################################
 # QUERYS PARA LOGIN
 ################################    
+
+def is_admin_profile(usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "SELECT profile FROM usuarios WHERE user = %s"
+    cursor.execute(query, (usuario,))
+    profile = cursor.fetchone()[0]  
+    cursor.close()
+    conexion.close()
+    return profile
 
 def verificar_existencia_usuario(usuario):
     conexion = conectar_bd()

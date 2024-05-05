@@ -4,7 +4,7 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_por_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from querys.querys import *
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
@@ -23,7 +23,7 @@ async def login():
             password = request.form['password']
             email = request.form['email']
             
-            nuevo_usuario = Usuario(username, password, email)
+            nuevo_usuario = Usuario(username, password, email, 1)
             
             if guardar_credenciales(nuevo_usuario):
                 flash(f'Registro exitoso para {username}', 'success')
@@ -33,8 +33,9 @@ async def login():
         elif action == 'login':   
             username = request.form['username']
             password = request.form['password']
+            profile = is_admin_profile(username)
             
-            usuario = Usuario(username, password, None)
+            usuario = Usuario(username, password, None, profile)
             
             if verificar_credenciales(usuario):
                 session['username'] = username
@@ -74,6 +75,11 @@ def index():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('index.html', players=datos_jugadores, lesiones=lesion_jugadores)
+
+@routes_config.route('/adminDashboard')
+def adminDashboard():
+    datos_usuarios = cargar_datos_usuarios()
+    return render_template('adminDashboard.html', usuarios=datos_usuarios)
 
 '''
 @routes_config.route('/resultadosCompeticiones')

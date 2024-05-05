@@ -70,19 +70,19 @@ function agregarJugador() {
 // Después de agregar un jugador al array específico, llamar a actualizarListaJugadores con el array correspondiente
 if (posicionJugador === "MC") {
     cmCount++;
-    jugadoresMC.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    jugadoresMC.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador, precio: precioJugador });
     actualizarListaJugadores("lista_jugadores_mc", jugadoresMC);
 } else if (posicionJugador === "DF") {
     dcCount++;
-    jugadoresDF.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    jugadoresDF.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador, precio: precioJugador });
     actualizarListaJugadores("lista_jugadores_df", jugadoresDF);
 } else if (posicionJugador === "PO") {
     poCount++;
-    jugadoresPO.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    jugadoresPO.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador, precio: precioJugador });
     actualizarListaJugadores("lista_jugadores_po", jugadoresPO);
 } else if (posicionJugador === "DL") {
     dlCount++;
-    jugadoresDL.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador });
+    jugadoresDL.push({ nombre: jugadorSeleccionado, posicion: posicionJugador, id: idJugador, precio: precioJugador });
     actualizarListaJugadores("lista_jugadores_dl", jugadoresDL);
 }
 
@@ -98,39 +98,38 @@ if (posicionJugador === "MC") {
     actualizarListaJugadores("lista_jugadores");
     
 }
-
 function actualizarListaJugadores(containerId, listaJugadores) {
     var listaElement = document.getElementById(containerId);
-    
+
     listaElement.innerHTML = "";
-    
+
     listaJugadores.forEach(function(jugador, index) {
         var listItem = document.createElement("li");
-        listItem.textContent = jugador.nombre + " - " + jugador.posicion + " - "; 
-        
+        listItem.textContent = jugador.nombre + " - " + jugador.posicion + " - ";
+
         var btnQuitar = document.createElement("button");
         btnQuitar.textContent = "Quitar";
-        
+
         btnQuitar.addEventListener("click", function() {
             var posicionJugadorEliminado = jugador.posicion;
-    
-            var precioJugadorEliminado = jugador.precio;
-            
-            listaJugadores.splice(index, 1); 
-            
-            actualizarContadores(posicionJugadorEliminado);
-            actualizarListaJugadores(containerId, listaJugadores); 
-            
+            var precioJugadorEliminado = parseFloat(jugador.precio); // Convertir a número
+
+            // Restar el precio del jugador eliminado del precio total
             precioTotal -= precioJugadorEliminado;
-            
-            document.getElementById("precio_total").textContent = precioTotal;
+            document.getElementById("precio_total").textContent = precioTotal.toFixed(2);
+
+            listaJugadores.splice(index, 1); // Eliminar el jugador de la lista
+
+            actualizarContadores(posicionJugadorEliminado);
+            actualizarListaJugadores(containerId, listaJugadores);
         });
-        
+
         listItem.appendChild(btnQuitar);
-        
+
         listaElement.appendChild(listItem);
     });
 }
+
 
 
 function actualizarContadores(posicion) {

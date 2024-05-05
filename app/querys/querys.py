@@ -212,6 +212,46 @@ def obtener_id_usuario_logueado():
             return resultado[0]  
     return None
 
+def obtener_formacion_plantilla_usuario(user):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+
+        # Obtener el ID del usuario
+        query_id_usuario = "SELECT id_usuario FROM usuarios WHERE user = %s"
+        cursor.execute(query_id_usuario, (user,))
+        id_usuario = cursor.fetchone()
+
+        if id_usuario:
+            id_usuario = id_usuario[0]  # Obtener el valor del ID del usuario
+
+            # Obtener la formación de la plantilla del usuario utilizando su ID
+            query_plantilla = """
+                SELECT tipo_alineacion
+                FROM plantilla
+                WHERE id_usuario = %s
+                LIMIT 1
+            """
+            cursor.execute(query_plantilla, (id_usuario,))
+            plantilla = cursor.fetchone()
+
+            if plantilla:
+                print("El usuario tiene una plantilla asociada en la base de datos.")
+                formacion = plantilla[0]
+            else:
+                print("El usuario no tiene una plantilla asociada en la base de datos.")
+                formacion = None
+
+            cursor.close()
+            conexion.close()
+
+            return formacion
+        else:
+            print("No se encontró el usuario en la base de datos.")
+            return None
+    except Exception as e:
+        print(f"Error al obtener la plantilla del usuario: {e}")
+        return None
 
 def obtener_plantilla_usuario(user):
     try:

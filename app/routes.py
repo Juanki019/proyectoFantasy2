@@ -4,7 +4,7 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_por_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
+from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_por_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_formacion_plantilla_usuario, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
@@ -137,7 +137,6 @@ def datajugadores():
     return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, jornadas=jornadas)
 
 
-
 @routes_config.route('/alineaciones')
 def alineaciones():
     if 'username' in session:  
@@ -146,7 +145,8 @@ def alineaciones():
         plantilla_usuario = obtener_plantilla_usuario(usuario_actual)
         datos_jugadores = cargar_datos_desde_bd()
         lesion_jugadores = cargar_datos_lesionados_desde_bd()
-        
+        formacion_plantilla = obtener_formacion_plantilla_usuario(usuario_actual)  # Asegúrate de pasar el usuario_actual como argumento
+
         plantilla_con_info = []
         for jugador in plantilla_usuario:
             for datos_jugador in datos_jugadores:
@@ -154,11 +154,11 @@ def alineaciones():
                     plantilla_con_info.append(datos_jugador)
                     break  # Una vez que se encuentra el jugador, se sale del bucle interno
 
-        return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_con_info)
+        return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_con_info, formacion=formacion_plantilla)
     
     else:
         flash('Debes iniciar sesión para acceder a esta página', 'error')
-        return redirect(url_for('login'))  
+        return redirect(url_for('login'))
 
 
 @routes_config.route('/alineacionesProbables')
@@ -190,7 +190,7 @@ def eliminar_alineacion():
     if 'username' in session:
         username = session['username']
         if eliminar_plantilla_por_usuario(username):
-            return redirect(url_for('alineaciones'))  
+            return redirect(url_for('routes.alineaciones'))  
         else:
             return "El usuario no existe"  
     else:

@@ -134,9 +134,17 @@
         <div></div>
         <span></span>
     </div>
+
     <div id="players">
         {% set ns = namespace(contador=1) %}
         {% if plantilla %}
+            {% if formacion == "4-3-3" %}
+                {% set ns.contador = 1 %}
+            {% elif formacion == "4-4-2" %}
+                {% set ns.contador = 12 %}
+            {% elif formacion == "3-5-2" %}
+                {% set ns.contador = 23 %}
+            {% endif %}
             {% for jugador in plantilla %}
                 <div id="pl-{{ ns.contador }}" class="player">
                     <p>{{ jugador.Nombre }}</p>
@@ -147,6 +155,8 @@
             <p>No tienes jugadores en tu plantilla aún.</p>
         {% endif %}
     </div>
+    
+
     
     
     

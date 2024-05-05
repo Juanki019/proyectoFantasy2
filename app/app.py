@@ -1,6 +1,7 @@
 import subprocess
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Blueprint
 from flask_mail import Mail, Message
+from querys.querys import is_admin_profile
 from routes import routes_config
 import sys
 import os
@@ -24,7 +25,10 @@ def iniciar_subprocesos():
 @app.route('/')
 def index():
     if 'username' in session:
-        return redirect(url_for('routes.index'))
+        if is_admin_profile(session['username']) != 777:
+            return redirect(url_for('routes.index'))
+        else:
+            return redirect(url_for('routes.adminDashboard'))
     else:
         return redirect(url_for('routes.login'))
 

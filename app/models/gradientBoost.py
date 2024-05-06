@@ -1,179 +1,104 @@
-import pickle
-import tkinter as tk
-from tkinter import ttk, filedialog
-import joblib
-from sklearn.linear_model import LinearRegression
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error
-from sklearn.impute import SimpleImputer
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import learning_curve
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.neural_network import MLPRegressor
+from sklearn.model_selection import GridSearchCV, cross_val_predict
+from sklearn.impute import SimpleImputer
+import mysql.connector
+import pickle
 import os
-from datetime import datetime
-from tkinter import messagebox
-from PIL import Image, ImageTk
-import subprocess
 
-class GradientBoost():
+class GradientBoostModel():
     def __init__(self):
-        self.model = GradientBoostModel()
+        self.db_connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="vicente1234",
+            database="dreamxi"
+        )
+        self.cursor = self.db_connection.cursor(dictionary=True)
+        self.model = None
+        self.model_directory = 'data/'
+        if not os.path.exists(self.model_directory):
+            os.makedirs(self.model_directory)
+        self.model_path = os.path.join(self.model_directory, 'gradient_boost_model.pkl')
+        self.gradient_boost_params = {
+            'loss': 'squared_error',
+            'learning_rate': 0.1,
+            'n_estimators': 100,
+            'max_depth': 3,
+            'min_samples_split': 2,
+            'min_samples_leaf': 1,
+            'max_features': None,
+            'random_state': None
+        }
 
-    def predict(self, data):
-        return self.model.predict(data)
-    
-    self.gradient_boost_params = {
-        'loss': ['squared_error'],   # Función de pérdida a optimizar (por ejemplo, 'ls' para mínimos cuadrados)
-        'learning_rate': [0.01, 0.1, 0.2],  # Tasa de aprendizaje
-        'n_estimators': [100, 200, 300],  # Número de estimadores
-        'max_depth': [3, 5, 7],  # Profundidad máxima de cada árbol
-        'min_samples_split': [2],  # Número mínimo de muestras requeridas para dividir un nodo interno
-        'min_samples_leaf': [1],  # Número mínimo de muestras requeridas para estar en un nodo hoja
-        'max_features': [None],  # Número de características a considerar al buscar la mejor división
-        'random_state': [None]  # Semilla para controlar la aleatoriedad
-    }
+    def load_all_players_data(self):
+        query = "SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores"
+        self.cursor.execute(query)
+        result = self.cursor.fetchall()
+        return result
 
-    def train_model_laliga_gradient(self):
-        df = pd.read_csv(self.selected_data_source.get(), usecols=lambda x: x not in ['NOMBRE', 'EQUIPO', 'target'])
-        selected_target = self.selected_target_variable.get()
+    def train_model(self, target_column):
+        players_data = self.load_all_players_data()
+        df = pd.DataFrame(players_data)
 
-        if selected_target not in df.columns:
-            print(f"La columna '{selected_target}' no se encuentra en el DataFrame.")
-            return
+        if target_column not in df.columns:
+            return "Columna objetivo no encontrada."
 
-        X = df.drop(selected_target, axis=1)
-        y = df[selected_target]
-
-        imp = SimpleImputer(strategy='mean')
-        X = imp.fit_transform(X)
-
-        algorithm = self.selected_algorithm.get()
-        if algorithm == 'GradientBoost':
-            ModelClass = GradientBoostingRegressor()
-
-            grid_search = GridSearchCV(estimator=ModelClass, param_grid=self.gradient_boost_params, cv=5, scoring='neg_mean_squared_error',
-                                       n_jobs=-1)
-
-            grid_search.fit(X, y)
-            self.model = grid_search.best_estimator_
-            # Crear una instancia del modelo de Gradient Boosting con los parámetros configurados
-            #self.model = ModelClass(**self.gradient_boost_params).fit(X, y)
-
-            # Usar validación cruzada en lugar de train_test_split
-            cv_results = cross_validate(self.model, X, y, cv=10,
-                                        scoring=('neg_mean_squared_error', 'neg_mean_absolute_error'))
-
-            # Obtener las métricas promedio de la validación cruzada
-            mse = -np.mean(cv_results['test_neg_mean_squared_error'])
-            rmse = np.sqrt(mse)
-            mae = -np.mean(cv_results['test_neg_mean_absolute_error'])
-            self.result_text.set(f"MSE: {mse}, RMSE: {rmse}, MAE: {mae}")
-
-            # Entrenar el modelo con todos los datos
-            #self.model = ModelClass.fit(X, y)
-
-            current_datetime = datetime.now()
-            formatted_date = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-            training_date = formatted_date
-
-            algorithm_used = self.selected_algorithm.get()
-            num_samples = len(X)
-
-            # Actualizar etiquetas con la información calculada
-            self.training_date_label["text"] = f"Fecha de realización: {training_date}"
-            self.algorithm_used_label["text"] = f"Algoritmo utilizado: {algorithm_used}"
-            self.num_samples_label["text"] = f"Nº de ejemplares empleados: {num_samples}"
-
-            save_path = self.save_model_path.get()
-            if save_path:
-                model_filename = "modelado_laliga.pkl"
-                model_path = os.path.join(save_path, model_filename)
-
-                # Guardar el modelo
-                with open(model_path, 'wb') as file:
-                    pickle.dump(self.model, file)
-                print(f"Modelo guardado en: {model_path}")
-            else:
-                print("La ruta de guardado no está seleccionada.")
-
-        else:
-            print(f"Algoritmo desconocido: {algorithm}")
-            messagebox.showwarning("Advertencia", "Por favor, selecciona un algoritmo antes de entrenar el modelo.")
-
-    def train_model_misterfantasy_gradient(self):
-
-        df = pd.read_csv(self.selected_data_source.get(),
-                         usecols=lambda x: x not in ['Nombre', 'Posicion', 'Subida_Bajada'])
-        selected_target = self.selected_target_variable.get()
-
-        if selected_target not in df.columns:
-            print(f"La columna '{selected_target}' no se encuentra en el DataFrame.")
-            return
-
-        X = df.drop(selected_target, axis=1)
-        y = df[selected_target]
+        X = df.drop(columns=[target_column])
+        y = df[target_column]
 
         imp = SimpleImputer(strategy='mean')
         X = imp.fit_transform(X)
 
-        algorithm = self.selected_algorithm.get()
-        if algorithm == 'GradientBoost':
-            ModelClass = GradientBoostingRegressor()
+        # Configuración de parámetros
+        parameters = {
+            'loss': 'squared_error',
+            'learning_rate': 0.1,
+            'n_estimators': 100,
+            'max_depth': 3,
+            'min_samples_split': 2,
+            'min_samples_leaf': 1
+        }
+        model = GradientBoostingRegressor(**parameters)
+        self.model = GridSearchCV(model, {'n_estimators': [100, 200, 300]}, cv=5)
+        self.model.fit(X, y)
+        self.save_model()
 
-            grid_search = GridSearchCV(estimator=ModelClass, param_grid=self.gradient_boost_params, cv=5,
-                                       scoring='neg_mean_squared_error',
-                                       n_jobs=-1)
+    def predict(self, player_name, target_column):
+        if self.model is None:
+            self.model = self.load_model()
+        if self.model is None:
+            return "Modelo no entrenado."
 
-            grid_search.fit(X, y)
-            self.model = grid_search.best_estimator_
-            # Crear una instancia del modelo de Gradient Boosting con los parámetros configurados
-            # self.model = ModelClass(**self.gradient_boost_params).fit(X, y)
+        query = f"SELECT puntos, precio, media, partidos, minutos, goles, asistencias FROM jugadores WHERE nombre = %s"
+        self.cursor.execute(query, (player_name,))
+        player_data = self.cursor.fetchone()
 
-            # Usar validación cruzada en lugar de train_test_split
-            cv_results = cross_validate(self.model, X, y, cv=10,
-                                        scoring=('neg_mean_squared_error', 'neg_mean_absolute_error'))
+        if not player_data:
+            return "Datos del jugador no disponibles."
 
-            # Obtener las métricas promedio de la validación cruzada
-            mse = -np.mean(cv_results['test_neg_mean_squared_error'])
-            rmse = np.sqrt(mse)
-            mae = -np.mean(cv_results['test_neg_mean_absolute_error'])
-            self.result_text.set(f"MSE: {mse}, RMSE: {rmse}, MAE: {mae}")
+        # Preparar los datos para la predicción, excluyendo el target
+        player_df = pd.DataFrame([player_data])
+        X = player_df.drop(columns=[target_column])
 
-            # Entrenar el modelo con todos los datos
-            #self.model = ModelClass().fit(X, y)
+        # Hacer la predicción
+        predicted_value = self.model.predict(X)
+        return predicted_value
+        
+    def save_model(self):
+        with open(self.model_path, 'wb') as file:
+            pickle.dump(self.model, file)
+        print("Modelo guardado en:", os.path.abspath(self.model_path))
 
-            current_datetime = datetime.now()
-            formatted_date = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-            training_date = formatted_date
+    def load_model(self):
+        try:
+            with open(self.model_path, 'rb') as file:
+                self.model = pickle.load(file)
+            print("Modelo cargado desde:", self.model_path)
+        except FileNotFoundError:
+            print("Archivo no encontrado:", self.model_path)
+            self.model = None
 
-            algorithm_used = self.selected_algorithm.get()
-            num_samples = len(X)
-
-            # Actualizar etiquetas con la información calculada
-            self.training_date_label["text"] = f"Fecha de realización: {training_date}"
-            self.algorithm_used_label["text"] = f"Algoritmo utilizado: {algorithm_used}"
-            self.num_samples_label["text"] = f"Nº de ejemplares empleados: {num_samples}"
-
-            save_path = self.save_model_path.get()
-            if save_path:
-                model_filename = "modelado_laliga.pkl"
-                model_path = os.path.join(save_path, model_filename)
-
-                # Guardar el modelo
-                with open(model_path, 'wb') as file:
-                    pickle.dump(self.model, file)
-                print(f"Modelo guardado en: {model_path}")
-            else:
-                print("La ruta de guardado no está seleccionada.")
-
-        else:
-            print(f"Algoritmo desconocido: {algorithm}")
-            messagebox.showwarning("Advertencia", "Por favor, selecciona un algoritmo antes de entrenar el modelo.")
+    def close_db_connection(self):
+        self.cursor.close()
+        self.db_connection.close()

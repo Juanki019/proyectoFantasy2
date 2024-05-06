@@ -9,6 +9,7 @@ from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
 from datetime import datetime, timedelta
+from models.gradientBoost import GradientBoostModel
 
 routes_config = Blueprint('routes', __name__)
 
@@ -302,3 +303,28 @@ async def send_notification_jornada(chat_id):
     await bot.send_message(chat_id=chat_id, text=message)
 
     return 'Notificación enviada con éxito.'
+
+@routes_config.route('/train', methods=['POST'])
+def train():
+    data = request.get_json()
+    target_column = data.get('target_column', 'default_column_if_not_specified')
+    model = GradientBoostModel()
+    response = model.train_model(target_column)
+    if response == "Columna objetivo no encontrada.":
+        return jsonify({'error': 'Columna objetivo no encontrada.'}), 400
+    else:
+        return jsonify({'response': 'Modelo entrenado correctamente.'})
+
+@routes_config.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    player_name = data['player_name']
+    target_column = data.get('target_column')
+    model = GradientBoostModel()
+    prediction = model.predict(player_name, target_column)
+    if prediction == "Jugador no encontrado":
+        return jsonify({'error': 'Jugador no encontrado'}), 404
+    elif prediction == "Modelo no entrenado.":
+        return jsonify({'error': 'Modelo no entrenado.'}), 503
+    else:
+        return jsonify({'player_name': player_name, 'prediction': prediction})

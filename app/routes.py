@@ -4,7 +4,6 @@ from flask import session
 import http.client
 import json
 from models.LinearRegressionModel import LinearRegressionModel
-from querys.querys import cargar_datos_desde_bd, cargar_datos_jornadas_desde_bd, cargar_datos_jornadas_no_jugadas_desde_bd, cargar_datos_lesionados_desde_bd, eliminar_plantilla_por_usuario, get_player_info, get_team_info, guardar_credenciales, guardar_plantilla_bd, obtener_formacion_plantilla_usuario, obtener_plantilla_usuario, verificar_credenciales, update_contrasena, obtener_id_usuario_logueado
 from querys.querys import *
 from classes.Usuario import Usuario
 from telegram import Bot

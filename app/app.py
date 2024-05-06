@@ -32,6 +32,7 @@ def index():
     else:
         return redirect(url_for('routes.login'))
 
+
 if __name__ == '__main__':
     iniciar_subprocesos()
     print("Subproceso iniciado correctamente.")

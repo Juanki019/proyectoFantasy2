@@ -104,3 +104,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+document.getElementById('filtro').addEventListener('change', function() {
+    var selectedFecha = this.value;
+    var filas = document.querySelectorAll('.table-jornadas tbody tr');
+
+    // Itera sobre las filas de la tabla
+    filas.forEach(function(fila) {
+        var fechaFila = fila.getAttribute('data-fecha');
+
+        // Si el valor de la fecha de la fila coincide con la fecha seleccionada o se seleccionó 'Todos', muestra la fila; de lo contrario, ocúltala
+        if (selectedFecha === 'todos' || fechaFila === selectedFecha) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+});

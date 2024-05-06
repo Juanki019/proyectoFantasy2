@@ -111,6 +111,24 @@ def update_contrasena(usuario):
     cursor.close()
     conexion.close()
 
+def eliminar_usuario(id_usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "DELETE FROM usuarios WHERE id_usuario = %s"
+    cursor.execute(query, (id_usuario,))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+def contar_jugadores_plantilla(id_usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "SELECT COUNT(*) FROM plantillas WHERE id_usuario = %s"
+    cursor.execute(query, (id_usuario,))
+    cantidad = cursor.fetchone()[0]  # Obtiene el resultado del conteo
+    cursor.close()
+    conexion.close()
+    return cantidad
 
 
 ################################

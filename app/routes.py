@@ -61,7 +61,7 @@ def olvidocontrasena():
             return render_template('olvidoContrasena.html')
 
         # Actualizamos la contraseña solo para el usuario con el email proporcionado
-        usuario = Usuario(None, password, email)
+        usuario = Usuario(None, password, email, 1)
         update_contrasena(usuario)
 
         flash('Contraseña actualizada exitosamente', 'success')
@@ -202,6 +202,14 @@ def eliminar_alineacion():
             return "El usuario no existe"  
     else:
         return "No se ha iniciado sesión"  
+
+
+@routes_config.route('/eliminar_usuario', methods=['POST', 'GET'])
+def eliminar_usuario_ruta():
+    id_usuario = request.form.get('id_usuario')
+    eliminar_usuario(id_usuario)
+    return redirect(url_for('routes.login'))
+
 
 
 @routes_config.route('/prediccion')

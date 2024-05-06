@@ -219,6 +219,10 @@ canvas {
     margin-bottom: 20px; 
 }
 
+label{
+  color: #ccc;
+}
+
 #canvas-container {
     display: flex;
     flex-direction: row;

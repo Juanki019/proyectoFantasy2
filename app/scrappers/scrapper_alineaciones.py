@@ -47,10 +47,11 @@ for i, element in enumerate(elements, 1):
         element = elements[i - 1]
         driver.execute_script("arguments[0].click();", element)
         # Esperar un momento para que la página se actualice después del clic
-        time.sleep(5)  # Espera 5 segundos para que la página se actualice
+        time.sleep(6)  # Espera 5 segundos para que la página se actualice
         # Esperar a que el elemento de la alineación esté completamente visible
         section_element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'alineaciones-probables-container')))
-        screenshot_path = f'C:\\UEM - 3\\PROYECTO2\\proyectoFantasy2\\data\\ALINEACIONES\\partido{i}.png'
+        screenshot_path = f'C:\\UEM - 3\\PROYECTO2\\proyectoFantasy2\\app\\static\\imagenes\\alineacionesp\\partido{i}.png'
+
         section_element.screenshot(screenshot_path)
         driver.back()
 

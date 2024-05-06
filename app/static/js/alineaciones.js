@@ -263,10 +263,10 @@ function agregarJugador() {
             alert("Ya se han seleccionado 4 centrocampistas.");
             return;
         } else if (dcCount >= 4 && esDefensaCentral(posicionJugador)) {
-            alert("Ya se han seleccionado 2 defensas centrales.");
+            alert("Ya se han seleccionado 4 defensas.");
             return;
         } else if (dlCount >= 2 && esDelanteroLateral(posicionJugador)) {
-            alert("Ya se han seleccionado 4 defensas laterales.");
+            alert("Ya se han seleccionado 2 delanteros.");
             return;
         }else if(poCount >= 1 && esPortero(posicionJugador)){
             alert("Ya se han seleccionado 1 portero.");
@@ -275,10 +275,10 @@ function agregarJugador() {
 
     } else if (alineacion === "4-3-3") {
         if (cmCount >= 3 && esCentrocampista(posicionJugador)) {
-            alert("Ya se han seleccionado 4 centrocampistas.");
+            alert("Ya se han seleccionado 3 centrocampistas.");
             return;
         } else if (dcCount >= 4 && esDefensaCentral(posicionJugador)) {
-            alert("Ya se han seleccionado 2 defensas centrales.");
+            alert("Ya se han seleccionado 4 defensas.");
             return;
         } else if (dlCount >= 3 && esDelanteroLateral(posicionJugador)) {
             alert("Ya se han seleccionado 3 delanteros.");
@@ -289,13 +289,13 @@ function agregarJugador() {
         }
     } else if (alineacion === "3-5-2") {
         if (cmCount >= 5 && esCentrocampista(posicionJugador)) {
-            alert("Ya se han seleccionado 4 centrocampistas.");
+            alert("Ya se han seleccionado 5 centrocampistas.");
             return;
         } else if (dcCount >= 3 && esDefensaCentral(posicionJugador)) {
-            alert("Ya se han seleccionado 2 defensas centrales.");
+            alert("Ya se han seleccionado 3 defensas.");
             return;
         } else if (dlCount >= 2 && esDelanteroLateral(posicionJugador)) {
-            alert("Ya se han seleccionado 4 delantero.");
+            alert("Ya se han seleccionado 2 delanteros.");
             return;
         }else if(poCount >= 1 && esPortero(posicionJugador)){
             alert("Ya se han seleccionado 1 portero.");

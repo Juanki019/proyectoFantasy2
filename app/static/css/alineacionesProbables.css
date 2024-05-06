@@ -1,3 +1,4 @@
+/* Estilos para el cuerpo de la página */
 body {
     background: #333;
     color: #ffffff;
@@ -5,17 +6,23 @@ body {
     font-size: 20px;
 }
 
+/* Estilos para el encabezado */
 h1 {
     text-align: center;
+    font-family: Arial Black; 
+    font-weight: bold; 
+    font-size: 5rem; 
+    color: #fff; 
+    text-shadow: 0 1px 0 #ddd, 0 2px 0 #ccc, 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 0 #acacac, 0 6px 1px rgba(0,0,0,0.1), 0 0 5px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.2), 0 20px 20px rgba(0,0,0,0.15);
+    padding: 3rem;
 }
 
-
-
+/* Estilos para el contenedor de imágenes */
 .image-container {
     border: 1px solid #ccc; 
-    margin-bottom: 20px; 
-    padding: 20px; 
-    max-width: 800px; 
+    margin: 3rem; /* Utiliza solo una declaración de margin */
+    padding: 18px; 
+    max-width: 80%; 
     display: block; 
     overflow: hidden; 
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
@@ -32,3 +39,34 @@ h1 {
     margin: 0 auto; 
 }
 
+/* Estilos para el contenedor de jugadores */
+#jugadores-container {
+    color: white; /* Cambiar el color del texto a blanco */
+    padding: 20px; /* Añade espaciado alrededor del contenido */
+}
+
+/* Estilos para la tabla de jornadas */
+.table-jornadas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-jornadas th,
+.table-jornadas td {
+    padding: 10px; /* Añade espaciado dentro de las celdas */
+    border: 1px solid white; /* Añade bordes blancos a las celdas */
+    font-size: 18px; /* Cambia el tamaño de la fuente */
+    text-align: center; /* Centra el texto dentro de las celdas */
+}
+
+.table-jornadas th {
+    background-color: gray; /* Cambia el color de fondo de las celdas de encabezado */
+}
+
+.table-jornadas tr:nth-child(even) {
+    background-color: darkgray; /* Cambia el color de fondo de las filas pares */
+}
+
+.table-jornadas tr:hover {
+    background-color: gray; /* Cambia el color de fondo al pasar el cursor sobre las filas */
+}

@@ -42,20 +42,21 @@
         </tr>
         {% for usuario in usuarios %}
         <tr>
-        <td>{{ usuario['id_usuario'] }}</td>
-        <td>{{ usuario['user'] }}</td>
-        <td>{{ usuario['password'] }}</td>
-        <td>{{ usuario['email'] }}</td>
-        <td>{{ usuario['profile'] }}</td>
-        <td>
-            <a href="/eliminar_usuario?id={{ usuario['id_usuario'] }}"><button>Eliminar</button></a>
-            <a href="/modificar_usuario?id={{ usuario['id_usuario'] }}"><button>Modificar</button></a>
-        </td>
+            <td>{{ usuario['id_usuario'] }}</td>
+            <td><span>{{ usuario['user'] }}</span><input type="text" style="display:none;"></td>
+            <td><span>{{ usuario['password'] }}</span><input type="password" style="display:none;"></td>
+            <td><span>{{ usuario['email'] }}</span><input type="email" style="display:none;"></td>
+            <td><span>{{ usuario['profile'] }}</span><input type="text" style="display:none;"></td>
+            <td>
+                <button onclick="modificarUsuario(this)">Modificar</button>
+                <a href="/eliminar_usuario?id={{ usuario['id_usuario'] }}"><button>Eliminar</button></a>
+            </td> 
         </tr>
         {% endfor %}
     </table>
-    
+
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/adminDashboard.js') }}"></script>
 </body>
 
 </html>

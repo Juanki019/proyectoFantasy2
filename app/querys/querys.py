@@ -102,6 +102,25 @@ def guardar_credenciales(usuario):
         return False  
 
 
+def guardar_credenciales_sin_contrasena(usuario):
+    if verificar_existencia_usuario(usuario):
+        flash(f"El nombre de usuario '{usuario.username}' ya existe en la base de datos.")
+        return False  
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "INSERT INTO usuarios (user, email) VALUES (%s, %s)"
+        cursor.execute(query, (usuario.username, usuario.email))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True  
+    except Exception as e:
+        print(f"Error al guardar el usuario: {e}")
+        flash(f"El nombre de usuario '{usuario.username}' ya existe en la base de datos.")
+        return False  
+
+
 def update_contrasena(usuario):
     conexion = conectar_bd()
     cursor = conexion.cursor()

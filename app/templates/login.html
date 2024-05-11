@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
     <title>Login DreamXI</title>
 </head>
@@ -14,9 +15,7 @@
                 <input type="hidden" name="action" value="register">
                 <h1>Create Account</h1>
                 <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="{{ url_for('routes.google_login') }}" class="social"><i class="fab fa-google-plus-g"></i></a>
                 </div>
                 <span>registrate aqui!</span>
                 <input type="text" id="username" name="username" placeholder="Username" required />
@@ -30,9 +29,7 @@
                 <input type="hidden" name="action" value="login">
                 <h1>Inicio Sesion</h1>
                 <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="{{ url_for('routes.google_login') }}" class="social"><i class="fab fa-google-plus-g"></i></a>
                 </div>
                 <span>introdue tus credenciales</span>
                 <input type="text" id="username" name="username" placeholder="Username" />

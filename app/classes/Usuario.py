@@ -5,6 +5,11 @@ class Usuario:
         self.password = password
         self.email = email
         self.profile = profile
+        
+    def __init__(self, username, email, profile):
+        self.username = username
+        self.email = email
+        self.profile = profile
 
     def get_info(self):
         return {

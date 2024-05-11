@@ -22,6 +22,11 @@ body {
 	color: white;
 }
 
+.fas.fa-chrome {
+    font-size: 2em;
+}
+
+
 h1 {
 	font-weight: bold;
 	margin: 0;

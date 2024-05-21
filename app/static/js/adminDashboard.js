@@ -1,12 +1,16 @@
 function modificarUsuario(button) {
     var fila = button.closest('tr');
     var inputs = fila.querySelectorAll('input');
+    var selects = fila.querySelectorAll('select');
     var spans = fila.querySelectorAll('span');
     var botonModificar = fila.querySelector('button');
 
     // Toggle entre mostrar campos de entrada y mostrar texto
     inputs.forEach(input => {
         input.style.display = input.style.display === 'none' ? 'inline' : 'none';
+    });
+    selects.forEach(select => {
+        select.style.display = select.style.display === 'none' ? 'inline' : 'none';
     });
     spans.forEach(span => {
         span.style.display = span.style.display === 'none' ? 'inline' : 'none';
@@ -21,9 +25,9 @@ function modificarUsuario(button) {
         var usuario = inputs[0].value;
         var password = inputs[1].value;
         var email = inputs[2].value;
-        var profile = inputs[3].value;
+        var profile = selects[0].value; // Obtener el valor seleccionado del <select>
 
-        fetch('/tu-endpoint-de-actualizacion', {
+        fetch('/update_usuario', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,6 +44,9 @@ function modificarUsuario(button) {
             if (!response.ok) {
                 throw new Error('Error al actualizar usuario');
             }
+            return response.json();
+        })
+        .then(data => {
             alert('Usuario actualizado correctamente');
             // Aquí puedes realizar alguna acción adicional si lo deseas, como actualizar la tabla o recargar la página
         })

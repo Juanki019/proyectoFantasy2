@@ -39,12 +39,18 @@
         <th>Acciones</th>
         </tr>
         {% for usuario in usuarios %}
-        <tr>
+        <tr data-id="{{ usuario['id_usuario'] }}">
             <td>{{ usuario['id_usuario'] }}</td>
-            <td><span>{{ usuario['user'] }}</span><input type="text" style="display:none;"></td>
-            <td><span>{{ usuario['password'] }}</span><input type="password" style="display:none;"></td>
-            <td><span>{{ usuario['email'] }}</span><input type="email" style="display:none;"></td>
-            <td><span>{{ usuario['profile'] }}</span><input type="text" style="display:none;"></td>
+            <td><span>{{ usuario['user'] }}</span><input type="text" value="{{ usuario['user'] }}" style="display:none;"></td>
+            <td><span>{{ usuario['password'] }}</span><input type="password" value="{{ usuario['password'] }}" style="display:none;"></td>
+            <td><span>{{ usuario['email'] }}</span><input type="email" value="{{ usuario['email'] }}" style="display:none;"></td>
+            <td>
+                <span>{{ usuario['profile'] }}</span>
+                <select style="display:none;">
+                    <option value="1" {% if usuario['profile'] == '1' %}selected{% endif %}>1</option>
+                    <option value="777" {% if usuario['profile'] == '777' %}selected{% endif %}>777</option>
+                </select>
+            </td>            
             <td>
                 <button onclick="modificarUsuario(this)">Modificar</button>
                 <a href="/eliminar_usuario?id={{ usuario['id_usuario'] }}"><button>Eliminar</button></a>

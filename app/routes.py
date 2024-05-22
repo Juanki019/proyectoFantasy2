@@ -1,36 +1,19 @@
-import os
-from flask import abort, render_template, request, redirect, url_for, flash, jsonify, Blueprint
+from flask import render_template, request, redirect, url_for, flash, jsonify, Blueprint
+from flask_mail import Mail, Message
 from flask import session
 import http.client
 import json
-import pathlib
-import cachecontrol
-import requests
 from models.LinearRegressionModel import LinearRegressionModel
 from querys.querys import *
 from classes.Usuario import Usuario
 from telegram import Bot
 from aiogram import Bot
 from datetime import datetime, timedelta
-from google_auth_oauthlib.flow import Flow, google
 from models.gradientBoost import GradientBoostModel
-from google.oauth2 import id_token
 
 routes_config = Blueprint('routes', __name__)
 
 linear_regression_model = LinearRegressionModel()
-
-GOOGLE_CLIENT_ID = "637192833358-n3at0n0olomc4ibnm8frskop095q3qqd.apps.googleusercontent.com"
-
-client_secrets_file = os.path.join(pathlib.Path(__file__).parent, 'client_secret.json')
-
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
-flow = Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
-    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1:5000/callback"
-)
 
 @routes_config.route('/login', methods=['GET', 'POST'])
 async def login():
@@ -64,53 +47,6 @@ async def login():
                 flash('Credenciales incorrectas. Inténtalo de nuevo.', 'error')
             
     return render_template('login.html')
-
-
-@routes_config.route('/google-login')
-async def google_login():
-    authorization_url, state = flow.authorization_url()
-    session["state"] = state
-    return redirect(authorization_url)
-
-
-@routes_config.route("/callback")
-def callback():
-    flow.fetch_token(authorization_response=request.url)
-
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
-
-    credentials = flow.credentials
-    request_session = requests.session()
-    cached_session = cachecontrol.CacheControl(request_session)
-    token_request = google.auth.transport.requests.Request(session=cached_session)
-
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=GOOGLE_CLIENT_ID
-    )
-
-    username = id_info.get("name")
-    email = id_info.get("email")
-    
-    nuevo_usuario = Usuario(username, email, 1)
-
-    print(f'Nombre de usuario: {username}')
-    print(f'Correo electrónico: {email}')
-    session['username'] = username
-
-    if guardar_credenciales_sin_contrasena(nuevo_usuario):
-        flash(f'Registro exitoso para {username}', 'success')
-        #await send_notification(chat_id, username)
-    else:
-        flash(f'Error al registrar el usuario {username}', 'error')           
-    
-    return redirect("/index")
-
-
-
-
 
 
 @routes_config.route('/olvidocontrasena', methods=['GET', 'POST'])
@@ -169,7 +105,6 @@ def resultadosCompeticiones():
         return "Error al obtener los datos de la API"    
 '''
 
-
 @routes_config.route('/resultadosCompeticiones')
 def resultadosCompeticiones():
     datos_jugadores = cargar_datos_desde_bd()
@@ -194,8 +129,8 @@ def datajugadores():
         return render_template('datajugadores.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api, jornadas=jornadas)
     else:
         return "Error al obtener los datos de la API"    
-'''
 
+'''
 
 @routes_config.route('/datajugadores')
 def datajugadores():
@@ -207,6 +142,7 @@ def datajugadores():
 
 @routes_config.route('/alineaciones')
 def alineaciones():
+    if 'username' in session:  
         print("Usuario en sesión:", session['username'])  
         usuario_actual = session['username']
         plantilla_usuario = obtener_plantilla_usuario(usuario_actual)
@@ -222,6 +158,10 @@ def alineaciones():
                     break  # Una vez que se encuentra el jugador, se sale del bucle interno
 
         return render_template('alineaciones.html', players=datos_jugadores, lesiones=lesion_jugadores, plantilla=plantilla_con_info, formacion=formacion_plantilla)
+    
+    else:
+        flash('Debes iniciar sesión para acceder a esta página', 'error')
+        return redirect(url_for('login'))
 
 
 @routes_config.route('/alineacionesProbables')
@@ -260,11 +200,36 @@ def eliminar_alineacion():
         return "No se ha iniciado sesión"  
 
 
-@routes_config.route('/eliminar_usuario', methods=['POST', 'GET'])
+@routes_config.route('/eliminar_usuario', methods=['DELETE'])
 def eliminar_usuario_ruta():
-    id_usuario = request.form.get('id_usuario')
-    eliminar_usuario(id_usuario)
-    return redirect(url_for('routes.login'))
+    id_usuario = request.args.get('id_usuario')
+    if id_usuario:
+        eliminar_usuario(id_usuario)
+        return redirect(url_for('routes.adminDashboard'))
+    else:
+        return "Error: No se proporcionó el parámetro 'id_usuario'", 400
+    
+@routes_config.route('/update_usuario', methods=['PUT'])
+def actualizar_usuario():
+    try:
+        data = request.get_json()
+        print("Datos recibidos:", data)  # Log para verificar los datos recibidos
+
+        id_usuario = data.get('id_usuario')
+        user = data.get('user')
+        password = data.get('password')
+        email = data.get('email')
+        profile = data.get('profile')
+
+        if None in [id_usuario, user, password, email, profile]:
+            return jsonify({'error': 'Faltan datos en la solicitud'}), 400
+
+        response = update_usuario(user, password, email, profile, id_usuario)
+        return redirect(url_for('routes.adminDashboard'))
+
+    except Exception as e:
+        print(f"Error al procesar la solicitud: {e}")
+        return jsonify({'error': 'Error al procesar la solicitud'}), 500
 
 
 
@@ -321,7 +286,6 @@ def team_info():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
-
 
 
 ########################################################################################

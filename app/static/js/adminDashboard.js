@@ -27,6 +27,14 @@ function modificarUsuario(button) {
         var email = inputs[2].value;
         var profile = selects[0].value; // Obtener el valor seleccionado del <select>
 
+        console.log('Datos a enviar:', {
+            id_usuario: idUsuario,
+            user: usuario,
+            password: password,
+            email: email,
+            profile: profile
+        });
+
         fetch('/update_usuario', {
             method: 'PUT',
             headers: {

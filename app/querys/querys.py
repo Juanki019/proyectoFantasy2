@@ -1,6 +1,6 @@
 import mysql.connector
 import csv
-from flask import session, flash
+from flask import jsonify, session, flash
 
 
 def cargar_datos_desde_csv(ruta_csv):
@@ -114,12 +114,10 @@ def guardar_credenciales_sin_contrasena(usuario):
         conexion.commit()
         cursor.close()
         conexion.close()
-        return True  
     except Exception as e:
         print(f"Error al guardar el usuario: {e}")
         flash(f"El nombre de usuario '{usuario.username}' ya existe en la base de datos.")
         return False  
-
 
 def update_contrasena(usuario):
     conexion = conectar_bd()
@@ -130,14 +128,19 @@ def update_contrasena(usuario):
     cursor.close()
     conexion.close()
 
-def eliminar_usuario(id_usuario):
-    conexion = conectar_bd()
-    cursor = conexion.cursor()
-    query = "DELETE FROM usuarios WHERE id_usuario = %s"
-    cursor.execute(query, (id_usuario,))
-    conexion.commit()
-    cursor.close()
-    conexion.close()
+def update_usuario(user, password, email, profile, id_usuario):
+    try: 
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "UPDATE usuarios SET user=%s, password=%s, email=%s, profile=%s WHERE id_usuario=%s"
+        cursor.execute(query, (user, password, email, profile, id_usuario))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return jsonify({'message': 'Usuario actualizado correctamente'}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Error al actualizar usuario'}), 500
 
 def contar_jugadores_plantilla(id_usuario):
     conexion = conectar_bd()

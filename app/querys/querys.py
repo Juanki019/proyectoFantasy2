@@ -137,10 +137,10 @@ def update_usuario(user, password, email, profile, id_usuario):
         conexion.commit()
         cursor.close()
         conexion.close()
-        return jsonify({'message': 'Usuario actualizado correctamente'}), 200
+        return {'message': 'Usuario actualizado correctamente'}
     except Exception as e:
         print(e)
-        return jsonify({'error': 'Error al actualizar usuario'}), 500
+        return {'error': 'Error al actualizar usuario'}
 
 def contar_jugadores_plantilla(id_usuario):
     conexion = conectar_bd()

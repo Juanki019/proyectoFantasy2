@@ -296,7 +296,7 @@ def actualizar_usuario():
             return jsonify({'error': 'Faltan datos en la solicitud'}), 400
 
         response = update_usuario(user, password, email, profile, id_usuario)
-        return redirect(url_for('routes.adminDashboard'))
+        return jsonify(response), (200 if 'message' in response else 500) 
 
     except Exception as e:
         print(f"Error al procesar la solicitud: {e}")

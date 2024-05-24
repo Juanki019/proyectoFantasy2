@@ -56,7 +56,8 @@ function modificarUsuario(button) {
         })
         .then(data => {
             alert('Usuario actualizado correctamente');
-            // Aquí puedes realizar alguna acción adicional si lo deseas, como actualizar la tabla o recargar la página
+            // Recargar la página después de actualizar el usuario
+            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);

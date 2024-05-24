@@ -53,7 +53,7 @@
             </td>            
             <td>
                 <button onclick="modificarUsuario(this)">Modificar</button>
-                <a href="/eliminar_usuario?id={{ usuario['id_usuario'] }}"><button>Eliminar</button></a>
+                <button class="eliminar-usuario" data-id="{{ usuario['id_usuario'] }}">Eliminar</button>
             </td> 
         </tr>
         {% endfor %}

@@ -273,12 +273,13 @@ def eliminar_alineacion():
 
 @routes_config.route('/eliminar_usuario', methods=['DELETE'])
 def eliminar_usuario_ruta():
-    id_usuario = request.args.get('id_usuario')
+    id_usuario = request.json.get('id_usuario')
     if id_usuario:
         eliminar_usuario(id_usuario)
-        return redirect(url_for('routes.adminDashboard'))
+        return jsonify({'message': 'Usuario eliminado con éxito'}), 200
     else:
-        return "Error: No se proporcionó el parámetro 'id_usuario'", 400
+        return jsonify({'error': "No se proporcionó el parámetro 'id_usuario'"}), 400
+    
     
 @routes_config.route('/update_usuario', methods=['PUT'])
 def actualizar_usuario():

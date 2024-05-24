@@ -65,3 +65,42 @@ function modificarUsuario(button) {
         });
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.eliminar-usuario').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const row = this.closest('tr');
+            const profile = row.querySelector('td:nth-child(5) span').textContent; // Obtiene el perfil del usuario
+
+            if (profile === '777') {
+                alert('No se puede eliminar un usuario con el perfil 777.');
+                return; // Sale de la función si el perfil es 777
+            }
+            if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                fetch('/eliminar_usuario', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_usuario: id }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        // Elimina la fila de la tabla
+                        const row = this.closest('tr');
+                        row.remove();
+                        alert(data.message);
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un error al eliminar el usuario.');
+                });
+            }
+        });
+    });
+});

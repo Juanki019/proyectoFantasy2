@@ -32,8 +32,8 @@
                     <a href="{{ url_for('routes.google_login') }}" class="social"><i class="fab fa-google-plus-g"></i></a>
                 </div>
                 <span>introdue tus credenciales</span>
-                <input type="text" id="username" name="username" placeholder="Username" />
-                <input type="password" id="password" name="password" placeholder="Password" />
+                <input type="text" id="username" name="username" placeholder="Username" required/>
+                <input type="password" id="password" name="password" placeholder="Password" required/>
                 <a href="{{ url_for('routes.olvidocontrasena') }}">¿Olvidaste tu contraseña?</a>
                 <button class"button" type="submit">Iniciar sesión</button>
             </form>

@@ -15,7 +15,9 @@ from datetime import datetime, timedelta
 from google_auth_oauthlib.flow import Flow, google
 from models.gradientBoost import GradientBoostModel
 from google.oauth2 import id_token
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
 routes_config = Blueprint('routes', __name__)
 
 linear_regression_model = LinearRegressionModel()
@@ -66,12 +68,12 @@ async def login():
     return render_template('login.html')
 
 
+
 @routes_config.route('/google-login')
 async def google_login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return redirect(authorization_url)
-
 
 @routes_config.route("/callback")
 def callback():
@@ -85,16 +87,21 @@ def callback():
     cached_session = cachecontrol.CacheControl(request_session)
     token_request = google.auth.transport.requests.Request(session=cached_session)
 
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=GOOGLE_CLIENT_ID
-    )
+    try:
+        id_info = id_token.verify_oauth2_token(
+            id_token=credentials._id_token,
+            request=token_request,
+            audience=GOOGLE_CLIENT_ID,
+            clock_skew_in_seconds=10  # Allow clock skew tolerance
+        )
+    except google.auth.exceptions.InvalidValue as e:
+        logging.error(f"Token validation error: {e}")
+        abort(500, description=f"Token validation error: {e}")
 
     username = id_info.get("name")
     email = id_info.get("email")
     
-    nuevo_usuario = Usuario(username, email, 1)
+    nuevo_usuario = Usuario(username, '',email, 1)
 
     print(f'Nombre de usuario: {username}')
     print(f'Correo electrónico: {email}')
@@ -102,14 +109,11 @@ def callback():
 
     if guardar_credenciales_sin_contrasena(nuevo_usuario):
         flash(f'Registro exitoso para {username}', 'success')
-        #await send_notification(chat_id, username)
+        # await send_notification(chat_id, username)
     else:
         flash(f'Error al registrar el usuario {username}', 'error')           
     
     return redirect("/index")
-
-
-
 
 
 

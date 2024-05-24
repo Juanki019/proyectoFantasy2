@@ -205,6 +205,15 @@ def cargar_datos_jornadas_no_jugadas_desde_bd():
     conexion.close()
     return datos
 
+def eliminar_usuario(id_usuario):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    query = "DELETE FROM usuarios WHERE id_usuario = %s"
+    cursor.execute(query, (id_usuario,))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
 def eliminar_plantilla_por_usuario(username):
     # Realizar la consulta para obtener el ID de usuario
     query_id_usuario = "SELECT id_usuario FROM usuarios WHERE user = %s"

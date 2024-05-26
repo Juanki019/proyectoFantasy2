@@ -25,7 +25,7 @@ def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="vicente1234",
         database="dreamxi"
     )
 
@@ -383,7 +383,7 @@ def actualizar_plantilla(user, nueva_plantilla):
 def cargar_datos_todos_los_jugadores():
     conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores")
+    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias, Asistencias_sin_gol, Regates, Tiros_a_puerta, Tarjetas_rojas, Tarjetas_amarillas FROM jugadores")
     datos = cursor.fetchall()
     cursor.close()
     conexion.close()
@@ -392,7 +392,7 @@ def cargar_datos_todos_los_jugadores():
 def cargar_datos_jugador_por_nombre(nombre_jugador):
     conexion = conectar_bd()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores WHERE nombre = %s", (nombre_jugador,))
+    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias, Asistencias_sin_gol, Regates, Tiros_a_puerta, Tarjetas_rojas, Tarjetas_amarillas FROM jugadores WHERE nombre = %s", (nombre_jugador,))
     datos = cursor.fetchone()
     cursor.close()
     conexion.close()

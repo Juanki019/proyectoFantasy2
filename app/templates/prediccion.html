@@ -12,16 +12,19 @@
 
 <body>
     <section>
-        <h1> PREDICCIONES SOBRE JUGADORES</h1>
-        <h2>Entrena el modelo para realizar las predicciones:</h2>
-        <button id="trainModelButton">Entrenar Modelo</button>
-        <div id="trainResponse"></div>
+        <h1>PREDICCIONES SOBRE JUGADORES</h1>
+        
+        <!-- Sección de Selección de Jugador -->
         <h2>Selecciona un jugador:</h2>
         <select id="player_select">
             {% for player in players %}
                 <option value="{{ player.Nombre }}">{{ player.Nombre }}</option>
             {% endfor %}
         </select>
+        <button id="show_player_info">Mostrar información del jugador</button>
+        <div id="player_info"></div>
+        
+        <!-- Sección para seleccionar la variable objetivo (target) -->
         <h2>Selecciona la variable objetivo:</h2>
         <select id="target_select">
             <option value="Puntos">Puntos</option>
@@ -29,9 +32,14 @@
             <option value="Precio">Precio</option>
             <!-- Agrega más opciones según tus necesidades -->
         </select>
-        <button id="show_player_info">Mostrar información del jugador</button>
-        <div id="player_info"></div> 
-        <button id="predict_button">Predecir valores</button> <!-- Botón para predecir -->
+    
+        <!-- Sección para Entrenar el Modelo -->
+        <h2>Entrena el modelo para realizar las predicciones:</h2>
+        <button id="trainModelButton">Entrenar Modelo</button>
+        <div id="trainResponse"></div>
+    
+        <!-- Sección de Predicción -->
+        <button id="predict_button">Predecir valores</button>
         <div id="prediction_result"></div> <!-- Aquí se mostrará la predicción -->
     </section>
     <h1> PREDICCIONES SOBRE EL EQUIPO</h1>
@@ -44,11 +52,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $('#trainModelButton').click(function() {
+                var selectedTarget = $('#target_select').val();
                 $.ajax({
                     url: '/train',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({target_column: 'Goles'}),  // Cambia 'goles' por la columna objetivo deseada
+                    data: JSON.stringify({target_column: selectedTarget}),  //Cambia 'goles' por la columna objetivo deseada
                     success: function(response) {
                         $('#trainResponse').html('Modelo entrenado correctamente');
                     },
@@ -60,31 +69,31 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#predict_button').click(function() {
-            var player = $('#player_select').val();  // Asegúrate de que esto corresponda al ID correcto
-            var target = $('#target_select').val();  // Asegúrate de que esto corresponda al ID correcto
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#predict_button').click(function() {
+                var player = $('#player_select').val();  // Asegúrate de que esto corresponda al ID correcto
+                var target = $('#target_select').val();  // Asegúrate de que esto corresponda al ID correcto
 
-            $.ajax({
-                url: '/predict',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({player_name: player, target_column: target}),
-                success: function(response) {
-                    if (response.prediction) {
-                        $('#predictionResult').html('Prediction for ' + response.player_name + ' on ' + response.target_column + ': ' + response.prediction);
-                    } else {
-                        $('#predictionResult').html('No prediction available.');
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({player_name: player, target_column: target}),
+                    success: function(response) {
+                        if (response.prediction) {
+                            $('#prediction_result').html('Prediccion para ' + response.player_name + ' --> '+ target + ': ' + response.prediction);
+                        } else {
+                            $('#prediction_result').html('No prediction available.');
+                        }
+                    },
+                    error: function() {
+                        $('#prediction_result').html('Error retrieving prediction.');
                     }
-                },
-                error: function() {
-                    $('#predictionResult').html('Error retrieving prediction.');
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 
 </body>
 

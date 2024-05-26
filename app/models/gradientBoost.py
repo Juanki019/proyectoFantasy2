@@ -5,6 +5,7 @@ from sklearn.impute import SimpleImputer
 import mysql.connector
 import pickle
 import os
+import numpy as np 
 
 class GradientBoostModel():
     def __init__(self):
@@ -48,7 +49,7 @@ class GradientBoostModel():
         y = df[target_column]
 
         imp = SimpleImputer(strategy='mean')
-        X = imp.fit_transform(X)
+        X = pd.DataFrame(imp.fit_transform(X), columns=X.columns)
 
         # Configuración de parámetros
         parameters = {
@@ -70,7 +71,7 @@ class GradientBoostModel():
         if self.model is None:
             return "Modelo no entrenado."
 
-        query = f"SELECT puntos, precio, media, partidos, minutos, goles, asistencias FROM jugadores WHERE nombre = %s"
+        query = f"SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores WHERE nombre = %s"
         self.cursor.execute(query, (player_name,))
         player_data = self.cursor.fetchone()
 
@@ -79,10 +80,22 @@ class GradientBoostModel():
 
         # Preparar los datos para la predicción, excluyendo el target
         player_df = pd.DataFrame([player_data])
+
+        if target_column not in player_df.columns:
+            print(f"La columna '{target_column}' no se encuentra en los datos del jugador.")
+            return f"La columna '{target_column}' no se encuentra en los datos del jugador."
+
+        features_used_during_fit = ['Puntos', 'Precio', 'Media', 'Partidos', 'Minutos', 'Goles', 'Asistencias']  # ajusta según tus datos
+        features_used_during_fit.remove(target_column)
+
         X = player_df.drop(columns=[target_column])
 
         # Hacer la predicción
         predicted_value = self.model.predict(X)
+
+        if isinstance(predicted_value, np.ndarray):
+            predicted_value = predicted_value.tolist()
+
         return predicted_value
         
     def save_model(self):
@@ -95,9 +108,10 @@ class GradientBoostModel():
             with open(self.model_path, 'rb') as file:
                 self.model = pickle.load(file)
             print("Modelo cargado desde:", self.model_path)
+            return True
         except FileNotFoundError:
             print("Archivo no encontrado:", self.model_path)
-            self.model = None
+            return False
 
     def close_db_connection(self):
         self.cursor.close()

@@ -20,35 +20,44 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    var showPlayerInfoButton = document.getElementById('show_player_info');
-    var playerSelect = document.getElementById('player_select');
-    var targetSelect = document.getElementById('target_select');
-    var playerInfoDiv = document.getElementById('player_info');
-
-    showPlayerInfoButton.addEventListener('click', function() {
-        var selectedPlayer = playerSelect.value;
-        var selectedTarget = targetSelect.value;
-
-        // Aquí se envía una solicitud al servidor para obtener la predicción
-        fetch('/predict_player', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+    $('#trainModelButton').click(function() {
+        var selectedTarget = $('#target_select').val();
+        $.ajax({
+            url: '/train',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({target_column: selectedTarget}),  //Cambia 'goles' por la columna objetivo deseada
+            success: function(response) {
+                $('#trainResponse').html('Modelo entrenado correctamente');
             },
-            body: JSON.stringify({
-                player_name: selectedPlayer,
-                target_column: selectedTarget
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            playerInfoDiv.innerHTML = '';
+            error: function() {
+                $('#trainResponse').html('Error en el entrenamiento del modelo.');
+            }
+        });
+    });
 
-            // Muestra la predicción en el div player_info
-            var predictionText = document.createElement('p');
-            predictionText.textContent = 'Predicción para ' + selectedTarget + ' del jugador ' + selectedPlayer + ': ' + data.prediction;
-            playerInfoDiv.appendChild(predictionText);
-        })
-        .catch(error => console.error('Error al obtener la predicción:', error));
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#predict_button').click(function() {
+            var player = $('#player_select').val();  // Asegúrate de que esto corresponda al ID correcto
+            var target = $('#target_select').val();  // Asegúrate de que esto corresponda al ID correcto
+
+            $.ajax({
+                url: '/predict',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({player_name: player, target_column: target}),
+                success: function(response) {
+                    if (response.prediction) {
+                        $('#prediction_result').html('Prediccion para ' + response.player_name + ' --> '+ target + ': ' + response.prediction);
+                    } else {
+                        $('#prediction_result').html('No prediction available.');
+                    }
+                },
+                error: function() {
+                    $('#prediction_result').html('Error retrieving prediction.');
+                }
+            });
+        });
     });
 });
+

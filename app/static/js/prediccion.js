@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: '/train',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({target_column: selectedTarget}),  //Cambia 'goles' por la columna objetivo deseada
+            data: JSON.stringify({target_column: selectedTarget}),  
             success: function(response) {
                 $('#trainResponse').html('Modelo entrenado correctamente');
             },
@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('DOMContentLoaded', function() {
         $('#predict_button').click(function() {
-            var player = $('#player_select').val();  // Asegúrate de que esto corresponda al ID correcto
-            var target = $('#target_select').val();  // Asegúrate de que esto corresponda al ID correcto
+            var player = $('#player_select').val(); 
+            var target = $('#target_select').val();  
 
             $.ajax({
                 url: '/predict',

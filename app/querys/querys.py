@@ -25,7 +25,7 @@ def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="vicente1234",
         database="dreamxi"
     )
 
@@ -379,3 +379,21 @@ def actualizar_plantilla(user, nueva_plantilla):
     except Exception as e:
         print(f"Error al actualizar la plantilla: {e}")
         return False
+    
+def cargar_datos_todos_los_jugadores():
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores")
+    datos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return datos
+
+def cargar_datos_jugador_por_nombre(nombre_jugador):
+    conexion = conectar_bd()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores WHERE nombre = %s", (nombre_jugador,))
+    datos = cursor.fetchone()
+    cursor.close()
+    conexion.close()
+    return datos

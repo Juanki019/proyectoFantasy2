@@ -411,22 +411,21 @@ def train():
 
 @routes_config.route('/predict', methods=['POST'])
 def predict():
-    model = GradientBoostModel()  # Crea una instancia de tu clase de modelo
-    if not model.load_model():  # Intenta cargar el modelo; si falla, informa que el modelo no está entrenado
+    model = GradientBoostModel() 
+    if not model.load_model():  
         return jsonify({'error': 'Modelo no entrenado.'}), 503
     
     data = request.get_json()
     player_name = data['player_name']
     target_column = data.get('target_column')
     
-    prediction = model.predict(player_name, target_column)  # Realiza la predicción
+    prediction = model.predict(player_name, target_column)  #Realiza la predicción
 
     if isinstance(prediction, str):
         return jsonify({'error': prediction}), 404 if "no encontrado" in prediction or "no disponibles" in prediction else 400
 
-    # Convierte el ndarray a lista si es necesario
     if isinstance(prediction, np.ndarray):
-        prediction = prediction.tolist()  # Convierte ndarray a lista
+        prediction = prediction.tolist()  #Convierte ndarray a lista
 
     if prediction == "Jugador no encontrado":
         return jsonify({'error': 'Jugador no encontrado'}), 404

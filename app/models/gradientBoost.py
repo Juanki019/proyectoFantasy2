@@ -6,16 +6,10 @@ import mysql.connector
 import pickle
 import os
 import numpy as np 
+from querys.querys import cargar_datos_todos_los_jugadores, cargar_datos_jugador_por_nombre
 
 class GradientBoostModel():
     def __init__(self):
-        self.db_connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="vicente1234",
-            database="dreamxi"
-        )
-        self.cursor = self.db_connection.cursor(dictionary=True)
         self.model = None
         self.model_directory = 'data/'
         if not os.path.exists(self.model_directory):
@@ -39,7 +33,7 @@ class GradientBoostModel():
         return result
 
     def train_model(self, target_column):
-        players_data = self.load_all_players_data()
+        players_data = cargar_datos_todos_los_jugadores()
         df = pd.DataFrame(players_data)
 
         if target_column not in df.columns:
@@ -71,14 +65,12 @@ class GradientBoostModel():
         if self.model is None:
             return "Modelo no entrenado."
 
-        query = f"SELECT Puntos, Precio, Media, Partidos, Minutos, Goles, Asistencias FROM jugadores WHERE nombre = %s"
-        self.cursor.execute(query, (player_name,))
-        player_data = self.cursor.fetchone()
+        player_data = cargar_datos_jugador_por_nombre(player_name)
 
         if not player_data:
             return "Datos del jugador no disponibles."
 
-        # Preparar los datos para la predicción, excluyendo el target
+        #Preparar los datos para la predicción, excluyendo el target
         player_df = pd.DataFrame([player_data])
 
         if target_column not in player_df.columns:
@@ -90,7 +82,7 @@ class GradientBoostModel():
 
         X = player_df.drop(columns=[target_column])
 
-        # Hacer la predicción
+        #Hacer la predicción
         predicted_value = self.model.predict(X)
 
         if isinstance(predicted_value, np.ndarray):

@@ -1,6 +1,7 @@
 import mysql.connector
 import csv
 from flask import jsonify, session, flash
+from sshtunnel import SSHTunnelForwarder
 
 
 def cargar_datos_desde_csv(ruta_csv):
@@ -9,24 +10,23 @@ def cargar_datos_desde_csv(ruta_csv):
         datos = list(lector_csv)
     return datos
 
-"""
-# Conexión a la base de datos MySQL
-def conectar_bd():
-    return mysql.connector.connect(
-        host="195.235.211.197",
-        port="35024",
-        user="root",
-        password="grupo5",
-        database="dreamxi"
-    )
-"""
+local_port = 35024
+
+tunnel = SSHTunnelForwarder(
+    ('195.235.211.197', 35024),
+    ssh_username='ubuntu',
+    ssh_password='grupo5',
+    remote_bind_address=('127.0.0.1', 3306),
+    local_bind_address=('0.0.0.0', local_port)
+)
 
 def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="vicente1234",
-        database="dreamxi"
+        password="1234",
+        database="dreamxi",
+        port=local_port
     )
 
 # Función para cargar datos de jugadores desde la base de datos

@@ -24,7 +24,8 @@ except HandlerSSHTunnelForwarderError as e:
 app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():
-    script_path = os.path.join(os.path.dirname(__file__), 'app', 'scrappers', 'scraperJornadas.py')
+    script_path = os.path.join(os.path.dirname(__file__), 'scrappers', 'scraperJornadas.py')
+    # print (script_path)
     subprocess.Popen([sys.executable, script_path])
     print("Subproceso iniciado correctamente.")
 
@@ -41,7 +42,7 @@ def index():
 
 if __name__ == '__main__':  
     try:
-        # iniciar_subprocesos()
+        iniciar_subprocesos()
         app.run(debug=True)
     finally:
         if tunnel.is_active:

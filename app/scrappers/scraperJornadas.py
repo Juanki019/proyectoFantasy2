@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
 import mysql.connector
-
+import os
 
 def scrape_jornadas(url):
     # Realizar la solicitud HTTP al endpoint
@@ -79,13 +78,13 @@ def guardar_csv(jornadas_info):
                 escritor_csv.writerow([jornada_actual, fecha_actual, item[0], item[1], item[2]])
 
 
-
 def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
-        database="dreamxi"
+        password="1234",
+        database="dreamxi",
+        port=35024
     )
     
 def guardar_en_base_dato(jornadas_info):
@@ -118,12 +117,13 @@ def guardar_en_base_dato(jornadas_info):
         # Cerrar la conexión
         conexion.close()
 
-# URL del endpoint
-url = "https://resultados.as.com/resultados/futbol/primera/calendario/"
-# Llamar a la función para obtener la información de las jornadas
-jornadas_info = scrape_jornadas(url)
-# Si se encontraron datos de las jornadas, guardarlos en la base de datos
-if jornadas_info:
-    guardar_en_base_dato(jornadas_info)
-else:
-    print("No se pudieron encontrar datos de las jornadas.")
+if __name__ == '__main__':  
+    # URL del endpoint
+    url = "https://resultados.as.com/resultados/futbol/primera/calendario/"
+    # Llamar a la función para obtener la información de las jornadas
+    jornadas_info = scrape_jornadas(url)
+    # Si se encontraron datos de las jornadas, guardarlos en la base de datos
+    if jornadas_info:
+        guardar_en_base_dato(jornadas_info)
+    else:
+        print("No se pudieron encontrar datos de las jornadas.")

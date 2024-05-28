@@ -1,39 +1,39 @@
 body {
     font-family: 'Oxygen', sans-serif;
-    background-color: #333; /* Fondo gris oscuro */
-    color: white; /* Color de texto blanco */
+    background-color: #333; 
+    color: white; 
     margin: 0;
     padding: 0;
-    text-align: center; /* Alineación de texto centrada */
+    text-align: center; 
 }
 
 section {
-    background-color: #444; /* Un tono más claro de gris para el fondo de las secciones */
+    background-color: #444; 
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     padding: 20px;
-    margin: 20px auto; /* Centrado automático con margen */
-    width: 80%; /* Control del ancho para centrar el contenido */
+    margin: 20px auto; 
+    width: 80%; 
 }
 
 h1, h2 {
-    color: white; /* Texto en blanco */
+    color: white; 
 }
 
 h1 {
     font-size: 24px;
     margin-top: 20px;
-    margin-bottom: 10px; /* Espaciado después del título */
+    margin-bottom: 10px; 
 }
 
 h2 {
     font-size: 18px;
     margin-top: 10px;
-    margin-bottom: 5px; /* Menos espacio después de los subtítulos */
+    margin-bottom: 5px; 
 }
 
 button {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50; 
     border: none;
     color: white;
     padding: 10px 20px;
@@ -49,24 +49,27 @@ button {
 select {
     padding: 10px;
     margin-top: 5px;
-    margin-bottom: 10px; /* Espaciado después de select */
+    margin-bottom: 10px; 
     border-radius: 4px;
-    width: 50%; /* Más estrecho para mejor visualización */
-    background-color: #555; /* Gris para el fondo del select */
-    color: white; /* Texto blanco dentro de los select */
-    border: 1px solid #666; /* Borde ligeramente más oscuro para definir mejor el elemento */
+    width: 50%; 
+    background-color: #555; 
+    color: white; 
+    border: 1px solid #666; 
 }
 
 #trainResponse, #prediction_result {
-    background-color: #555; /* Fondo gris para las áreas de respuesta */
-    color: white; /* Texto blanco */
+    background-color: #555; 
+    color: white;
     padding: 10px;
     margin-top: 10px;
-    margin-bottom: 10px; /* Espaciado después del div */
+    margin-bottom: 10px; 
     border-radius: 4px;
-    text-align: left; /* Alineación del texto a la izquierda dentro de los divs de respuesta */
+    text-align: left; 
 }
 
-/* Añade estilos adicionales según sea necesario para otros elementos */
+#trainResponse, #prediction_result{
+    text-align: center;
+}
+
 
 

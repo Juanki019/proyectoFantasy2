@@ -20,15 +20,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    $('#trainModelButton').click(function() {
-        var selectedTarget = $('#target_select').val();
+    $('#target_select').change(function() {
+        var selectedTarget = $(this).val();
         $.ajax({
             url: '/train',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({target_column: selectedTarget}),  
             success: function(response) {
-                $('#trainResponse').html('Modelo entrenado correctamente');
+                $('#trainResponse').html('Aplicación lista para predecir su dato');
             },
             error: function() {
                 $('#trainResponse').html('Error en el entrenamiento del modelo.');
@@ -36,27 +36,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#predict_button').click(function() {
-            var player = $('#player_select').val(); 
-            var target = $('#target_select').val();  
-
-            $.ajax({
-                url: '/predict',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({player_name: player, target_column: target}),
-                success: function(response) {
-                    if (response.prediction) {
-                        $('#prediction_result').html('Prediccion para ' + response.player_name + ' --> '+ target + ': ' + response.prediction);
-                    } else {
-                        $('#prediction_result').html('No prediction available.');
-                    }
-                },
-                error: function() {
-                    $('#prediction_result').html('Error retrieving prediction.');
+    $('#predict_button').click(function() {
+        var player = $('#player_select').val();  
+        var target = $('#target_select').val(); 
+        $.ajax({
+            url: '/predict',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({player_name: player, target_column: target}),
+            success: function(response) {
+                if (response.prediction) {
+                    $('#prediction_result').html('Prediccion para ' + response.player_name + ' --> '+ target + ': ' + response.prediction);
+                } else {
+                    $('#prediction_result').html('No prediction available.');
                 }
-            });
+            },
+            error: function() {
+                $('#prediction_result').html('Error retrieving prediction.');
+            }
         });
     });
 });

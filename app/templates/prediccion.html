@@ -13,6 +13,14 @@
 <body>
     <section>
         <h1>PREDICCIONES SOBRE JUGADORES</h1>
+        <h2>Selecciona la variable objetivo:</h2>
+        <select id="target_select">
+            <option value="" disabled selected>Seleccione un dato...</option>
+            <option value="Puntos">Puntos</option>
+            <option value="Goles">Goles</option>
+            <option value="Precio">Precio</option>
+        </select>
+        <div id="trainResponse"></div>
         <h2>Selecciona un jugador:</h2>
         <select id="player_select">
             {% for player in players %}
@@ -21,73 +29,14 @@
         </select>
         <button id="show_player_info">Mostrar información del jugador</button>
         <div id="player_info"></div>
-        
-        <h2>Selecciona la variable objetivo:</h2>
-        <select id="target_select">
-            <option value="Puntos">Puntos</option>
-            <option value="Goles">Goles</option>
-            <option value="Precio">Precio</option>
-        </select>
-    
-        <h2>Entrena el modelo para realizar las predicciones:</h2>
-        <button id="trainModelButton">Entrenar Modelo</button>
-        <div id="trainResponse"></div>
     
         <button id="predict_button">Predecir valores</button>
         <div id="prediction_result"></div> 
-    </section>
-    <h1> PREDICCIONES SOBRE EL EQUIPO</h1>
-    <section>
     </section>
 
     <script src="{{ url_for('static', filename='js/prediccion.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $('#trainModelButton').click(function() {
-                var selectedTarget = $('#target_select').val();
-                $.ajax({
-                    url: '/train',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({target_column: selectedTarget}),  
-                    success: function(response) {
-                        $('#trainResponse').html('Modelo entrenado correctamente');
-                    },
-                    error: function() {
-                        $('#trainResponse').html('Error en el entrenamiento del modelo.');
-                    }
-                });
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $('#predict_button').click(function() {
-                var player = $('#player_select').val();  
-                var target = $('#target_select').val(); 
-                $.ajax({
-                    url: '/predict',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({player_name: player, target_column: target}),
-                    success: function(response) {
-                        if (response.prediction) {
-                            $('#prediction_result').html('Prediccion para ' + response.player_name + ' --> '+ target + ': ' + response.prediction);
-                        } else {
-                            $('#prediction_result').html('No prediction available.');
-                        }
-                    },
-                    error: function() {
-                        $('#prediction_result').html('Error retrieving prediction.');
-                    }
-                });
-            });
-        });
-    </script>
 
 </body>
-
 </html>

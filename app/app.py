@@ -25,8 +25,10 @@ app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():
     script_path = os.path.join(os.path.dirname(__file__), 'scrappers', 'scraperJornadas.py')
+    script_path2 = os.path.join(os.path.dirname(__file__), 'scrappers', 'lesionados_cambio.py')
     # print (script_path)
     subprocess.Popen([sys.executable, script_path])
+    subprocess.Popen([sys.executable, script_path2])
     print("Subproceso iniciado correctamente.")
 
 @app.route('/')

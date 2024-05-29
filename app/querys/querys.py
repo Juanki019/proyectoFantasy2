@@ -156,25 +156,6 @@ def contar_jugadores_plantilla(id_usuario):
 ################################
 # QUERYS PARA CARGA DE DATOS
 ################################  
-def cargar_datos_lesionados_en_bd(csv_lesionados):
-    with open(csv_lesionados, 'r', newline='', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        datos_nuevos = [dict(row) for row in reader]
-    
-    conexion = conectar_bd()
-    cursor = conexion.cursor(dictionary=True)
-    
-    cursor.execute("DELETE FROM lesiones")
-    
-    for dato in datos_nuevos:
-        cursor.execute("INSERT INTO lesiones (equipo, jugador, lesion) VALUES (%s, %s, %s)",
-        (dato['Equipo'], dato['Jugador'], dato['Lesion']))
-
-    conexion.commit()
-    cursor.close()
-    conexion.close()
-    return "Datos cargados exitosamente en la base de datos."
-
 
 def cargar_datos_lesionados_desde_bd():
     conexion = conectar_bd()

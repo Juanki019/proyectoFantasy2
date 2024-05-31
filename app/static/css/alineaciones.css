@@ -423,4 +423,36 @@ li{
 #strip-4 {bottom:410px;}
 #strip-5 {bottom:530px;}
 
+#target_select_plantilla {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;  
+}
+
+#titulo-predicciones {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+    color: #666;
+}
+
+#trainResponse_plantilla {
+    text-align: center;
+    width: 100%; 
+    color: white;
+}
+
+#predict_plantilla_result{
+    text-align: center;
+    width: 100%; 
+    color: white;
+}
+
+#predict_button_plantilla {
+    display: block; 
+    margin: 0 auto;
+}
 

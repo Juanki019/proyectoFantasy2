@@ -109,7 +109,19 @@
     {% endif %}
     </div>
 
+    <h2 id="titulo-predicciones">PREDICCIONES PARA TU PLANTILLA</h2>
+    <h3>Selecciona la variable objetivo:</h3>
 
+    <select id="target_select_plantilla">
+        <option value="" disabled selected>Seleccione un dato...</option>
+        <option value="Puntos">Puntos</option>
+        <option value="Goles">Goles</option>
+        <option value="Precio">Precio</option>
+    </select>
+
+    <div id="trainResponse_plantilla"></div>
+    <button id="predict_button_plantilla">Predecir valores</button>
+    <div id="predict_plantilla_result"></div>
 
 <div id="pitch">
     <div id="corner-1"></div>
@@ -158,7 +170,8 @@
     
     </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>
+    
 </body>
 </html>

@@ -434,3 +434,21 @@ def predict():
     else:
         print(f'Sending prediction: {prediction}')
         return jsonify({'player_name': player_name, 'prediction': prediction})
+    
+@routes_config.route('/predict_plantilla_completa', methods=['POST'])
+def predict_plantilla_completa():
+    if 'username' not in session:
+        return jsonify({'error': 'Usuario no autenticado.'}), 401
+
+    data = request.get_json()
+    target_column = data.get('target_column')
+    if not target_column:
+        return jsonify({'error': 'Columna objetivo no especificada.'}), 402
+
+    model = GradientBoostModel()
+    predictions = model.predict_plantilla(session['username'], target_column)
+
+    if isinstance(predictions, str) and "Error" in predictions:
+        return jsonify({'error': predictions}), 400
+
+    return jsonify(predictions)

@@ -6,7 +6,7 @@ import mysql.connector
 import pickle
 import os
 import numpy as np 
-from querys.querys import cargar_datos_todos_los_jugadores, cargar_datos_jugador_por_nombre
+from querys.querys import cargar_datos_todos_los_jugadores, cargar_datos_jugador_por_nombre, obtener_plantilla_usuario
 
 class GradientBoostModel():
     def __init__(self):
@@ -77,7 +77,7 @@ class GradientBoostModel():
             print(f"La columna '{target_column}' no se encuentra en los datos del jugador.")
             return f"La columna '{target_column}' no se encuentra en los datos del jugador."
 
-        features_used_during_fit = ['Puntos', 'Precio', 'Media', 'Partidos', 'Minutos', 'Goles', 'Asistencias']  # ajusta según tus datos
+        features_used_during_fit = ['Puntos', 'Precio', 'Media', 'Partidos', 'Minutos', 'Goles', 'Asistencias', 'Asistencias_sin_gol', 'Regates, Tiros_a_puerta', 'Tarjetas_rojas', 'Tarjetas_amarillas'] 
         features_used_during_fit.remove(target_column)
 
         X = player_df.drop(columns=[target_column])
@@ -89,7 +89,28 @@ class GradientBoostModel():
             predicted_value = predicted_value.tolist()
 
         return predicted_value
-        
+    
+    def predict_plantilla(self, username, target_column):
+        plantilla = obtener_plantilla_usuario(username)
+        if not plantilla:
+            return {"error": "No hay jugadores en la plantilla del usuario."}
+
+        predictions = {}
+        for id_jugador in plantilla:
+            
+            print(f"ID del jugador: {id_jugador}")
+            if not id_jugador:
+                predictions[id_jugador] = "Error: No se encontró el nombre del jugador."
+                continue
+            if self.model is None:
+                if not self.load_model():
+                    return "Modelo no entrenado."
+            # Utilizar la función predict existente que maneja predicciones por nombre
+            predicted_value = self.predict(id_jugador, target_column)
+            predictions[id_jugador] = predicted_value
+
+        return predictions
+
     def save_model(self):
         with open(self.model_path, 'wb') as file:
             pickle.dump(self.model, file)

@@ -378,3 +378,4 @@ def cargar_datos_jugador_por_nombre(nombre_jugador):
     cursor.close()
     conexion.close()
     return datos
+

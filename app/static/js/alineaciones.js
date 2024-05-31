@@ -470,3 +470,63 @@ function esPortero(posicion) {
         }
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#target_select_plantilla').change(function() {
+            var selectedTarget = $(this).val();
+            console.log('Intentando enviar datos:', selectedTarget);
+            $.ajax({
+                url: '/train',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({target_column: selectedTarget}),  
+                success: function(response) {
+                    $('#trainResponse_plantilla').html('Aplicación lista para predecir su dato');
+                    console.log('Modelo entrenado correctamente para ' + selectedTarget);
+                },
+                error: function() {
+                    $('#trainResponse_plantilla').html('Error en el entrenamiento del modelo.');
+                    console.log('Error');
+                }
+            });
+        });
+        $('#predict_button_plantilla').click(function() {
+            var target = $('#target_select_plantilla').val();  // Asegúrate de tener este select en tu HTML
+    
+            $.ajax({
+                url: '/predict_plantilla_completa',  // Asume que este es tu endpoint Flask para la predicción de la plantilla
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({target_column: target}),
+                success: function(response) {
+                    $('#predict_plantilla_result').empty();
+                    if (response.error) {
+                        $('#predict_plantilla_result').append('<p>' + response.error + '</p>');
+                    } else {
+                        for (let playerName in response) {
+                            if(response[playerName].error) {
+                                $('#predict_plantilla_result').append('<p>Error en la predicción para ' + playerName + '</p>');
+                            } else {
+                                $('#predict_plantilla_result').append('<p>Predicción para ' + playerName + ' --> ' + target + ': ' + response[playerName] + '</p>');
+                            }
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al realizar las predicciones:', error);
+                    $('#predict_plantilla_result').append('<p>Error al realizar las predicciones.</p>');
+                }
+            });
+        });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

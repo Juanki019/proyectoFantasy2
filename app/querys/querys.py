@@ -24,9 +24,8 @@ def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="1234",
+        password="",
         database="dreamxi",
-        port=local_port
     )
 
 # Función para cargar datos de jugadores desde la base de datos

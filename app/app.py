@@ -13,14 +13,14 @@ app.secret_key = 'e6d57962610614c813054cf3c3716f01'
 
 
 mail = Mail(app)
-
+"""
 try:
     tunnel.start()
     logging.info("Tunnel SSH established successfully on local port: %s", tunnel.local_bind_port)
 except HandlerSSHTunnelForwarderError as e:
     logging.error("Failed to establish SSH tunnel: %s", e)
     exit(1)
-
+"""
 app.register_blueprint(routes_config, url_prefix='/')
 
 def iniciar_subprocesos():

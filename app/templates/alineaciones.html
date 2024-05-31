@@ -28,7 +28,7 @@
 
         <select id="player_select">
             {% for player in players %}
-                <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}" data-precio="{{ player.Precio}}" data-antejornada="{{ player.Antepenultima_Jornada}}" data-penjornada="{{ player.Penultima_Jornada}}" data-ultjornada="{{ player.Ultima_Jornada}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
+                <option value="{{ player.Nombre }}" data-id="{{ player.id_jugador }}" data-posicion="{{ player.Posicion }}"  data-goles="{{ player.Goles }}"  data-puntos="{{ player.Puntos }}" data-precio="{{ player.Precio}}" data-antejornada="{{ player.Antepenultima_Jornada}}" data-penjornada="{{ player.Penultima_Jornada}}" data-ultjornada="{{ player.Ultima_Jornada}}">{{ player.Nombre }} ({{ player.Posicion }})</option>
             {% endfor %}
         </select>
 

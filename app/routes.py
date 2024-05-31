@@ -116,11 +116,6 @@ def callback():
     return redirect("/index")
 
 
-
-
-
-
-
 @routes_config.route('/olvidocontrasena', methods=['GET', 'POST'])
 def olvidocontrasena():
     if request.method == 'POST':
@@ -364,17 +359,6 @@ def logout():
 ########################################################################################
 #                        FUNCIONES CONFIG
 ########################################################################################
-
-def train_and_predict(df, player_data, target_column):
-    X = df.drop(['Nombre', 'Posicion', 'Equipo', target_column], axis=1)
-    y = df[target_column]
-
-    model = LinearRegressionModel()
-
-    model.train(X, y)
-
-    prediction = model.predict(player_data)
-    return prediction
 
 bot_token = '7001449113:AAGj6_iTg_uIKTc6biDIlfD_WPRUFHxCWv0'
 chat_id = '1369962968'

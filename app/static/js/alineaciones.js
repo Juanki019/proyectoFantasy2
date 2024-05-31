@@ -470,6 +470,7 @@ function esPortero(posicion) {
         }
     }
 
+    
     document.addEventListener('DOMContentLoaded', function() {
         $('#target_select_plantilla').change(function() {
             var selectedTarget = $(this).val();
@@ -478,7 +479,7 @@ function esPortero(posicion) {
                 url: '/train',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({target_column: selectedTarget}),  
+                data: JSON.stringify({ target_column: selectedTarget }),
                 success: function(response) {
                     $('#trainResponse_plantilla').html('Aplicación lista para predecir su dato');
                     console.log('Modelo entrenado correctamente para ' + selectedTarget);
@@ -489,24 +490,48 @@ function esPortero(posicion) {
                 }
             });
         });
-        $('#predict_button_plantilla').click(function() {
-            var target = $('#target_select_plantilla').val();  // Asegúrate de tener este select en tu HTML
     
+
+        $('#predict_button_plantilla').click(function() {
+            var target = $('#target_select_plantilla').val();
+            
             $.ajax({
-                url: '/predict_plantilla_completa',  // Asume que este es tu endpoint Flask para la predicción de la plantilla
+                url: '/predict_plantilla_completa',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({target_column: target}),
+                data: JSON.stringify({ target_column: target }),
                 success: function(response) {
                     $('#predict_plantilla_result').empty();
                     if (response.error) {
                         $('#predict_plantilla_result').append('<p>' + response.error + '</p>');
                     } else {
                         for (let playerName in response) {
-                            if(response[playerName].error) {
+                            if (response[playerName].error) {
                                 $('#predict_plantilla_result').append('<p>Error en la predicción para ' + playerName + '</p>');
                             } else {
-                                $('#predict_plantilla_result').append('<p>Predicción para ' + playerName + ' --> ' + target + ': ' + response[playerName] + '</p>');
+                                let prediction = response[playerName];
+                                let playerOption = $('#player_select option[value="' + playerName + '"]');
+                                let price = parseFloat(playerOption.data('precio'));
+                                let goles = parseFloat(playerOption.data('goles')); // Ajusta según el atributo correcto
+                                let puntos = parseFloat(playerOption.data('puntos')); // Ajusta según el atributo correcto
+    
+                                console.log('Player:', playerName);
+                                console.log('Prediction:', prediction);
+                                console.log('Price:', price);
+                                console.log('Goles:', goles);
+                                console.log('Puntos:', puntos);
+    
+                                let message = 'Predicción para ' + playerName + ' --> ' + target + ': ' + prediction;
+    
+                                if (target === 'Precio' && prediction > price) {
+                                    message += ' <span style="color: green;">✔ Recomendado para compra</span>';
+                                } else if (target === 'Goles' && prediction > goles) {
+                                    message += ' <span style="color: green;">✔ Recomendado para goleador</span>';
+                                } else if (target === 'Puntos' && prediction > puntos) {
+                                    message += ' <span style="color: green;">✔ Recomendado para puntos</span>';
+                                }
+    
+                                $('#predict_plantilla_result').append('<p>' + message + '</p>');
                             }
                         }
                     }
@@ -518,15 +543,3 @@ function esPortero(posicion) {
             });
         });
     });
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-

@@ -84,9 +84,7 @@
         {% for jugador in plantilla %}
             <div class="filterDiv {{ jugador.Posicion }}">
                 <div class="discount card" style="--delay: .4s; margin-top: 20px;">
-                
-                    <img style="width: 90px; margin-left: auto; margin-right: auto; margin-top: -20px; margin-bottom: 10px;" src="https://magicalogical.co.uk/tto/wp-content/uploads/2021/06/offerplayer.png">
-                    
+                                    
                     <hr style="width: 100%;">
                     </hr>
                     <div class="title">{{ jugador.Nombre }}</div>
@@ -169,6 +167,7 @@
     </div>
     
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/alineaciones.js') }}"></script>

@@ -8,7 +8,7 @@ def conectar_bd():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="1234",
+        password="",
         database="dreamxi",
         port=35024
     )

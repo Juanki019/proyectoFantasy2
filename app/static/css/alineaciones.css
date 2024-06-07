@@ -1,9 +1,27 @@
 body {
-    font-family: Arial, sans-serif;
+    background: url('../imagenes/imagen_plantillas.jpg') no-repeat center center fixed;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    background-color: #333;
+    color: white;
+    position: relative;
+    margin-top: -18px;
     }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 188rem;
+    background: rgba(0, 0, 0, 0.8); /* Ajusta este valor para cambiar la oscuridad (0.8 significa 80% oscurecida) */
+    z-index: -1;
+}
 
 .container {
     max-width: 800px;
@@ -327,7 +345,9 @@ li{
     width: 500px;
     background: var(--green);
     transform: translate(-50%, 10%);
+    margin-bottom: 5rem
 }
+
 
 #penaltyarea-1 {position:absolute; bottom:0; left:50%; transform:translate(-50%,0%); border:1px solid #fff; width:200px; height:80px;}
 

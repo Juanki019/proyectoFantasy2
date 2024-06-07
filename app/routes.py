@@ -149,7 +149,7 @@ def adminDashboard():
     datos_usuarios = cargar_datos_usuarios()
     return render_template('adminDashboard.html', usuarios=datos_usuarios)
 
-'''
+
 @routes_config.route('/resultadosCompeticiones')
 def resultadosCompeticiones():
     datos_jugadores = cargar_datos_desde_bd()
@@ -170,14 +170,14 @@ def resultadosCompeticiones():
         return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores, data_api=data_api, competitions=competitions)
     else:
         return "Error al obtener los datos de la API"    
-'''
 
+'''
 @routes_config.route('/resultadosCompeticiones')
 def resultadosCompeticiones():
     datos_jugadores = cargar_datos_desde_bd()
     lesion_jugadores = cargar_datos_lesionados_desde_bd()
     return render_template('resultadosCompeticiones.html', players=datos_jugadores, lesiones=lesion_jugadores)
-
+'''
 '''
 @routes_config.route('/datajugadores')
 def datajugadores():
@@ -198,7 +198,6 @@ def datajugadores():
         return "Error al obtener los datos de la API"    
 
 '''
-
 @routes_config.route('/datajugadores')
 def datajugadores():
     datos_jugadores = cargar_datos_desde_bd()
